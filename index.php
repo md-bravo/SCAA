@@ -8,7 +8,7 @@
                <nav class="navbar fixed-top">
                     <div class="container-fluid d-flex justify-content-between pl-0 pr-0">
                          <div>
-                              <a href="#" class="navbar-brand" id="sidebar-toggle"><i class="fas fa-bars fa-2x"></i></a>
+                              <a href="#" class="navbar-brand" id="sidebar-toggle"><i class="fas fa-bars fa-lg"></i></a>
                          </div>
                          <div>
                               <span class="navbar-text titulo-largo">
@@ -19,7 +19,7 @@
                               </span>
                          </div>
                          <div>
-                              <img src="img/icelogo.jpg" class="logo img-fluid" alt="logo-ice">
+                              <img src="img/logo-ice.png" class="logo img-fluid" alt="logo-ice">
                          </div>
 
                     </div>
