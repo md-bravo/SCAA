@@ -25,7 +25,7 @@ a:focus {
 }
 #wrapper.toggled #navbar-wrapper {
   position: absolute;
-  margin-right: -250px;
+  margin-right: -200px;
 }
 #navbar-wrapper .navbar {
   border-width: 0 0 0 0;
@@ -49,28 +49,33 @@ a:focus {
   height: 40px;
 }
 
+.navbar {
+  border-top: solid 2px #f8be12!important;
+  border-bottom: solid 2px #f8be12!important;
+}
+
 #sidebar-wrapper {
   /* z-index: 1000; */
   position: fixed;
-  left: 250px;
+  left: 200px;
   width: 0;
   height: 100%;
-  margin-left: -250px;
+  margin-left: -200px;
   overflow-y: auto;
   overflow-x: hidden;
-  background: #025299;
+  background: #444c6d;
   transition: all 0.5s ease; 
   margin-top: 4.2rem;
 }
 
 #wrapper.toggled #sidebar-wrapper {
-  width: 250px;
+  width: 200px;
 }
 
 .sidebar-brand {
   position: absolute;
   top: 0;
-  width: 250px;
+  width: 200px;
   text-align: center;
   padding: 10px 0;
 }
@@ -78,7 +83,7 @@ a:focus {
 .sidebar-nav {
   position: absolute;
   top: 75px;
-  width: 250px;
+  width: 200px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -113,12 +118,12 @@ a:focus {
 }
 #wrapper.toggled #content-wrapper {
   position: absolute;
-  margin-right: -250px;
+  margin-right: -200px;
 }
 
 @media (min-width: 992px) {
   #wrapper {
-    padding-left: 250px;
+    padding-left: 200px;
   }
 
   #wrapper.toggled {
@@ -126,7 +131,7 @@ a:focus {
   }
 
   #sidebar-wrapper {
-    width: 250px;
+    width: 200px;
   }
 
   #wrapper.toggled #sidebar-wrapper {
@@ -178,12 +183,12 @@ a:focus {
 
   #wrapper.toggled #navbar-wrapper {
     position: absolute;
-    margin-right: -250px;
+    margin-right: -200px;
   }
 
   #wrapper.toggled #content-wrapper {
     position: absolute;
-    margin-right: -250px;
+    margin-right: -200px;
   }
 
   #navbar-wrapper {
@@ -195,7 +200,7 @@ a:focus {
   }
 
   #wrapper.toggled {
-    padding-left: 250px;
+    padding-left: 200px;
   }
 
   #content-wrapper {
@@ -206,7 +211,7 @@ a:focus {
   #wrapper.toggled #navbar-wrapper,
   #wrapper.toggled #content-wrapper {
     position: relative;
-    margin-right: 250px;
+    margin-right: 200px;
   }
 }
 
@@ -220,16 +225,16 @@ a:focus {
   }
 
   #wrapper.toggled #sidebar-wrapper {
-    width: 250px;
+    width: 200px;
   }
   #wrapper.toggled #navbar-wrapper {
     position: absolute;
-    margin-right: -250px;
+    margin-right: -200px;
   }
 
   #wrapper.toggled #content-wrapper {
     position: absolute;
-    margin-right: -250px;
+    margin-right: -200px;
   }
 
   #navbar-wrapper {
@@ -244,7 +249,7 @@ a:focus {
   }
 
   #wrapper.toggled {
-    padding-left: 250px;
+    padding-left: 200px;
   }
 
   #content-wrapper {
@@ -255,6 +260,6 @@ a:focus {
   #wrapper.toggled #navbar-wrapper,
   #wrapper.toggled #content-wrapper {
     position: relative;
-    margin-right: 250px;
+    margin-right: 200px;
   }
 }
