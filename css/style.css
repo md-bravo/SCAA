@@ -54,6 +54,10 @@ a:focus {
   border-bottom: solid 2px #f8be12!important;
 }
 
+.nav-pills .nav-link.active {
+  background-color: #f8be12;
+}
+
 #sidebar-wrapper {
   /* z-index: 1000; */
   position: fixed;
@@ -88,24 +92,24 @@ a:focus {
   padding: 0;
   list-style: none;
 }
-.sidebar-nav > li {
+.sidebar-nav > #v-pills-tab {
   text-indent: 10px;
   line-height: 42px;
 }
-.sidebar-nav > li a {
+.sidebar-nav > #v-pills-tab a {
   display: block;
   text-decoration: none;
   color: hsla(0,0%,100%,.8);
   font-weight: 600;
   font-size: 18px;
 }
-.sidebar-nav > li > a:hover,
-.sidebar-nav > li.active > a {
+.sidebar-nav > #v-pills-tab > a:hover,
+.sidebar-nav > #v-pills-tab.active > a {
   text-decoration: none;
   color: #fff;
   background: #f8be12;
 }
-.sidebar-nav > li > a i.fas {
+.sidebar-nav > #v-pills-tab > a i.fas {
   font-size: 24px;
   width: 60px;
 }
