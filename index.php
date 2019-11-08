@@ -1,8 +1,9 @@
 <?php
-     require 'inc/templates/header.php';
+     include 'inc/funciones/funciones.php';
+     include 'inc/templates/header.php';
 ?>
 
-<body>
+
      <div id="wrapper">
           <div id="navbar-wrapper">
                <nav class="navbar fixed-top">
@@ -71,5 +72,5 @@
 
 
 <?php
-  require 'inc/templates/footer.php';
+  include 'inc/templates/footer.php';
 ?>

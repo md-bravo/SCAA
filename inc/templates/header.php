@@ -15,3 +15,6 @@
 
      <title>SCAA - DGEAS</title>
 </head>
+
+<body class="<?php echo obtenerPaginaActual(); ?>">
+

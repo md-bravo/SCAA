@@ -1,5 +1,5 @@
 body {
-  padding-bottom: 30px;
+  /* padding-bottom: 30px; */
   position: relative;
   min-height: 100%;
 }
@@ -67,7 +67,7 @@ a:focus {
   margin-left: -200px;
   overflow-y: auto;
   overflow-x: hidden;
-  background: #444c6d;
+  background: #3b3f58;
   transition: all 0.5s ease; 
   margin-top: 4.2rem;
 }
@@ -266,4 +266,49 @@ a:focus {
     position: relative;
     margin-right: 200px;
   }
+}
+
+/* Styles Login */
+.container-login {
+  height: 100vh!important;
+}
+
+.contenido span {
+  text-transform: capitalize;
+}
+
+body.login{
+  background: rgba(255,255,255,1);
+  background: -moz-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 0%, rgba(213,235,241,0.93) 28%, rgba(3,60,110,0.76) 100%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(255,255,255,1)), color-stop(28%, rgba(213,235,241,0.93)), color-stop(100%, rgba(3,60,110,0.76)));
+  background: -webkit-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 0%, rgba(213,235,241,0.93) 28%, rgba(3,60,110,0.76) 100%);
+  background: -o-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 0%, rgba(213,235,241,0.93) 28%, rgba(3,60,110,0.76) 100%);
+  background: -ms-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 0%, rgba(213,235,241,0.93) 28%, rgba(3,60,110,0.76) 100%);
+  background: radial-gradient(ellipse at center, rgba(255,255,255,1) 0%, rgba(213,235,241,0.93) 28%, rgba(3,60,110,0.76) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#033c6e', GradientType=1 );
+}
+
+body.login .contenido {
+border-radius: 10px;
+-webkit-box-shadow: 0px 17px 39px -6px rgba(0,0,0,0.76);
+-moz-box-shadow: 0px 17px 39px -6px rgba(0,0,0,0.76);
+box-shadow: 0px 17px 39px -6px rgba(0,0,0,0.76);
+}
+
+.titulo-login {
+  background-color: #025299;
+  color: hsla(0,0%,100%,.8);
+}
+
+.titulo-login:hover{
+  color: #f8be12;
+}
+
+.btn-login {
+  background-color: #025299!important;
+  color: hsla(0,0%,100%,.8);
+}
+
+.btn-login:hover {
+  color: #f8be12;
 }
