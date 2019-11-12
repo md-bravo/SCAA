@@ -68,3 +68,33 @@ $(function()
     }
 
 });
+
+
+$(document).ready(function() {
+    $('#example').DataTable({
+        "order": [[ 4, "desc" ]],
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ registros",
+            "zeroRecords": "No hay registros",
+            "info": "Página _PAGE_ de _PAGES_",
+            "infoEmpty": "Mostrando 0 a 0 de 0 registros",
+            "infoFiltered": "(filtered from _MAX_ total records)",
+            "search": "Buscar:",
+            "paginate": {
+                "first":      "Primera",
+                "last":       "Última",
+                "next":       "Siguiente",
+                "previous":   "Previa"
+            },
+            select: {
+                rows: {
+                    _: "You have selected %d rows",
+                    0: "",
+                    1: "1 fila seleccionada"
+                }
+            }
+        },
+        "select": 'single'
+    });
+
+} );

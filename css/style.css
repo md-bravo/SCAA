@@ -312,3 +312,13 @@ box-shadow: 0px 17px 39px -6px rgba(0,0,0,0.76);
 .btn-login:hover {
   color: #f8be12;
 }
+
+/* End Styles Login */
+
+/* Styles Dashboard */
+
+.dataTables_wrapper {
+  padding-top: 1rem!important;
+}
+
+/* End Styles Dashboard */
