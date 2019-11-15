@@ -78,7 +78,7 @@ $(document).ready(function() {
             "zeroRecords": "No hay registros",
             "info": "Página _PAGE_ de _PAGES_",
             "infoEmpty": "Mostrando 0 a 0 de 0 registros",
-            "infoFiltered": "(filtered from _MAX_ total records)",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
             "search": "Buscar:",
             "paginate": {
                 "first":      "Primera",
