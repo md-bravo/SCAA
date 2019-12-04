@@ -33,9 +33,9 @@
                </div>           
                <div class="sidebar-nav">
                     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                         <a class="p-0 nav-link rounded-0 active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true"><i class="fas fa-home"></i>Dashboard</a>
-                         <a class="p-0 nav-link rounded-0" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false"><i class="fas fa-edit"></i>Registros</a>
-                         <a class="p-0 nav-link rounded-0" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false"><i class="fas fa-file-alt"></i>Reportes</a>
+                         <a class="p-0 nav-link rounded-0 " id="v-pills-dashboard-tab" data-toggle="pill" href="#v-pills-dashboard" role="tab" aria-controls="v-pills-dashboard" aria-selected="true"><i class="fas fa-home"></i>Dashboard</a>
+                         <a class="p-0 nav-link rounded-0 active" id="v-pills-registro-tab" data-toggle="pill" href="#v-pills-registro" role="tab" aria-controls="v-pills-registro" aria-selected="false"><i class="fas fa-edit"></i>Registros</a>
+                         <a class="p-0 nav-link rounded-0" id="v-pills-reportes-tab" data-toggle="pill" href="#v-pills-reportes" role="tab" aria-controls="v-pills-reportes" aria-selected="false"><i class="fas fa-file-alt"></i>Reportes</a>
                          <a class="p-0 nav-link rounded-0" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false"><i class="fas fa-sign-out-alt"></i>Salir</a>
                     </div>
                </div>
@@ -47,7 +47,7 @@
                     <div class="col-lg-12">
                          
                          <div class="tab-content" id="v-pills-tabContent">
-                              <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                              <div class="tab-pane fade " id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab">
                                    <div class="row justify-content-center border-bottom">
                                         <h3>Actividades Asignadas</h3>     
                                    </div>
@@ -533,11 +533,86 @@
                                    </tfoot>
                               </table>
                               </div>
-                              <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                   <h1>Tab 2</h1>     
-                                   <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, sint commodi. Cum, voluptatem saepe maiores adipisci ullam culpa corrupti quas, assumenda error aliquam consequatur enim, sapiente inventore repudiandae nesciunt omnis.</h2>
+                              <div class="tab-pane fade show active" id="v-pills-registro" role="tabpanel" aria-labelledby="v-pills-registro-tab">
+                                   <div class="row justify-content-center border-bottom">
+                                        <h3>Asignar Actividades</h3>     
+                                   </div>
+                                   <div class="row pt-5 justify-content-center">                                       
+                                        <form>
+                                             <div class="form-row">
+                                                  <div class="form-group col-md-5">
+                                                       <label for="codigo">Código</label>
+                                                       <input type="text" class="form-control" id="codigo">
+                                                  </div>
+                                                  <div class="form-group col-md-5">
+                                                       <label for="cedula">Cédula</label>
+                                                       <input type="text" class="form-control" id="cedula">
+                                                  </div>
+                                                  <div class="form-group col-md-2 d-flex align-items-end flex-row-reverse">
+                                                       <button type="button" id="btnBuscar" class="btn btn-primary">Buscar</button>                                                       
+                                                  </div>
+                                             </div>
+                                             <div class="form-row">
+                                                  <div class="form-group col-md-6">
+                                                       <label for="nombre">Técnico</label>
+                                                       <input type="text" class="form-control" id="nombre" readonly>
+                                                  </div>
+                                                  <div class="form-group col-md-3">
+                                                       <label for="area">Área</label>
+                                                       <input type="text" class="form-control" id="area" readonly>
+                                                  </div>
+                                                  <div class="form-group col-md-3">
+                                                       <label for="zona">Zona</label>
+                                                       <input type="text" class="form-control" id="zona" readonly>
+                                                  </div>
+                                             </div>
+                                             <div class="form-group">
+                                                  <label for="exampleFormControlSelect1">Actividades</label>
+                                                  <select class="form-control" id="exampleFormControlSelect1">
+                                                       <option>Actividad 1</option>
+                                                       <option>Actividad 2</option>
+                                                       <option>Actividad 3</option>
+                                                       <option>Actividad 4</option>
+                                                       <option>Actividad 5</option>
+                                                  </select>
+                                             </div>
+                                             <div class="form-row">
+                                                  <div class="form-group col-md-3">
+                                                       <label for="OST">OST</label>
+                                                       <input type="text" class="form-control" id="OST">
+                                                  </div>
+                                                  <div class="form-group col-md-3">
+                                                       <label for="SIGA">SIGA</label>
+                                                       <input type="text" class="form-control" id="SIGA">
+                                                  </div>
+                                                  <div class="form-group col-md-3">
+                                                       <label for="NumServicio"># Servicio</label>
+                                                       <input type="text" class="form-control" id="NumServicio">
+                                                  </div>
+                                                  <div class="form-group col-md-3">
+                                                       <label for="cantidad">Cantidad</label>
+                                                       <input type="text" class="form-control" id="cantidad" required>
+                                                  </div>
+                                             </div>
+                                             <div class="form-group">
+                                                  <label for="observaciones">Observaciones</label>
+                                                  <textarea class="form-control" id="observaciones" rows="2"></textarea>
+                                             </div>
+                                             <div class="form-row">
+                                                  <div class="form-group col-md-8">
+                                                       <label for="registra">Registra</label>
+                                                       <input type="text" class="form-control" id="registra" readonly>
+                                                  </div>
+                                                  <div class="form-group col-md-4">
+                                                       <label for="fecha">Fecha / Hora</label>
+                                                       <input type="text" class="form-control" id="fecha" readonly>
+                                                  </div>
+                                             </div>
+                                             <button type="submit" class="btn btn-primary">Guardar</button>
+                                        </form>
+                                   </div>
                               </div>
-                              <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                              <div class="tab-pane fade" id="v-pills-reportes" role="tabpanel" aria-labelledby="v-pills-reportes-tab">
                                    <h1>Tab 3</h1>     
                                    <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, sint commodi. Cum, voluptatem saepe maiores adipisci ullam culpa corrupti quas, assumenda error aliquam consequatur enim, sapiente inventore repudiandae nesciunt omnis.</h2>
                               </div>

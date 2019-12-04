@@ -10,6 +10,7 @@
       if ($actual === 'login') {
         echo '<script type="text/javascript" src="js/formulario-login.js"></script>';
       } elseif ($actual === 'index') {
+        echo '<script type="text/javascript" src="js/formulario-registro.js"></script>';
         echo '<script type="text/javascript" src="js/script.js?v=1"></script>';
       }
     ?>

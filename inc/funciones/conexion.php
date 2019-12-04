@@ -1,6 +1,6 @@
 <?php
 
-    $conn = new mysqli('localhost', 'root', 'root', 'nombreDB');
+    $conn = new mysqli('localhost', 'root', 'root', 'db_scaa');
 
     if($conn->connect_error){
         echo $conn->connect_error;
