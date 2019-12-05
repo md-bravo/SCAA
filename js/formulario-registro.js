@@ -2,10 +2,80 @@ eventListener();
 
 function eventListener() {
     // Document Ready
-    document.addEventListener("DOMContentLoaded", function () { });
+    document.addEventListener("DOMContentLoaded", function () {
+        // let fechaActual = new Date().toLocaleDateString('es-ES');
+        // console.log(fechaActual);
+        // document.getElementById('fecha').value = fechaActual;
+        fechaHora();
+        mueveReloj();
+    });
+
+    // Hacer cuandrilla
+    document.getElementById('checkCuadrilla').addEventListener('change', hacerCuadrilla);
 
     // Buscar un Usuario
     document.getElementById("btnBuscar").addEventListener("click", buscarUsuario);
+}
+
+// Muestra la fecha y la hora (solo se está utilizando la fecha)
+function fechaHora() {
+    // For todays date;
+    Date.prototype.today = function () { 
+        return ((this.getDate() < 10)?"0":"") + this.getDate() +"/"+(((this.getMonth()+1) < 10)?"0":"") + (this.getMonth()+1) +"/"+ this.getFullYear();
+    }
+
+    // For the time now
+    Date.prototype.timeNow = function () {
+        return ((this.getHours() < 10)?"0":"") + this.getHours() +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes() +":"+ ((this.getSeconds() < 10)?"0":"") + this.getSeconds();
+    }
+
+    var newDate = new Date();
+    var datetime = newDate.today();
+    document.getElementById('fecha').value = datetime;
+}
+
+// Muestra el reloj en el formulario
+function mueveReloj(){
+    momentoActual = new Date()
+    hora = momentoActual.getHours()
+    minuto = momentoActual.getMinutes()
+    segundo = momentoActual.getSeconds()
+
+    str_segundo = new String (segundo)
+    if (str_segundo.length == 1)
+       segundo = "0" + segundo
+
+    str_minuto = new String (minuto)
+    if (str_minuto.length == 1)
+       minuto = "0" + minuto
+
+    str_hora = new String (hora)
+    if (str_hora.length == 1)
+       hora = "0" + hora
+
+    horaImprimible = hora + " : " + minuto + " : " + segundo
+
+    document.getElementById('hora').value = horaImprimible;
+
+    setTimeout("mueveReloj()",1000)
+}
+
+function hacerCuadrilla(e) {
+    const estado = document.getElementById('checkCuadrilla').checked;
+    const busquedaIndividual = document.getElementById('busquedaIndividual');
+    const muestraIndividual =  document.getElementById('muestraIndividual');
+    const muestraCuadrilla = document.getElementById('muestraCuadrilla');
+
+    if(estado === true) {
+        busquedaIndividual.style.display = 'none';
+        muestraIndividual.style.display = 'none';
+        muestraCuadrilla.classList.remove('d-none');
+        muestraCuadrilla.style.display = 'flex';
+    } else {
+        busquedaIndividual.style.display = 'flex';
+        muestraIndividual.style.display = 'flex';
+        muestraCuadrilla.style.display = 'none';
+    }
 }
 
 // Buscar un Usuario por su cédula o código
