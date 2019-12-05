@@ -20,3 +20,25 @@
 
 <body class="<?php echo obtenerPaginaActual(); ?>">
 
+<div id="wrapper">
+     <div id="navbar-wrapper">
+          <nav class="navbar fixed-top">
+               <div class="container-fluid d-flex justify-content-between pl-0 pr-0">
+                    <div>
+                         <a href="#" class="navbar-brand" id="sidebar-toggle"><i class="fas fa-bars fa-lg"></i></a>
+                    </div>
+                    <div>
+                         <span class="navbar-text titulo-largo">
+                              Sistema de Control y Asignación de Actividades - DGEAS
+                         </span>
+                         <span class="navbar-text titulo-corto">
+                              SCAA - DGEAS
+                         </span>
+                    </div>
+                    <div>
+                         <img src="img/logo-ice.png" class="logo img-fluid" alt="logo-ice">
+                    </div>
+               </div>
+          </nav>
+     </div>
+
