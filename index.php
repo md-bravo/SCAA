@@ -492,23 +492,6 @@
                          </tfoot>
                     </table>
                </div>
-               <!-- <div class="tab-content" id="v-pills-tabContent">
-                    <div class="tab-pane fade " id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab">
-                         <h1>Tab 1</h1>     
-                         <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, sint commodi. Cum, voluptatem saepe maiores adipisci ullam culpa corrupti quas, assumenda error aliquam consequatur enim, sapiente inventore repudiandae nesciunt omnis.</h2>
-                    <div class="tab-pane fade show active" id="v-pills-registro" role="tabpanel" aria-labelledby="v-pills-registro-tab">
-                         <h1>Tab 2</h1>     
-                         <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, sint commodi. Cum, voluptatem saepe maiores adipisci ullam culpa corrupti quas, assumenda error aliquam consequatur enim, sapiente inventore repudiandae nesciunt omnis.</h2>
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-reportes" role="tabpanel" aria-labelledby="v-pills-reportes-tab">
-                         <h1>Tab 3</h1>     
-                         <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, sint commodi. Cum, voluptatem saepe maiores adipisci ullam culpa corrupti quas, assumenda error aliquam consequatur enim, sapiente inventore repudiandae nesciunt omnis.</h2>
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                         <h1>Tab 4</h1>     
-                         <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, sint commodi. Cum, voluptatem saepe maiores adipisci ullam culpa corrupti quas, assumenda error aliquam consequatur enim, sapiente inventore repudiandae nesciunt omnis.</h2>
-                    </div>
-               </div> -->
           </div>
      </section>
 </div>
