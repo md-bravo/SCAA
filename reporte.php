@@ -5,7 +5,7 @@
 ?>
 
 <section id="content-wrapper">
-    <div class="row">
+    <div class="row mx-0">
         <div class="col-lg-12">
             <div class="row justify-content-center border-bottom">
                 <h3>Reportes</h3>     
