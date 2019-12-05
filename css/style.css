@@ -92,27 +92,53 @@ a:focus {
   padding: 0;
   list-style: none;
 }
-.sidebar-nav > #v-pills-tab {
+
+.sidebar-nav > li {
   text-indent: 10px;
   line-height: 42px;
 }
-.sidebar-nav > #v-pills-tab a {
+
+/* .sidebar-nav > #v-pills-tab {
+  text-indent: 10px;
+  line-height: 42px;
+} */
+
+.sidebar-nav > li a {
   display: block;
   text-decoration: none;
   color: hsla(0,0%,100%,.8);
   font-weight: 600;
   font-size: 18px;
 }
-.sidebar-nav > #v-pills-tab > a:hover,
-.sidebar-nav > #v-pills-tab.active > a {
+/* .sidebar-nav > #v-pills-tab a {
+  display: block;
+  text-decoration: none;
+  color: hsla(0,0%,100%,.8);
+  font-weight: 600;
+  font-size: 18px;
+} */
+
+.sidebar-nav > li > a:hover,
+.sidebar-nav > li.active > a {
   text-decoration: none;
   color: #fff;
   background: #f8be12;
 }
-.sidebar-nav > #v-pills-tab > a i.fas {
+/* .sidebar-nav > #v-pills-tab > a:hover,
+.sidebar-nav > #v-pills-tab.active > a {
+  text-decoration: none;
+  color: #fff;
+  background: #f8be12;
+} */
+
+.sidebar-nav > li > a i.fas {
   font-size: 24px;
   width: 60px;
 }
+/* .sidebar-nav > #v-pills-tab > a i.fas {
+  font-size: 24px;
+  width: 60px;
+} */
 
 #content-wrapper {
   width: 100%;

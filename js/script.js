@@ -8,12 +8,33 @@ function eventListener() {
         // Inicializar la variable en el session storage para medir el tiempo de inactividad
         var timeStamp = new Date();
         sessionStorage.setItem("lastTimeStamp",timeStamp);
+
+        verificarNav();
     });
 
 
 
 }
 
+// Esta función determina en que página se encuentra y agrega la clase active al menú que corresponde.
+function verificarNav(e) {
+    const url = window.location.pathname;
+    let ubicacion = url.slice(12,-4);
+
+    switch (ubicacion) {
+        case 'index':
+            document.querySelector('.sidebar-nav').children[0].classList.add('active');    
+            break;
+        case 'registro':
+            document.querySelector('.sidebar-nav').children[1].classList.add('active');        
+            break;
+        case 'reporte':
+            document.querySelector('.sidebar-nav').children[2].classList.add('active');        
+            break;
+        default:
+            break;
+    }
+}
 
 // Colapsar el sidebar
 $("#sidebar-toggle").click(function(e) {
@@ -69,7 +90,7 @@ $(function()
 
 });
 
-
+// Tabla de registros
 $(document).ready(function() {
     $('#example').DataTable({
         "order": [[ 4, "desc" ]],
