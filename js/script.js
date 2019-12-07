@@ -19,20 +19,13 @@ function eventListener() {
 // Esta función determina en que página se encuentra y agrega la clase active al menú que corresponde.
 function verificarNav(e) {
     const url = window.location.pathname;
-    let ubicacion = url.slice(12,-4);
 
-    switch (ubicacion) {
-        case 'index':
-            document.querySelector('.sidebar-nav').children[0].classList.add('active');    
-            break;
-        case 'registro':
-            document.querySelector('.sidebar-nav').children[1].classList.add('active');        
-            break;
-        case 'reporte':
-            document.querySelector('.sidebar-nav').children[2].classList.add('active');        
-            break;
-        default:
-            break;
+    if(url.indexOf('index') != -1){
+        document.querySelector('.sidebar-nav').children[0].classList.add('active');
+    } else if(url.indexOf('registro') != -1){
+        document.querySelector('.sidebar-nav').children[1].classList.add('active');
+    } else if(url.indexOf('reporte') != -1) {
+        document.querySelector('.sidebar-nav').children[2].classList.add('active');
     }
 }
 

@@ -14,6 +14,7 @@
      <link rel="stylesheet" type="text/css" href="css/all.min.css">
      <link rel="stylesheet" type="text/css" href="css/style.css">
      <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
+     <link rel="stylesheet" type="text/css" href="css/vendor/bootstrap-select.min.css">
 
      <title>SCAA - DGEAS</title>
 </head>
