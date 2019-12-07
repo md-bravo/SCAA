@@ -43,7 +43,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-md-2 d-flex align-items-end flex-row-reverse">
-                                    <button type="submit" id="btnBuscar" class="btn btn-primary btn-block">Buscar</button>                                                       
+                                    <button type="submit" id="btnBuscar" class="btn btn-primary btn-block">Buscar</button>
                                 </div>
                             </div>
                             <div id="muestraIndividual" class="form-row bg-light">
@@ -96,24 +96,27 @@
                                             <select disabled class="form-control selectpicker" data-live-search="true" id="ddlUsuarios" title="Seleccione">                                                
                                                 <?php
                                                     foreach($usuarios as $usuario) { ?>
-                                                        <option value="<?php echo $usuario['cedula']?>"><?php echo   $usuario['apellido1'] . ' ' . $usuario['apellido2'] . ' ' . $usuario['nombre1'] . ' ' . $usuario['nombre2']?></option>
+                                                        <option data-icon="far fa-user" value="<?php echo $usuario['cedula']?>"><?php echo ' - '.  $usuario['apellido1'] . ' ' . $usuario['apellido2'] . ' ' . $usuario['nombre1'] . ' ' . $usuario['nombre2']?></option>
                                                     <?php } ?>                        
                                             </select>
                                         <?php } ?>
                                 </div>
                             </div>
-                            <div id="muestraCuadrilla" class="form-row bg-light d-none">
-                                <div class="form-group col-md-12 py-3">
+                            <div id="muestraCuadrilla" class="form-row bg-light d-none py-3">
+                                <div class="form-group col-md-11">
                                     <label class="pb-2" for="ddlCuadrilla">Seleccione los miembros de la cuadrilla</label>
                                     <?php
                                         if($usuarios) { ?>
                                             <select class="form-control selectpicker" multiple data-selected-text-format="count > 4" data-live-search="true"  id="ddlCuadrilla" title="Seleccione">                                                
                                                 <?php
                                                     foreach($usuarios as $usuario) { ?>
-                                                        <option value="<?php echo $usuario['cedula']?>"><?php echo   $usuario['apellido1'] . ' ' . $usuario['apellido2'] . ' ' . $usuario['nombre1'] . ' ' . $usuario['nombre2']?></option>
+                                                        <option data-icon="far fa-user" value="<?php echo $usuario['cedula']?>"><?php echo ' - ' . $usuario['apellido1'] . ' ' . $usuario['apellido2'] . ' ' . $usuario['nombre1'] . ' ' . $usuario['nombre2']?></option>
                                                     <?php } ?>                        
                                             </select>
                                         <?php } ?>
+                                </div>
+                                <div class="form-group col-md-1 d-flex align-items-end flex-row-reverse">
+                                    <button type="button" id="btnLimpiar" class="btn btn-primary"><i class="fas fa-undo-alt"></i></button>
                                 </div>
                             </div>
 
@@ -141,7 +144,7 @@
                                             <select class="form-control selectpicker" data-live-search="true"  id="ddlActividades" title="Seleccione">                                                
                                                 <?php
                                                     foreach($actividades as $actividad) { ?>
-                                                        <option value="<?php echo $actividad['id_Act']?>" id="<?php echo $actividad['peso_Act']?>"><?php echo   $actividad['nombre_Act']?></option>
+                                                        <option data-icon="far fa-check-square" value="<?php echo $actividad['id_Act']?>" id="<?php echo $actividad['peso_Act']?>"><?php echo ' - '.  $actividad['nombre_Act']?></option>
                                                     <?php } ?>                        
                                             </select>
                                         <?php } ?>

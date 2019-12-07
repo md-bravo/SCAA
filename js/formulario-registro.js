@@ -19,6 +19,9 @@ function eventListener() {
     // Hacer cuandrilla
     document.getElementById('checkCuadrilla').addEventListener('change', hacerCuadrilla);
 
+    // Limpiar todos los seleccionados en cuadrilla
+    document.getElementById('btnLimpiar').addEventListener('click', deseleccionarTodos);
+
     // Buscar por nombre
     document.getElementById('checkBuscarNombre').addEventListener('change', habilitarBusqueda);
 
@@ -36,6 +39,11 @@ function eventListener() {
 
 }
 
+// Limpiar todos los seleccionados en cuadrilla
+function deseleccionarTodos(e) {
+    e.preventDefault();
+    $('#ddlCuadrilla').selectpicker('deselectAll');
+}
 // Calcula el total entre el pesa de la actividad y la cantidad
 function calcularTotal(e) {
 
@@ -84,8 +92,12 @@ function filtrarActividades(e) {
                 let nuevoElemento = document.createElement('option');
                 nuevoElemento.id = peso;
                 nuevoElemento.value = id; 
-                nuevoElemento.innerHTML = actividad;
+                nuevoElemento.setAttribute("data-icon", "far fa-check-square");
+                nuevoElemento.innerHTML = ` - ${actividad}`;
                 ddlActividades.appendChild(nuevoElemento);
+
+
+                
             }
         }
         refrescarListaActividades();
@@ -97,7 +109,8 @@ function filtrarActividades(e) {
             let nuevoElemento = document.createElement('option');
             nuevoElemento.value = id; 
             nuevoElemento.id = peso;
-            nuevoElemento.innerHTML = actividad;
+            nuevoElemento.setAttribute("data-icon", "far fa-check-square");
+                nuevoElemento.innerHTML = ` - ${actividad}`;
             ddlActividades.appendChild(nuevoElemento);
         }
         refrescarListaActividades();
@@ -201,8 +214,9 @@ function filtrarUsuarios(e) {
                 let cedula = tablaUsuarios.children[x].children[0].textContent;
                 let nombre = tablaUsuarios.children[x].children[1].textContent;
                 let nuevoElemento = document.createElement('option');
+                nuevoElemento.setAttribute("data-icon", "far fa-user");
                 nuevoElemento.value = cedula; 
-                nuevoElemento.innerHTML = nombre;
+                nuevoElemento.innerHTML = ` - ${nombre}`;
                 ddlUsuarios.appendChild(nuevoElemento);
             }
         }
@@ -214,8 +228,9 @@ function filtrarUsuarios(e) {
                 let cedula = tablaUsuarios.children[x].children[0].textContent;
                 let nombre = tablaUsuarios.children[x].children[1].textContent;
                 let nuevoElemento = document.createElement('option');
+                nuevoElemento.setAttribute("data-icon", "far fa-user");
                 nuevoElemento.value = cedula; 
-                nuevoElemento.innerHTML = nombre;
+                nuevoElemento.innerHTML = ` - ${nombre}`;
                 ddlUsuarios.appendChild(nuevoElemento);
             }
         }
@@ -227,8 +242,9 @@ function filtrarUsuarios(e) {
                 let cedula = tablaUsuarios.children[x].children[0].textContent;
                 let nombre = tablaUsuarios.children[x].children[1].textContent;
                 let nuevoElemento = document.createElement('option');
+                nuevoElemento.setAttribute("data-icon", "far fa-user");
                 nuevoElemento.value = cedula; 
-                nuevoElemento.innerHTML = nombre;
+                nuevoElemento.innerHTML = ` - ${nombre}`;
                 ddlUsuarios.appendChild(nuevoElemento);
             }
         }
@@ -238,8 +254,9 @@ function filtrarUsuarios(e) {
             let cedula = tablaUsuarios.children[x].children[0].textContent;
             let nombre = tablaUsuarios.children[x].children[1].textContent;
             let nuevoElemento = document.createElement('option');
+            nuevoElemento.setAttribute("data-icon", "far fa-user");
             nuevoElemento.value = cedula; 
-            nuevoElemento.innerHTML = nombre;
+            nuevoElemento.innerHTML = ` - ${nombre}`;
             ddlUsuarios.appendChild(nuevoElemento);
         }
         refrescarListaUsuarios();
