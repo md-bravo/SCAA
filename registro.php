@@ -1,4 +1,5 @@
 <?php
+     include 'inc/funciones/sesiones.php';
      include 'inc/funciones/funciones.php';
      include 'inc/templates/header.php';
      include 'inc/templates/sidebar.php';
@@ -189,7 +190,7 @@
                                     <div class="input-group mb-2">
                                         <input type="number" class="form-control" id="cantidad">
                                         <div class="input-group-prepend">
-                                            <div id="total" class="input-group-text"></div>
+                                            <div id="total" class="input-group-text">0.00</div>
                                         </div>                                        
                                     </div>
                                 </div>
@@ -210,7 +211,7 @@
                                         <div class="input-group-prepend">
                                         <div class="input-group-text font-weight-bold">Registra</div>
                                         </div>
-                                        <input type="text" class="form-control" id="registra" readonly value="Mac Donald Bravo Barahona">
+                                        <input type="text" class="form-control" id="registra" readonly value="<?php echo $_SESSION['nombre']?>">
                                     </div>
                                 </div>
                                 <div class="form-group col-md-2">

@@ -1,5 +1,10 @@
 <?php
+    session_start();
     include 'inc/funciones/funciones.php';
+
+    if(isset($_GET['cerrar_session'])) {
+        $_SESSION = array();
+    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -31,14 +36,14 @@
                     <div class="form-group row">
                         <label for="usuario" class="col-sm-3 col-form-label">Cédula: </label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="usuario" id="usuario" placeholder="Ingrese su Cédula" maxlength="9" autofocus required>
+                            <input type="number" class="form-control" name="usuario" id="usuario" placeholder="Ingrese su Cédula" maxlength="9" autofocus required>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="password" class="col-sm-3 col-form-label">Password: </label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="password" id="password" placeholder="Ingrese su Contraseña" required>
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Ingrese su Contraseña" required>
                         </div>
                     </div>
                         

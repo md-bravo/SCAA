@@ -31,8 +31,9 @@ function eventListener() {
     // Calcular peso actividades
     document.getElementById('ddlActividades').addEventListener('change', pesoActividades);
     
-
+    // calcular total cuando se ingresa la cantidad
     document.getElementById('cantidad').addEventListener('keyup', calcularTotal);
+    document.getElementById('cantidad').addEventListener('click', calcularTotal);
 
     // PENDIENTE (Ver todos los usuarios seleccionados en cuadrilla).
     // document.querySelectorAll('#ddlCuadrilla option:checked')[2].value

@@ -80,13 +80,28 @@ a:focus {
   position: absolute;
   top: 0;
   width: 200px;
-  text-align: center;
-  padding: 10px 0;
+  /* text-align: center; */
+  padding: 35px 0;
+  color: hsla(0,0%,100%,.8);
 }
 
+.sidebar-brand a {
+  text-indent: 20px;
+}
+
+.sidebar-brand a span{
+  margin-left: 10px;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+.sidebar-brand a i.fas {
+  font-size: 24px;
+  width: 60px;
+}
 .sidebar-nav {
   position: absolute;
-  top: 75px;
+  top: 100px;
   width: 200px;
   margin: 0;
   padding: 0;

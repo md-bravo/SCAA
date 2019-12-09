@@ -1,6 +1,7 @@
 <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-               
+               <input type="hidden" name="idRegistrador" id="idRegistrador" value="<?php echo $_SESSION['usuario']?>">
+               <a><i class="fas fa-user fa-1x"></i><span><?php echo $_SESSION['nombreCorto']?></span></a>
           </div>           
           <ul class="sidebar-nav">
                <li>

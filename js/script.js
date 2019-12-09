@@ -13,7 +13,6 @@ function eventListener() {
     });
 
 
-
 }
 
 // Esta función determina en que página se encuentra y agrega la clase active al menú que corresponde.
