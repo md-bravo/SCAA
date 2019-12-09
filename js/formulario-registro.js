@@ -42,7 +42,7 @@ function eventListener() {
 // Limpiar todos los seleccionados en cuadrilla
 function deseleccionarTodos(e) {
     e.preventDefault();
-    $('#ddlCuadrilla').selectpicker('deselectAll');
+    $('#ddlCuadrilla').selectpicker('val', '');
 }
 // Calcula el total entre el pesa de la actividad y la cantidad
 function calcularTotal(e) {

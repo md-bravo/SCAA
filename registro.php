@@ -61,8 +61,12 @@
                         
                             <div id="buscaNombre" class="form-row bg-light">
                                 <div class="form-group col-md-3">
-                                    <label for="ddlZonas">Zonas</label>
-                                    <?php
+                                    <label class="sr-only" for="registra">Zonas</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                        <div class="input-group-text">Zonas</div>
+                                        </div>
+                                        <?php
                                         $zonas = obtenerZonas();
                                         if($zonas) { ?>
                                             <select disabled class="form-control" id="ddlZonas">
@@ -73,10 +77,15 @@
                                                     <?php } ?>                        
                                             </select>
                                         <?php } ?>
+                                    </div>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label for="ddlAreas">Áreas</label>
-                                    <?php
+                                    <label class="sr-only" for="registra">Áreas</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                        <div class="input-group-text">Áreas</div>
+                                        </div>
+                                        <?php
                                         $areas = obtenerAreas();
                                         if($areas) { ?>
                                             <select disabled class="form-control" id="ddlAreas">
@@ -87,10 +96,15 @@
                                                     <?php } ?>                        
                                             </select>
                                         <?php } ?>
+                                    </div>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="ddlUsuarios">Empleado</label>
-                                    <?php
+                                    <label class="sr-only" for="registra">Usuario</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                        <div class="input-group-text">Usuario</div>
+                                        </div>
+                                        <?php
                                         $usuarios = obtenerUsuarios();
                                         if($usuarios) { ?>
                                             <select disabled class="form-control selectpicker" data-live-search="true" id="ddlUsuarios" title="Seleccione">                                                
@@ -100,6 +114,7 @@
                                                     <?php } ?>                        
                                             </select>
                                         <?php } ?>
+                                    </div>
                                 </div>
                             </div>
                             <div id="muestraCuadrilla" class="form-row bg-light d-none py-3">
@@ -121,7 +136,7 @@
                             </div>
 
 
-                            <div class="form-row mt-5">
+                            <div class="form-row mt-4 pt-3 bg-light">
                                 <div class="form-group col-md-2">
                                     <label for="ddlAreasAct">Áreas</label>
                                     <?php                                        
