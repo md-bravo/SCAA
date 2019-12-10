@@ -35,8 +35,8 @@ function eventListener() {
     document.getElementById('cantidad').addEventListener('keyup', calcularTotal);
     document.getElementById('cantidad').addEventListener('click', calcularTotal);
 
-    // PENDIENTE (Ver todos los usuarios seleccionados en cuadrilla).
-    // document.querySelectorAll('#ddlCuadrilla option:checked')[2].value
+    // Guardar el registro de actividad en la base de datos
+    document.getElementById('btnGuardar').addEventListener('click', guardarRegistro);
 
 }
 
@@ -322,18 +322,16 @@ function buscarUsuario(e) {
 
     const codigo = document.getElementById("codigo").value;
     const cedula = document.getElementById("cedula").value;
+    const tipo = document.getElementById('tipoBuscar').value;
 
     if (codigo === "" && cedula === "") {
-        Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Debe de ingresar el código o la cédula"
-        });
+        mostrarMensaje('error', 'Debe ingresar código o cédula')  
     } else {
         // Se definen los datos que se van a enviar al fetch
         const data = new FormData();
         data.append('codigo', codigo);
         data.append('cedula', cedula);
+        data.append('tipo', tipo);
 
         // Conexión del fetch al archivo php
         fetch('inc/modelos/modelo-registro.php', {
@@ -355,44 +353,20 @@ function buscarUsuario(e) {
         // Se muestran los resultados devueltos en el JSON
         function mostrarResultado(respuesta){
             // Si la respuesta es correcta
-            if(respuesta.respuesta === 'correcto') {      
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 2000
-                })
-                
-                Toast.fire({
-                icon: 'success',
-                title: 'Usuario Encontrado'
-                })         
+            if(respuesta.estado === 'correcto') {      
+                mostrarMensaje('success', 'Usuario Encontrado')        
 
-            document.getElementById('id').value = respuesta.usuario;
-            document.getElementById('nombre').value = respuesta.nombre;
-            document.getElementById('area').value = respuesta.area;
-            document.getElementById('zona').value = respuesta.zona;
+                document.getElementById('id').value = respuesta.usuario;
+                document.getElementById('nombre').value = respuesta.nombre;
+                document.getElementById('area').value = respuesta.area;
+                document.getElementById('zona').value = respuesta.zona;
                 
-            } else  if(respuesta.respuesta === 'no-existe') {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 2000
-                })
-                
-                Toast.fire({
-                icon: 'error',
-                title: 'Usuario no existe'
-                })    
+            } else  if(respuesta.estado === 'no-existe') {
+                mostrarMensaje('error', 'Usuario no existe'); 
             }else {
                 // Hubo un error
                 if(respuesta.error) {
-                    swal({
-                        title: 'Error',
-                        text: 'Algo falló al buscar el usuario',
-                        icon: 'error'
-                    });    
+                    mostrarMensaje('error', 'Algo falló al buscar el usuario');    
                 }
             }
         }
@@ -402,4 +376,112 @@ function buscarUsuario(e) {
             console.log('Error', err);
         }
     }
+}
+
+function guardarRegistro(e) {
+    e.preventDefault();
+
+    const cedulaPorCodigo = document.getElementById('id').value;
+    const cedulaPorNombre = document.getElementById('ddlUsuarios').value;
+    const usuariosCuadrilla = document.querySelectorAll('#ddlCuadrilla option:checked');
+    const idActividad = document.getElementById('ddlActividades').value;
+    const ost = document.getElementById('OST').value;
+    const siga = document.getElementById('SIGA').value;
+    const numServicio = document.getElementById('NumServicio').value;
+    const cantidad = document.getElementById('cantidad').value;
+    const total = document.getElementById('total').innerText;
+    const observaciones = document.getElementById('observaciones').value;
+    const idRegistrador = document.getElementById('idRegistrador').value;
+    const tipo = document.getElementById('tipoRegistrar').value;
+
+    let usuarios = [];
+    let cuadrilla = false;
+
+    // Se verifica que un usuario esté seleccionado
+    if(cedulaPorCodigo === '' && cedulaPorNombre === '' && usuariosCuadrilla.length === 0){
+        mostrarMensaje('error', 'Debe elegir un usuario') 
+    } else if(idActividad === ''){
+        mostrarMensaje('error', 'Debe seleccionar una actividad');
+    } else if(cantidad === ''){
+        mostrarMensaje('error', 'Debe indicar una cantidad');
+    }
+    else {    // Se agrega el usuario(s) al array de usuarios
+        if(cedulaPorCodigo != ''){
+            usuarios.push(cedulaPorCodigo);
+        } else if( cedulaPorNombre != ''){
+            usuarios.push(cedulaPorNombre);
+        } else {
+            for (let x = 0; x < usuariosCuadrilla.length; x++) {
+                usuarios.push(usuariosCuadrilla[x].value);   
+            }
+            if(usuariosCuadrilla.length > 1){   // Si la cuadrilla tiene más de un usuario se establece en true
+                cuadrilla = true;
+            }
+        }
+
+        // Se definen los datos que se van a enviar al fetch
+        const data = new FormData();
+        data.append('usuarios', usuarios);
+        data.append('cuadrilla', cuadrilla);
+        data.append('idActividad', idActividad);
+        data.append('ost', ost);
+        data.append('siga', siga);
+        data.append('numServicio', numServicio);
+        data.append('cantidad', cantidad);
+        data.append('total', total);
+        data.append('observaciones', observaciones);
+        data.append('idRegistrador', idRegistrador);
+        data.append('tipo', tipo);
+
+        // Conexión del fetch al archivo php
+        fetch('inc/modelos/modelo-registro.php', {
+        method: 'POST',
+        body: data
+        })
+        .then(respuestaExitosa) // Respuesta exitosa llama la función
+        .catch(mostrarError); // Respuesta negativa llama la función
+
+        // Si la ejecución del AJAX es correcta se verifica la respuesta
+        function respuestaExitosa(response){
+            if(response.ok) {   // Si la respuesta en ok se llama la función para mostrar los resultados
+                response.json().then(mostrarResultado);
+            } else {    // Si la respuesta no es ok se muestra el error
+                mostrarError('status code: ' + response.status);
+            }
+        }
+
+        // Se muestran los resultados devueltos en el JSON
+        function mostrarResultado(respuesta){
+            console.log(respuesta);
+            // Si la respuesta es correcta
+            if(respuesta.respuesta === 'correcto') {      
+                mostrarMensaje('success', 'Registro Exitoso')        
+                
+            } else {
+                // Hubo un error
+                if(respuesta.error) {
+                    mostrarMensaje('error', 'Algo falló al registrar actividad');    
+                }
+            }
+        }
+
+        // Muestra el error si el AJAX no se ejecuta o la respuesta no es ok
+        function mostrarError(err){
+            console.log('Error', err);
+        }
+    }
+}
+
+function mostrarMensaje(tipo,mensaje) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+        })
+        
+        Toast.fire({
+        icon: tipo,
+        title: mensaje
+        })    
 }

@@ -44,6 +44,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-md-2 d-flex align-items-end flex-row-reverse">
+                                    <input type="hidden" id="tipoBuscar" value="buscar">
                                     <button type="submit" id="btnBuscar" class="btn btn-primary btn-block">Buscar</button>
                                 </div>
                             </div>
@@ -224,7 +225,8 @@
                                 </div>
                             </div>
                             <div class="form-row d-flex justify-content-center">
-                                <button type="button" class="btn btn-lg btn-primary">Guardar</button>
+                                <input type="hidden" id="tipoRegistrar" value="registrar">
+                                <button type="button" class="btn btn-lg btn-primary" id="btnGuardar">Guardar</button>
                             </div>
                         </form>
 
