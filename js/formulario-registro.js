@@ -124,6 +124,10 @@ function refrescarListaActividades(e) {
     $('#ddlActividades').selectpicker('setStyle', 'border', 'add');
     $('#ddlActividades').selectpicker('setStyle', 'btn-light', 'remove');
     document.getElementById('pesoAct').value = '';
+
+    $('#ddlActividades').selectpicker({
+        noneResultsText:'No hay resultados para {0}'
+    });
 }
 
 // Habilita o deshabilita la obción de hacer cuadrilla
@@ -271,6 +275,13 @@ function refrescarListaUsuarios() {
     $('#ddlUsuarios').selectpicker('setStyle', 'border', 'add');
     $('#ddlCuadrilla').selectpicker('setStyle', 'btn-light', 'remove');
     $('#ddlCuadrilla').selectpicker('setStyle', 'border', 'add');
+    $('#ddlCuadrilla').selectpicker({
+        noneResultsText:'No hay resultados para {0}',
+        countSelectedText:'{0} Usuarios Seleccionados'
+    });
+    $('#ddlUsuarios').selectpicker({
+        noneResultsText:'No hay resultados para {0}'
+    });
 }
 
 // Muestra la fecha y la hora (solo se está utilizando la fecha)

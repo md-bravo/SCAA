@@ -124,7 +124,7 @@
                                     <label class="pb-2" for="ddlCuadrilla">Seleccione los miembros de la cuadrilla</label>
                                     <?php
                                         if($usuarios) { ?>
-                                            <select class="form-control selectpicker" multiple data-selected-text-format="count > 4" data-live-search="true"  id="ddlCuadrilla" title="Seleccione">                                                
+                                            <select class="form-control selectpicker" multiple data-selected-text-format="count > 3" data-live-search="true"  id="ddlCuadrilla" title="Seleccione">                                                
                                                 <?php
                                                     foreach($usuarios as $usuario) { ?>
                                                         <option data-icon="far fa-user" value="<?php echo $usuario['cedula']?>"><?php echo ' - ' . $usuario['apellido1'] . ' ' . $usuario['apellido2'] . ' ' . $usuario['nombre1'] . ' ' . $usuario['nombre2']?></option>
