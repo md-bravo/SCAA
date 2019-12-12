@@ -13,7 +13,7 @@
                     </div>
 
                     <div class="row pb-3 pt-4 justify-content-center">                                       
-                        <form>
+                        <form id="formulario-registro">
                             <div class="form-row border-bottom mb-3">
                                 <div class="custom-control custom-checkbox ml-1">
                                     <input type="checkbox" class="custom-control-input" id="checkCuadrilla">

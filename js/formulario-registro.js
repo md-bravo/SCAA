@@ -41,12 +41,11 @@ function eventListener() {
 }
 
 // Limpiar todos los seleccionados en cuadrilla
-function deseleccionarTodos(e) {
-    e.preventDefault();
+function deseleccionarTodos() {
     $('#ddlCuadrilla').selectpicker('val', '');
 }
 // Calcula el total entre el pesa de la actividad y la cantidad
-function calcularTotal(e) {
+function calcularTotal() {
 
     const pesoAct = Number(document.getElementById('pesoAct').value);
     const cantidad = Number(document.getElementById('cantidad').value);
@@ -58,7 +57,7 @@ function calcularTotal(e) {
 }
 
 // Busca el peso de la actividad seleccionada y lo muestra
-function  pesoActividades(e) {
+function  pesoActividades() {
     const listaActividades = document.getElementById('ddlActividades').children;
     let peso = document.getElementById('pesoAct');
 
@@ -67,11 +66,11 @@ function  pesoActividades(e) {
             peso.value = listaActividades[x].id;
         }
     }
-    
+    calcularTotal();
 }
 
 // Filtrar las actividades por Area
-function filtrarActividades(e) {
+function filtrarActividades() {
     const idArea = Number(document.getElementById('ddlAreasAct').value);
     const tablaAct = document.querySelector('#tablaActividades tbody');
     const cantidadAct = Number(tablaAct.rows.length);
@@ -119,7 +118,7 @@ function filtrarActividades(e) {
 }
 
 // Actualizar la lista de actividades según el filtro
-function refrescarListaActividades(e) {
+function refrescarListaActividades() {
     $('#ddlActividades').selectpicker('refresh');
     $('#ddlActividades').selectpicker('setStyle', 'border', 'add');
     $('#ddlActividades').selectpicker('setStyle', 'btn-light', 'remove');
@@ -131,7 +130,7 @@ function refrescarListaActividades(e) {
 }
 
 // Habilita o deshabilita la obción de hacer cuadrilla
-function hacerCuadrilla(e) {
+function hacerCuadrilla() {
         const estado = document.getElementById('checkCuadrilla').checked;
         const busquedaIndividual = document.getElementById('busquedaIndividual');
         const muestraIndividual =  document.getElementById('muestraIndividual');
@@ -165,7 +164,7 @@ function hacerCuadrilla(e) {
     }
 
 // Habilita o deshabilita la obción de busqueda por nombre
-function habilitarBusqueda(e) {
+function habilitarBusqueda() {
     const estado = document.getElementById('checkBuscarNombre').checked;
     
     if(estado === true) {
@@ -197,7 +196,7 @@ function habilitarBusqueda(e) {
 }
 
 // Filtrar los usuarios por Zona y Area
-function filtrarUsuarios(e) {
+function filtrarUsuarios() {
 
     const idZona = Number(document.getElementById('ddlZonas').value);
     const idArea = Number(document.getElementById('ddlAreas').value);
@@ -389,8 +388,7 @@ function buscarUsuario(e) {
     }
 }
 
-function guardarRegistro(e) {
-    e.preventDefault();
+function guardarRegistro() {
 
     const cedulaPorCodigo = document.getElementById('id').value;
     const cedulaPorNombre = document.getElementById('ddlUsuarios').value;
@@ -463,11 +461,15 @@ function guardarRegistro(e) {
 
         // Se muestran los resultados devueltos en el JSON
         function mostrarResultado(respuesta){
-            console.log(respuesta);
             // Si la respuesta es correcta
-            if(respuesta.respuesta === 'correcto') {      
-                mostrarMensaje('success', 'Registro Exitoso')        
-                
+
+            console.log(respuesta);
+            
+            if(respuesta.estado === 'correcto') {      
+                mostrarMensaje('success', 'Registro Exitoso') ;      
+                limpiarFormulario();
+            }else  if(respuesta.estado === 'error') {
+                mostrarMensaje('error', 'No se realizó el registro'); 
             } else {
                 // Hubo un error
                 if(respuesta.error) {
@@ -495,4 +497,27 @@ function mostrarMensaje(tipo,mensaje) {
         icon: tipo,
         title: mensaje
         })    
+}
+
+function limpiarFormulario() {
+    document.getElementById('codigo').value = '';
+    document.getElementById('cedula').value = '';
+    document.getElementById('id').value = '';
+    document.getElementById('nombre').value = '';
+    document.getElementById('zona').value = '';
+    document.getElementById('area').value = '';
+    document.getElementById('ddlZonas').value = 0;
+    document.getElementById('ddlAreas').value = 0;
+    filtrarUsuarios();
+    refrescarListaUsuarios();
+    deseleccionarTodos();
+    document.getElementById('ddlAreasAct').value = 0;
+    filtrarActividades();
+    refrescarListaActividades();
+    document.getElementById('OST').value = '';
+    document.getElementById('SIGA').value = '';
+    document.getElementById('NumServicio').value = '';
+    document.getElementById('cantidad').value = '';
+    document.getElementById('observaciones').value = '';
+    calcularTotal();
 }

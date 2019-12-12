@@ -20,12 +20,21 @@ if (isset($_POST['idActividad'])) {
 }
 if (isset($_POST['ost'])) {
     $ost = filter_var($_POST['ost'], FILTER_SANITIZE_STRING);
+    if($ost === ''){
+        $ost = NULL;
+    }
 }
 if (isset($_POST['siga'])) {
     $siga = filter_var($_POST['siga'], FILTER_SANITIZE_STRING);
+    if($siga === ''){
+        $siga = NULL;
+    }
 }
 if (isset($_POST['numServicio'])) {
     $numServicio = filter_var($_POST['numServicio'], FILTER_SANITIZE_STRING);
+    if($numServicio === ''){
+        $numServicio = NULL;
+    }
 }
 if (isset($_POST['cantidad'])) {
     $cantidad = filter_var($_POST['cantidad'], FILTER_SANITIZE_STRING);
@@ -35,6 +44,9 @@ if (isset($_POST['total'])) {
 }
 if (isset($_POST['observaciones'])) {
     $observaciones = filter_var($_POST['observaciones'], FILTER_SANITIZE_STRING);
+    if($observaciones === ''){
+        $observaciones = NULL;
+    }
 }
 if (isset($_POST['idRegistrador'])) {
     $idRegistrador = filter_var($_POST['idRegistrador'], FILTER_SANITIZE_STRING);
@@ -83,21 +95,106 @@ if($tipo === 'buscar'){
 }
 
 if($tipo === 'registrar'){
-   
-    $respuesta = array(
-        'estado' => 'correcto',
-        'usuarios' => $usuarios,
-        'cudrilla' => $cuadrilla,
-        'idActividad' => $idActividad,
-        'ost' => $ost,
-        'siga' => $siga,
-        'numServicio' => $numServicio,
-        'cantidad' => $cantidad,
-        'total' => $total,
-        'observaciones' => $observaciones,
-        'idRegistrador' => $idRegistrador,
-        'tipo' => $tipo
-    );
 
-    echo json_encode($respuesta);
+    date_default_timezone_set('America/Costa_Rica');
+    $fechaHora = Date('Y/m/d H:i:s');
+    $id_Estado_Reg_Act = 71;
+
+    $listaUsuarios = explode(",", $usuarios);
+    $cantidadUsuarios = count($listaUsuarios);
+
+    if($cantidadUsuarios === 1){
+        try {
+            $stmt = $conn->prepare("INSERT INTO reg_act (OST, SIGA, cantidad_eventos, numero_servicio, detalle, fecha_hora_apertura, usuario_asignado, usuario_asignador, id_Act, id_Estado_Reg_Act) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");   
+            $stmt->bind_param('ssssssssss', $ost, $siga, $cantidad, $numServicio, $observaciones, $fechaHora, $usuarios, $idRegistrador, $idActividad, $id_Estado_Reg_Act);
+            $stmt->execute();
+
+            if($stmt->affected_rows > 0) {
+                $respuesta = array(
+                    'estado' => 'correcto',
+                    'id_insertado' => $stmt->insert_id
+                );
+            }  else {
+                $respuesta = array(
+                    'estado' => 'error'
+                );
+            }
+            $stmt->close();
+            $conn->close();
+
+
+        } catch (Exception $e) {
+            // En caso de un error, tomar la exepcion
+            $respuesta = array(
+                'error' => $e->getMessage()
+            );
+        }
+        
+    }else {
+        try {         
+            $grupo = array();   
+            foreach ($listaUsuarios as $usuario) {
+                try {
+                    $stmt = $conn->prepare("INSERT INTO reg_act (OST, SIGA, cantidad_eventos, numero_servicio, detalle, fecha_hora_apertura, usuario_asignado, usuario_asignador, id_Act, id_Estado_Reg_Act) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");   
+                    $stmt->bind_param('ssssssssss', $ost, $siga, $cantidad, $numServicio, $observaciones, $fechaHora, $usuario, $idRegistrador, $idActividad, $id_Estado_Reg_Act);
+                    $stmt->execute();
+
+                    if($stmt->affected_rows > 0) {
+                        array_push($grupo, $stmt->insert_id);
+                    }
+
+                    if($stmt->affected_rows > 0) {
+                        $respuesta = array(
+                            'estado' => 'correcto',
+                            'id_insertado' => $stmt->insert_id
+                        );
+                    }  else {
+                        $respuesta = array(
+                            'estado' => 'error'
+                        );
+                    }
+                    $stmt->close();    
+        
+                } catch (Exception $e) {
+                    // En caso de un error, tomar la exepcion
+                    $respuesta = array(
+                        'error' => $e->getMessage()
+                    );
+                }
+            }
+            $conn->close();
+
+        } catch (Exception $e) {
+            // En caso de un error, tomar la exepcion
+            $respuesta = array(
+                'error' => $e->getMessage()
+            );
+        }
+    }
+    
+        
+    
+   
+    // $respuesta = array(
+    //     'estado' => 'correcto',
+    //     'usuarios' => $cantidadUsuarios,
+    //     'cuadrilla' => $cuadrilla,
+    //     'idActividad' => $idActividad,
+    //     'ost' => $ost,
+    //     'siga' => $siga,
+    //     'numServicio' => $numServicio,
+    //     'cantidad' => $cantidad,
+    //     'total' => $total,
+    //     'observaciones' => $observaciones,
+    //     'idRegistrador' => $idRegistrador,
+    //     'tipo' => $tipo,
+    //     'fecha-hora'=> $fechaHora
+    // );
+
+    echo json_encode($grupo);
 }
+
+// Formatear fecha y hora definida
+// $formato = 'Y-m-d H:i:s';
+// $fecha = DateTime::createFromFormat($formato, '2009-02-15 15:16:17');
+// echo "Formato: $formato; " . $fecha->format('Y-m-d H:i:s') . "\n";
