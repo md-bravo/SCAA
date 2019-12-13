@@ -6,16 +6,7 @@ function eventListener() {
         fechaHora();
         mueveReloj();
         valoresDefaultSelectpicker();
-        // refrescarListaUsuarios();
-        // refrescarListaActividades();
     });
-
-    // Buscar un Usuario
-    document.getElementById('btnBuscar').addEventListener('click', buscarUsuario);
-
-    // Filtro por Zona y Area
-    document.getElementById('ddlZonas').addEventListener('change', filtrarUsuarios);
-    document.getElementById('ddlAreas').addEventListener('change', filtrarUsuarios);
 
     // Hacer cuandrilla
     document.getElementById('checkCuadrilla').addEventListener('change', hacerCuadrilla);
@@ -25,6 +16,13 @@ function eventListener() {
 
     // Buscar por nombre
     document.getElementById('checkBuscarNombre').addEventListener('change', habilitarBusqueda);
+
+    // Buscar un Usuario
+    document.getElementById('btnBuscar').addEventListener('click', buscarUsuario);
+
+    // Filtro por Zona y Area
+    document.getElementById('ddlZonas').addEventListener('change', filtrarUsuarios);
+    document.getElementById('ddlAreas').addEventListener('change', filtrarUsuarios);
 
     // Filtrar Actividades por Área
     document.getElementById('ddlAreasAct').addEventListener('change', filtrarActividades);
@@ -41,87 +39,90 @@ function eventListener() {
 
 }
 
-// Limpiar todos los seleccionados en cuadrilla
-function deseleccionarTodos() {
-    $('#ddlCuadrilla').selectpicker('val', '');
-}
-// Calcula el total entre el pesa de la actividad y la cantidad
-function calcularTotal() {
+// Valores inciales para selectPicker
+function valoresDefaultSelectpicker(){
+    $('#ddlUsuarios').selectpicker('setStyle', 'btn-light', 'remove');
+    $('#ddlUsuarios').selectpicker('setStyle', 'border', 'add');
+    $('#ddlCuadrilla').selectpicker('setStyle', 'btn-light', 'remove');
+    $('#ddlCuadrilla').selectpicker('setStyle', 'border', 'add');
+    $('#ddlCuadrilla').selectpicker({
+        noneResultsText:'No hay resultados para {0}',
+        countSelectedText:'{0} Usuarios Seleccionados'
+    });
+    $('#ddlUsuarios').selectpicker({
+        noneResultsText:'No hay resultados para {0}'
+    });
+    $('#ddlActividades').selectpicker('setStyle', 'border', 'add');
+    $('#ddlActividades').selectpicker('setStyle', 'btn-light', 'remove');
 
-    const pesoAct = Number(document.getElementById('pesoAct').value);
-    const cantidad = Number(document.getElementById('cantidad').value);
-
-    const total = pesoAct * cantidad;
-    
-    document.getElementById('total').innerHTML = total.toFixed(2);
-
-}
-
-// Busca el peso de la actividad seleccionada y lo muestra
-function  pesoActividades() {
-    const listaActividades = document.getElementById('ddlActividades').children;
-    let peso = document.getElementById('pesoAct');
-
-    for (let x = 0; x < listaActividades.length; x++) {
-        if(listaActividades[x].selected === true){
-            peso.value = listaActividades[x].id;
-        }
-    }
-    calcularTotal();
+    $('#ddlActividades').selectpicker({
+        noneResultsText:'No hay resultados para {0}'
+    });
 }
 
-// Filtrar las actividades por Area
-function filtrarActividades() {
-    const idArea = Number(document.getElementById('ddlAreasAct').value);
-    const tablaAct = document.querySelector('#tablaActividades tbody');
-    const cantidadAct = Number(tablaAct.rows.length);
-    let ddlActividades = document.getElementById('ddlActividades');
+// Buscar un Usuario por su cédula o código
+function buscarUsuario(e) {
+    e.preventDefault();
 
-    // Limpiamos la lista de usuarios
-    while (ddlActividades.firstChild) {
-        ddlActividades.removeChild(ddlActividades.firstChild);
-    }
+    const codigo = document.getElementById("codigo").value;
+    const cedula = document.getElementById("cedula").value;
+    const tipo = document.getElementById('tipoBuscar').value;
 
-    // Llenamos la lista según los filtros
-    if(idArea != 0) {
-        for (let x = 0; x < cantidadAct; x++) {
-            let tableIdArea = Number(tablaAct.children[x].children[3].textContent);
-            if(idArea === tableIdArea){                
-                let id = tablaAct.children[x].children[0].textContent;
-                let actividad = tablaAct.children[x].children[1].textContent;
-                let peso = tablaAct.children[x].children[2].textContent;
-                let nuevoElemento = document.createElement('option');
-                nuevoElemento.id = peso;
-                nuevoElemento.value = id; 
-                nuevoElemento.setAttribute("data-icon", "far fa-check-square");
-                nuevoElemento.innerHTML = ` - ${actividad}`;
-                ddlActividades.appendChild(nuevoElemento);
+    if (codigo === "" && cedula === "") {
+        mostrarMensaje('error', 'Debe ingresar código o cédula')  
+    } else {
+        // Se definen los datos que se van a enviar al fetch
+        const data = new FormData();
+        data.append('codigo', codigo);
+        data.append('cedula', cedula);
+        data.append('tipo', tipo);
 
+        // Conexión del fetch al archivo php
+        fetch('inc/modelos/modelo-registro.php', {
+        method: 'POST',
+        body: data
+        })
+        .then(respuestaExitosa) // Respuesta exitosa llama la función
+        .catch(mostrarError); // Respuesta negativa llama la función
 
-                
+        // Si la ejecución del AJAX es correcta se verifica la respuesta
+        function respuestaExitosa(response){
+            if(response.ok) {   // Si la respuesta en ok se llama la función para mostrar los resultados
+                response.json().then(mostrarResultado);
+            } else {    // Si la respuesta no es ok se muestra el error
+                mostrarError('status code: ' + response.status);
             }
         }
-        refrescarListaActividades();
-    } else {
-        for (let x = 0; x < cantidadAct; x++) {   
-            let id = tablaAct.children[x].children[0].textContent;
-            let actividad = tablaAct.children[x].children[1].textContent;
-            let peso = tablaAct.children[x].children[2].textContent;
-            let nuevoElemento = document.createElement('option');
-            nuevoElemento.value = id; 
-            nuevoElemento.id = peso;
-            nuevoElemento.setAttribute("data-icon", "far fa-check-square");
-                nuevoElemento.innerHTML = ` - ${actividad}`;
-            ddlActividades.appendChild(nuevoElemento);
-        }
-        refrescarListaActividades();
-    }
-}
 
-// Actualizar la lista de actividades según el filtro
-function refrescarListaActividades() {
-    $('#ddlActividades').selectpicker('refresh');
-    document.getElementById('pesoAct').value = '';
+        // Se muestran los resultados devueltos en el JSON
+        function mostrarResultado(respuesta){
+            // Si la respuesta es correcta
+            if(respuesta.estado === 'correcto') {      
+                mostrarMensaje('success', 'Usuario Encontrado')        
+
+                document.getElementById('id').value = respuesta.usuario;
+                document.getElementById('nombre').value = respuesta.nombre;
+                document.getElementById('area').value = respuesta.area;
+                document.getElementById('zona').value = respuesta.zona;
+                
+            } else  if(respuesta.estado === 'no-existe') {
+                mostrarMensaje('error', 'Usuario no existe'); 
+            }else {
+                // Hubo un error
+                if(respuesta.error) {
+                    mostrarMensaje('error', 'Algo falló al buscar el usuario');    
+                }
+                if (respuesta.conexion) {
+                    mostrarMensaje('error', 'Falla en la conexión a la base de datos');
+                }
+            }
+        }
+
+        // Muestra el error si el AJAX no se ejecuta o la respuesta no es ok
+        function mostrarError(err){
+            console.log('Error', err);
+        }
+    }
 }
 
 // Habilita o deshabilita la obción de hacer cuadrilla
@@ -156,7 +157,12 @@ function hacerCuadrilla() {
             document.getElementById('checkBuscar').style.display = 'flex';
             $('.selectpicker').selectpicker('deselectAll');
         }
-    }
+}
+
+// Limpiar todos los seleccionados en cuadrilla
+function deseleccionarTodos() {
+    $('#ddlCuadrilla').selectpicker('val', '');
+}
 
 // Habilita o deshabilita la obción de busqueda por nombre
 function habilitarBusqueda() {
@@ -262,139 +268,91 @@ function filtrarUsuarios() {
     }
 }
 
-function valoresDefaultSelectpicker(){
-    $('#ddlUsuarios').selectpicker('setStyle', 'btn-light', 'remove');
-    $('#ddlUsuarios').selectpicker('setStyle', 'border', 'add');
-    $('#ddlCuadrilla').selectpicker('setStyle', 'btn-light', 'remove');
-    $('#ddlCuadrilla').selectpicker('setStyle', 'border', 'add');
-    $('#ddlCuadrilla').selectpicker({
-        noneResultsText:'No hay resultados para {0}',
-        countSelectedText:'{0} Usuarios Seleccionados'
-    });
-    $('#ddlUsuarios').selectpicker({
-        noneResultsText:'No hay resultados para {0}'
-    });
-    $('#ddlActividades').selectpicker('setStyle', 'border', 'add');
-    $('#ddlActividades').selectpicker('setStyle', 'btn-light', 'remove');
-
-    $('#ddlActividades').selectpicker({
-        noneResultsText:'No hay resultados para {0}'
-    });
-}
-
 // Actualizar la lista de usuarios según los filtros
 function refrescarListaUsuarios() {
     $('#ddlUsuarios').selectpicker('refresh');
 }
 
-// Muestra la fecha y la hora (solo se está utilizando la fecha)
-function fechaHora() {
-    // For todays date;
-    Date.prototype.today = function () { 
-        return ((this.getDate() < 10)?"0":"") + this.getDate() +"/"+(((this.getMonth()+1) < 10)?"0":"") + (this.getMonth()+1) +"/"+ this.getFullYear();
+// Filtrar las actividades por Area
+function filtrarActividades() {
+    const idArea = Number(document.getElementById('ddlAreasAct').value);
+    const tablaAct = document.querySelector('#tablaActividades tbody');
+    const cantidadAct = Number(tablaAct.rows.length);
+    let ddlActividades = document.getElementById('ddlActividades');
+
+    // Limpiamos la lista de usuarios
+    while (ddlActividades.firstChild) {
+        ddlActividades.removeChild(ddlActividades.firstChild);
     }
 
-    // For the time now
-    Date.prototype.timeNow = function () {
-        return ((this.getHours() < 10)?"0":"") + this.getHours() +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes() +":"+ ((this.getSeconds() < 10)?"0":"") + this.getSeconds();
-    }
+    // Llenamos la lista según los filtros
+    if(idArea != 0) {
+        for (let x = 0; x < cantidadAct; x++) {
+            let tableIdArea = Number(tablaAct.children[x].children[3].textContent);
+            if(idArea === tableIdArea){                
+                let id = tablaAct.children[x].children[0].textContent;
+                let actividad = tablaAct.children[x].children[1].textContent;
+                let peso = tablaAct.children[x].children[2].textContent;
+                let nuevoElemento = document.createElement('option');
+                nuevoElemento.id = peso;
+                nuevoElemento.value = id; 
+                nuevoElemento.setAttribute("data-icon", "far fa-check-square");
+                nuevoElemento.innerHTML = ` - ${actividad}`;
+                ddlActividades.appendChild(nuevoElemento);
 
-    var newDate = new Date();
-    var datetime = newDate.today();
-    document.getElementById('fecha').value = datetime;
-}
 
-// Muestra el reloj en el formulario
-function mueveReloj(){
-    momentoActual = new Date()
-    hora = momentoActual.getHours()
-    minuto = momentoActual.getMinutes()
-    segundo = momentoActual.getSeconds()
-
-    str_segundo = new String (segundo)
-    if (str_segundo.length == 1)
-       segundo = "0" + segundo
-
-    str_minuto = new String (minuto)
-    if (str_minuto.length == 1)
-       minuto = "0" + minuto
-
-    str_hora = new String (hora)
-    if (str_hora.length == 1)
-       hora = "0" + hora
-
-    horaImprimible = hora + " : " + minuto + " : " + segundo
-
-    document.getElementById('hora').value = horaImprimible;
-
-    setTimeout("mueveReloj()",1000)
-}
-
-// Buscar un Usuario por su cédula o código
-function buscarUsuario(e) {
-    e.preventDefault();
-
-    const codigo = document.getElementById("codigo").value;
-    const cedula = document.getElementById("cedula").value;
-    const tipo = document.getElementById('tipoBuscar').value;
-
-    if (codigo === "" && cedula === "") {
-        mostrarMensaje('error', 'Debe ingresar código o cédula')  
-    } else {
-        // Se definen los datos que se van a enviar al fetch
-        const data = new FormData();
-        data.append('codigo', codigo);
-        data.append('cedula', cedula);
-        data.append('tipo', tipo);
-
-        // Conexión del fetch al archivo php
-        fetch('inc/modelos/modelo-registro.php', {
-        method: 'POST',
-        body: data
-        })
-        .then(respuestaExitosa) // Respuesta exitosa llama la función
-        .catch(mostrarError); // Respuesta negativa llama la función
-
-        // Si la ejecución del AJAX es correcta se verifica la respuesta
-        function respuestaExitosa(response){
-            if(response.ok) {   // Si la respuesta en ok se llama la función para mostrar los resultados
-                response.json().then(mostrarResultado);
-            } else {    // Si la respuesta no es ok se muestra el error
-                mostrarError('status code: ' + response.status);
-            }
-        }
-
-        // Se muestran los resultados devueltos en el JSON
-        function mostrarResultado(respuesta){
-            // Si la respuesta es correcta
-            if(respuesta.estado === 'correcto') {      
-                mostrarMensaje('success', 'Usuario Encontrado')        
-
-                document.getElementById('id').value = respuesta.usuario;
-                document.getElementById('nombre').value = respuesta.nombre;
-                document.getElementById('area').value = respuesta.area;
-                document.getElementById('zona').value = respuesta.zona;
                 
-            } else  if(respuesta.estado === 'no-existe') {
-                mostrarMensaje('error', 'Usuario no existe'); 
-            }else {
-                // Hubo un error
-                if(respuesta.error) {
-                    mostrarMensaje('error', 'Algo falló al buscar el usuario');    
-                }
-                if (respuesta.conexion) {
-                    mostrarMensaje('error', 'Falla en la conexión a la base de datos');
-                }
             }
         }
-
-        // Muestra el error si el AJAX no se ejecuta o la respuesta no es ok
-        function mostrarError(err){
-            console.log('Error', err);
+        refrescarListaActividades();
+    } else {
+        for (let x = 0; x < cantidadAct; x++) {   
+            let id = tablaAct.children[x].children[0].textContent;
+            let actividad = tablaAct.children[x].children[1].textContent;
+            let peso = tablaAct.children[x].children[2].textContent;
+            let nuevoElemento = document.createElement('option');
+            nuevoElemento.value = id; 
+            nuevoElemento.id = peso;
+            nuevoElemento.setAttribute("data-icon", "far fa-check-square");
+                nuevoElemento.innerHTML = ` - ${actividad}`;
+            ddlActividades.appendChild(nuevoElemento);
         }
+        refrescarListaActividades();
     }
 }
 
+// Actualizar la lista de actividades según el filtro
+function refrescarListaActividades() {
+    $('#ddlActividades').selectpicker('refresh');
+    document.getElementById('pesoAct').value = '';
+}
+
+// Busca el peso de la actividad seleccionada y lo muestra
+function  pesoActividades() {
+    const listaActividades = document.getElementById('ddlActividades').children;
+    let peso = document.getElementById('pesoAct');
+
+    for (let x = 0; x < listaActividades.length; x++) {
+        if(listaActividades[x].selected === true){
+            peso.value = listaActividades[x].id;
+        }
+    }
+    calcularTotal();
+}
+
+// Calcula el total entre el pesa de la actividad y la cantidad
+function calcularTotal() {
+
+    const pesoAct = Number(document.getElementById('pesoAct').value);
+    const cantidad = Number(document.getElementById('cantidad').value);
+
+    const total = pesoAct * cantidad;
+    
+    document.getElementById('total').innerHTML = total.toFixed(2);
+
+}
+
+// Guardar la información en la base de datos, por medio de modelo-registro.php
 function guardarRegistro() {
 
     const cedulaPorCodigo = document.getElementById('id').value;
@@ -493,6 +451,7 @@ function guardarRegistro() {
     }
 }
 
+// Mostrar mensaje en pantalla, según el tipo y el mensaje ingresado
 function mostrarMensaje(tipo,mensaje) {
     const Toast = Swal.mixin({
         toast: true,
@@ -507,6 +466,50 @@ function mostrarMensaje(tipo,mensaje) {
         })    
 }
 
+// Muestra la fecha y la hora (solo se está utilizando la fecha)
+function fechaHora() {
+    // For todays date;
+    Date.prototype.today = function () { 
+        return ((this.getDate() < 10)?"0":"") + this.getDate() +"/"+(((this.getMonth()+1) < 10)?"0":"") + (this.getMonth()+1) +"/"+ this.getFullYear();
+    }
+
+    // For the time now
+    Date.prototype.timeNow = function () {
+        return ((this.getHours() < 10)?"0":"") + this.getHours() +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes() +":"+ ((this.getSeconds() < 10)?"0":"") + this.getSeconds();
+    }
+
+    var newDate = new Date();
+    var datetime = newDate.today();
+    document.getElementById('fecha').value = datetime;
+}
+
+// Muestra el reloj en el formulario
+function mueveReloj(){
+    momentoActual = new Date()
+    hora = momentoActual.getHours()
+    minuto = momentoActual.getMinutes()
+    segundo = momentoActual.getSeconds()
+
+    str_segundo = new String (segundo)
+    if (str_segundo.length == 1)
+       segundo = "0" + segundo
+
+    str_minuto = new String (minuto)
+    if (str_minuto.length == 1)
+       minuto = "0" + minuto
+
+    str_hora = new String (hora)
+    if (str_hora.length == 1)
+       hora = "0" + hora
+
+    horaImprimible = hora + " : " + minuto + " : " + segundo
+
+    document.getElementById('hora').value = horaImprimible;
+
+    setTimeout("mueveReloj()",1000)
+}
+
+// Limpiar todos los campos del formulario luego de guardar el registro
 function limpiarFormulario() {
     document.getElementById('codigo').value = '';
     document.getElementById('cedula').value = '';

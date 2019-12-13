@@ -26,6 +26,7 @@
                                    <th>Fecha/Hora Apertura</th>
                                    <th>Asignado a</th>
                                    <th>Observaciones</th>
+                                   <th>G</th>
                                    <th hidden=true>ID Grupo</th>
                               </tr>
                          </thead>
@@ -46,6 +47,11 @@
                                              <td><?php echo $registro['fecha_hora_apertura'] ?></td>
                                              <td><?php echo $registro['nombre1'] . ' ' . $registro['nombre2'] . ' ' . $registro['apellido1'] . ' ' . $registro['apellido2'] ?></td>
                                              <td><?php echo $registro['detalle'] ?></td>
+                                             <?php if($registro['id_Grupo_Reg']) {?>
+                                                  <td>S</td>
+                                             <?php } else { ?>
+                                                  <td></td>
+                                             <?php } ?>
                                              <td hidden=true><?php echo $registro['id_Grupo_Reg'] ?></td>
                                         </tr>
                                    <?php } ?>
@@ -64,6 +70,7 @@
                                    <th>Fecha/Hora Apertura</th>
                                    <th>Asignado a</th>
                                    <th>Observaciones</th>
+                                   <th>G</th>
                                    <th hidden=true>ID Grupo</th>
                               </tr>
                          </tfoot>

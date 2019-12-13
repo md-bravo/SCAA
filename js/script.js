@@ -89,7 +89,7 @@ $(document).ready(function() {
         "language": {
             "lengthMenu": "Mostrar _MENU_ registros",
             "zeroRecords": "No hay registros",
-            "info": "Página _PAGE_ de _PAGES_",
+            "info": "Página _PAGE_ de _PAGES_  G = Grupo",
             "infoEmpty": "Mostrando 0 a 0 de 0 registros",
             "infoFiltered": "(filtrado de _MAX_ registros totales)",
             "search": "Buscar:",

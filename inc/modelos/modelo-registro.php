@@ -176,24 +176,29 @@ if($tipo === 'registrar'){
             }
 
             // Crea un grupo e inserta los registros que lo conforman
-            $grupoJSON = json_encode($grupo);
-            $stmt = $conn->prepare("INSERT INTO reg_act_agrupados (consecutivos) VALUES (?) ");  
-            $stmt->bind_param('s', $grupoJSON);
-            $stmt->execute();
-
-            if($stmt->affected_rows > 0) {
-                $id_grupo = $stmt->insert_id;
+            if(count($grupo > 0)){
+                $grupoJSON = json_encode($grupo);
+                $stmt = $conn->prepare("INSERT INTO reg_act_agrupados (consecutivos) VALUES (?) ");  
+                $stmt->bind_param('s', $grupoJSON);
+                $stmt->execute();
+    
+                if($stmt->affected_rows > 0) {
+                    $id_grupo = $stmt->insert_id;
+                }
+    
+                $stmt->close();
             }
-
-            $stmt->close();
+            
 
             // El ID del grupo creado se asocia a cada registro que lo conforma
-            foreach ($grupo as $registro){
-                $stmt = $conn->prepare("UPDATE reg_act SET id_Grupo_Reg = ? WHERE id_Reg_Act = $registro ");  
-                $stmt->bind_param('s', $id_grupo);
-                $stmt->execute();
+            if($id_grupo){
+                foreach ($grupo as $registro){
+                    $stmt = $conn->prepare("UPDATE reg_act SET id_Grupo_Reg = ? WHERE id_Reg_Act = $registro ");  
+                    $stmt->bind_param('s', $id_grupo);
+                    $stmt->execute();
+                }
+                $stmt->close();
             }
-            $stmt->close();
             $conn->close();
 
         } catch (Exception $e) {

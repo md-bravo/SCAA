@@ -3,7 +3,7 @@
      <script type="text/javascript" src="js/vendor/bootstrap.bundle.min.js"></script>
      <script type="text/javascript" src="js/vendor/sweetalert2.min.js"></script>
      <script type="text/javascript" src="DataTables/datatables.min.js"></script>
-     <script type="text/javascript" src="js/vendor/bootstrap-select.min.js"></script>
+     <script type="text/javascript" src="js/vendor/bootstrap-select.js"></script>
      
     <?php 
       $actual = obtenerPaginaActual();
