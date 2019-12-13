@@ -5,8 +5,9 @@ function eventListener() {
     document.addEventListener("DOMContentLoaded", function () {
         fechaHora();
         mueveReloj();
-        refrescarListaUsuarios();
-        refrescarListaActividades();
+        valoresDefaultSelectpicker();
+        // refrescarListaUsuarios();
+        // refrescarListaActividades();
     });
 
     // Buscar un Usuario
@@ -120,13 +121,7 @@ function filtrarActividades() {
 // Actualizar la lista de actividades según el filtro
 function refrescarListaActividades() {
     $('#ddlActividades').selectpicker('refresh');
-    $('#ddlActividades').selectpicker('setStyle', 'border', 'add');
-    $('#ddlActividades').selectpicker('setStyle', 'btn-light', 'remove');
     document.getElementById('pesoAct').value = '';
-
-    $('#ddlActividades').selectpicker({
-        noneResultsText:'No hay resultados para {0}'
-    });
 }
 
 // Habilita o deshabilita la obción de hacer cuadrilla
@@ -267,9 +262,7 @@ function filtrarUsuarios() {
     }
 }
 
-// Actualizar la lista de usuarios según los filtros
-function refrescarListaUsuarios() {
-    $('#ddlUsuarios').selectpicker('refresh');
+function valoresDefaultSelectpicker(){
     $('#ddlUsuarios').selectpicker('setStyle', 'btn-light', 'remove');
     $('#ddlUsuarios').selectpicker('setStyle', 'border', 'add');
     $('#ddlCuadrilla').selectpicker('setStyle', 'btn-light', 'remove');
@@ -281,6 +274,17 @@ function refrescarListaUsuarios() {
     $('#ddlUsuarios').selectpicker({
         noneResultsText:'No hay resultados para {0}'
     });
+    $('#ddlActividades').selectpicker('setStyle', 'border', 'add');
+    $('#ddlActividades').selectpicker('setStyle', 'btn-light', 'remove');
+
+    $('#ddlActividades').selectpicker({
+        noneResultsText:'No hay resultados para {0}'
+    });
+}
+
+// Actualizar la lista de usuarios según los filtros
+function refrescarListaUsuarios() {
+    $('#ddlUsuarios').selectpicker('refresh');
 }
 
 // Muestra la fecha y la hora (solo se está utilizando la fecha)
