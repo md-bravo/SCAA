@@ -378,6 +378,9 @@ function buscarUsuario(e) {
                 if(respuesta.error) {
                     mostrarMensaje('error', 'Algo falló al buscar el usuario');    
                 }
+                if (respuesta.conexion) {
+                    mostrarMensaje('error', 'Falla en la conexión a la base de datos');
+                }
             }
         }
 
@@ -462,9 +465,7 @@ function guardarRegistro() {
         // Se muestran los resultados devueltos en el JSON
         function mostrarResultado(respuesta){
             // Si la respuesta es correcta
-
-            console.log(respuesta);
-            
+           
             if(respuesta.estado === 'correcto') {      
                 mostrarMensaje('success', 'Registro Exitoso') ;      
                 limpiarFormulario();
@@ -474,6 +475,9 @@ function guardarRegistro() {
                 // Hubo un error
                 if(respuesta.error) {
                     mostrarMensaje('error', 'Algo falló al registrar actividad');    
+                }
+                if (respuesta.conexion) {
+                    mostrarMensaje('error', 'Falla en la conexión a la base de datos');
                 }
             }
         }

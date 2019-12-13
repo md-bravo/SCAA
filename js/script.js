@@ -85,7 +85,7 @@ $(function()
 // Tabla de registros
 $(document).ready(function() {
     $('#example').DataTable({
-        "order": [[ 4, "desc" ]],
+        "order": [[ 1, "desc" ]],
         "language": {
             "lengthMenu": "Mostrar _MENU_ registros",
             "zeroRecords": "No hay registros",

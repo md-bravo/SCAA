@@ -47,4 +47,14 @@ function obtenerActividades() {
     }
 }
 
+function obtenerListaRegistros() {
+    include 'conexion.php';
+    try {
+        return $conn->query('SELECT id_Reg_Act, consecutivo, OST, SIGA, cantidad_eventos, numero_servicio, detalle, fecha_hora_apertura, peso_total, usuarios.nombre1, usuarios.nombre2, usuarios.apellido1, usuarios.apellido2, actividades.nombre_Act, id_Grupo_Reg FROM reg_act INNER JOIN usuarios ON usuarios.cedula = reg_act.usuario_asignado INNER JOIN actividades ON actividades.id_Act = reg_act.id_Act ORDER BY consecutivo DESC');
+    } catch(Exception $e) {
+        echo "Error! : " . $e->getMessage();
+        return false;
+    }
+}
+
 ?>

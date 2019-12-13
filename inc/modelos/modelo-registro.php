@@ -98,15 +98,27 @@ if($tipo === 'registrar'){
 
     date_default_timezone_set('America/Costa_Rica');
     $fechaHora = Date('Y/m/d H:i:s');
-    $id_Estado_Reg_Act = 71;
+
+    // Consultar los estados disponibles, para conocer su id
+    $stmt = $conn->prepare("SELECT * FROM estados_reg_act");
+    $stmt->execute();
+    $stmt->bind_result($id_Estado, $estado_Reg_Act);
+    
+    while ($stmt->fetch()) {
+        if($estado_Reg_Act === "Abierto"){
+            $id_Estado_Reg_Act = $id_Estado;
+        }
+    }
+    $stmt->close();
+
 
     $listaUsuarios = explode(",", $usuarios);
     $cantidadUsuarios = count($listaUsuarios);
 
     if($cantidadUsuarios === 1){
         try {
-            $stmt = $conn->prepare("INSERT INTO reg_act (OST, SIGA, cantidad_eventos, numero_servicio, detalle, fecha_hora_apertura, usuario_asignado, usuario_asignador, id_Act, id_Estado_Reg_Act) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");   
-            $stmt->bind_param('ssssssssss', $ost, $siga, $cantidad, $numServicio, $observaciones, $fechaHora, $usuarios, $idRegistrador, $idActividad, $id_Estado_Reg_Act);
+            $stmt = $conn->prepare("INSERT INTO reg_act (OST, SIGA, cantidad_eventos, numero_servicio, detalle, fecha_hora_apertura, usuario_asignado, peso_total, usuario_asignador, id_Act, id_Estado_Reg_Act) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");   
+            $stmt->bind_param('sssssssssss', $ost, $siga, $cantidad, $numServicio, $observaciones, $fechaHora, $usuarios, $total,$idRegistrador, $idActividad, $id_Estado_Reg_Act);
             $stmt->execute();
 
             if($stmt->affected_rows > 0) {
@@ -135,8 +147,8 @@ if($tipo === 'registrar'){
             $grupo = array();   
             foreach ($listaUsuarios as $usuario) {
                 try {
-                    $stmt = $conn->prepare("INSERT INTO reg_act (OST, SIGA, cantidad_eventos, numero_servicio, detalle, fecha_hora_apertura, usuario_asignado, usuario_asignador, id_Act, id_Estado_Reg_Act) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");   
-                    $stmt->bind_param('ssssssssss', $ost, $siga, $cantidad, $numServicio, $observaciones, $fechaHora, $usuario, $idRegistrador, $idActividad, $id_Estado_Reg_Act);
+                    $stmt = $conn->prepare("INSERT INTO reg_act (OST, SIGA, cantidad_eventos, numero_servicio, detalle, fecha_hora_apertura, usuario_asignado, peso_total, usuario_asignador, id_Act, id_Estado_Reg_Act) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");   
+                    $stmt->bind_param('sssssssssss', $ost, $siga, $cantidad, $numServicio, $observaciones, $fechaHora, $usuario, $total, $idRegistrador, $idActividad, $id_Estado_Reg_Act);
                     $stmt->execute();
 
                     if($stmt->affected_rows > 0) {
@@ -162,6 +174,26 @@ if($tipo === 'registrar'){
                     );
                 }
             }
+
+            // Crea un grupo e inserta los registros que lo conforman
+            $grupoJSON = json_encode($grupo);
+            $stmt = $conn->prepare("INSERT INTO reg_act_agrupados (consecutivos) VALUES (?) ");  
+            $stmt->bind_param('s', $grupoJSON);
+            $stmt->execute();
+
+            if($stmt->affected_rows > 0) {
+                $id_grupo = $stmt->insert_id;
+            }
+
+            $stmt->close();
+
+            // El ID del grupo creado se asocia a cada registro que lo conforma
+            foreach ($grupo as $registro){
+                $stmt = $conn->prepare("UPDATE reg_act SET id_Grupo_Reg = ? WHERE id_Reg_Act = $registro ");  
+                $stmt->bind_param('s', $id_grupo);
+                $stmt->execute();
+            }
+            $stmt->close();
             $conn->close();
 
         } catch (Exception $e) {
@@ -171,27 +203,8 @@ if($tipo === 'registrar'){
             );
         }
     }
-    
-        
-    
-   
-    // $respuesta = array(
-    //     'estado' => 'correcto',
-    //     'usuarios' => $cantidadUsuarios,
-    //     'cuadrilla' => $cuadrilla,
-    //     'idActividad' => $idActividad,
-    //     'ost' => $ost,
-    //     'siga' => $siga,
-    //     'numServicio' => $numServicio,
-    //     'cantidad' => $cantidad,
-    //     'total' => $total,
-    //     'observaciones' => $observaciones,
-    //     'idRegistrador' => $idRegistrador,
-    //     'tipo' => $tipo,
-    //     'fecha-hora'=> $fechaHora
-    // );
 
-    echo json_encode($grupo);
+    echo json_encode($respuesta);
 }
 
 // Formatear fecha y hora definida
