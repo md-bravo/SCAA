@@ -12,7 +12,42 @@
                          <h3>Actividades Asignadas</h3>     
                     </div>
                     
-                    <table id="example" class="display" style="width:100%">
+                    <table id="tablaRegistros" class="display" style="width:100%">
+                         <thead>
+                              <tr>
+                                   <th>ID</th>
+                                   <th>Consecutivo</th>
+                                   <th>OST</th>
+                                   <th>SIGA</th>
+                                   <th>Servicio</th>
+                                   <th>Actividad</th>
+                                   <th>Cantidad</th>
+                                   <th>Peso Total</th>
+                                   <th>Fecha/Hora Apertura</th>
+                                   <th>Asignado a</th>
+                                   <th>Observaciones</th>
+                                   <th>ID Grupo</th>
+                              </tr>
+                         </thead>
+                         <tfoot>
+                              <tr>
+                                   <th>ID</th>
+                                   <th>Consecutivo</th>
+                                   <th>OST</th>
+                                   <th>SIGA</th>
+                                   <th>Servicio</th>
+                                   <th>Actividad</th>
+                                   <th>Cantidad</th>
+                                   <th>Peso Total</th>
+                                   <th>Fecha/Hora Apertura</th>
+                                   <th>Asignado a</th>
+                                   <th>Observaciones</th>                                   
+                                   <th>ID Grupo</th>
+                              </tr>
+                         </tfoot>
+                    </table>
+
+                    <!-- <table id="example" class="display" style="width:100%">
                          <thead>
                               <tr>
                                    <th hidden=true>ID</th>
@@ -74,7 +109,7 @@
                                    <th hidden=true>ID Grupo</th>
                               </tr>
                          </tfoot>
-                    </table>
+                    </table> -->
                </div>
           </div>
      </section>
