@@ -9,11 +9,23 @@ function eventListener() {
         var timeStamp = new Date();
         sessionStorage.setItem("lastTimeStamp",timeStamp);
 
+        verificarRol();
         verificarNav();
     });
 
 
 }
+
+// Carga el menú lateral según el rol del usuario logueado
+function verificarRol() {
+    const rol = document.getElementById('rolRegistrador').value;
+        if(rol === 'Vista' || rol === 'Tecnico'){
+            const menu = document.querySelectorAll('.sidebar-nav li');
+            menu[1].remove();
+            menu[2].remove();
+        }
+}
+
 
 // Esta función determina en que página se encuentra y agrega la clase active al menú que corresponde.
 function verificarNav(e) {

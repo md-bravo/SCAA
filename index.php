@@ -15,6 +15,7 @@
                     <table id="tablaRegistros" class="display" style="width:100%">
                          <thead>
                               <tr>
+                                   <th></th>
                                    <th>ID</th>
                                    <th>Consecutivo</th>
                                    <th>OST</th>
@@ -31,6 +32,7 @@
                          </thead>
                          <tfoot>
                               <tr>
+                                   <th></th>
                                    <th>ID</th>
                                    <th>Consecutivo</th>
                                    <th>OST</th>
