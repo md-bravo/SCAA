@@ -341,19 +341,28 @@ box-shadow: 0px 17px 39px -6px rgba(0,0,0,0.76);
 }
 
 /* End Styles Dashboard */
-td.details-control {
-  background: url('../img/plus.png') no-repeat center center;
-  cursor: pointer;
-  background-size: 1.5rem;
-}
-tr.shown td.details-control {
-  background: url('../img/negativo.png') no-repeat center center;
-  background-size: 1.5rem;
-}
 
 table {
   border-collapse: collapse!important;
 }
+
+td.details-control {
+  background: url('../img/plus.png') no-repeat center center;
+  cursor: pointer;
+  background-size: 1.33em;
+}
+
+tr.shown td.details-control {
+  background: url('../img/negativo.png') no-repeat center center;
+  background-size: 1.33em;
+}
+
+td.cerrarReg{
+  background: url('../img/correcto.png') no-repeat center center;
+  cursor: pointer;
+  background-size: 1.33em;
+}
+
 
 /* Estilos para formulario registro */
 

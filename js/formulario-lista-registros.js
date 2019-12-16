@@ -32,6 +32,13 @@ function llenarTabla() {
                     "data": null,
                     "defaultContent": ''
                },
+               {
+                    "className": 'cerrarReg',
+                    // "targets": -1,
+                    "orderable": false,
+                    "data":null,
+                    "defaultContent": '' //'<a id="cerrarReg"><i class="fas fa-check-circle fa-lg"></i></a>'
+               },
                { "data": "id_reg_act" },
                { "data": "consecutivo" },
                { "data": "ost" },
@@ -47,13 +54,9 @@ function llenarTabla() {
           ],
           "columnDefs": [
                {
-                    "targets": [1],
+                    "targets": [2],
                     "visible": false,
                     "searchable": false
-               },
-               {
-                    "targets": [3],
-                    "visible": false,
                },
                {
                     "targets": [4],
@@ -64,21 +67,25 @@ function llenarTabla() {
                     "visible": false,
                },
                {
-                    "targets": [8],
+                    "targets": [6],
                     "visible": false,
-                    "searchable": false
                },
                {
-                    "targets": [11],
+                    "targets": [9],
                     "visible": false,
+                    "searchable": false
                },
                {
                     "targets": [12],
                     "visible": false,
+               },
+               {
+                    "targets": [13],
+                    "visible": false,
                     "searchable": false
                }
           ],
-          "order": [[1, "desc"]],
+          "order": [[2, "desc"]],
           "language": {
                "sProcessing": "Procesando...",
                "sLengthMenu": "Mostrar _MENU_ registros",
@@ -114,7 +121,7 @@ function llenarTabla() {
                     }
                }
           },
-          "select": 'single'
+           "select": 'single'
      });
 
      // Se agrega el evento para mostrar u ocultar los detalles
@@ -133,6 +140,11 @@ function llenarTabla() {
                tr.addClass('shown');
           }
      });
+
+     $('#tablaRegistros tbody').on( 'click', 'td.cerrarReg', function () {
+          var data = table.row( $(this).parents('tr') ).data();
+          cerrarRegistro(data);
+      } );
 }
      
 // Formato para la presentación de los detalles
@@ -158,5 +170,12 @@ function format(d) {
           '</table>';
 }
 
+function cerrarRegistro(data) {
+     $('#modalCerrarReg').modal('show')
+     
+     const modalTitulo = document.getElementById('modalCerrarRegTitle').textContent;
 
+     document.getElementById('modalCerrarRegTitle').textContent = modalTitulo + ' ' + data.consecutivo;
 
+     
+}
