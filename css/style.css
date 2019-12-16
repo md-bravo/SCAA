@@ -351,6 +351,9 @@ tr.shown td.details-control {
   background-size: 1.5rem;
 }
 
+table {
+  border-collapse: collapse!important;
+}
 
 /* Estilos para formulario registro */
 

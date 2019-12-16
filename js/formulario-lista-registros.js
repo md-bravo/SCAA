@@ -4,38 +4,15 @@ function eventListener() {
 
      // Document Ready
      document.addEventListener('DOMContentLoaded', function () {
-
+          llenarTabla();
      });
 
 
 }
 
-// Formato para la presentación de los detalles
-function format(d) {
-     // `d` is the original data object for the row
-     return '<table class="table table-bordered">' +
-          '<tr>' +
-               '<th scope="row">OST</th>' +
-               '<td>' + d.ost + '</td>' +
-               '<th scope="row">SIGA</th>' +
-               '<td>' + d.siga + '</td>' +
-               '<th scope="row"># Servicio</th>' +
-               '<td>' + d.numero_servicio + '</td>' +
-               '<th scope="row">Peso Total</th>' +
-               '<td>' + d.peso_total + '</td>' +
-               '<th scope="row"># Grupo</th>' +
-               '<td>' + d.grupo + '</td>' +
-          '</tr>' +
-          '<tr>' +
-               '<th scope="row">Observaciones</th>' +
-               '<td colspan="9">' + d.detalle + '</td>' +
-          '</tr>' +
-          '</table>';
-}
 
 // Tabla de registros, se carga tabla mediante AJAX
-$(document).ready(function () {
-
+function llenarTabla() {
      const usuario = document.getElementById('idRegistrador').value;
      const rol = document.getElementById('rolRegistrador').value;
 
@@ -89,6 +66,7 @@ $(document).ready(function () {
                {
                     "targets": [8],
                     "visible": false,
+                    "searchable": false
                },
                {
                     "targets": [11],
@@ -97,6 +75,7 @@ $(document).ready(function () {
                {
                     "targets": [12],
                     "visible": false,
+                    "searchable": false
                }
           ],
           "order": [[1, "desc"]],
@@ -144,17 +123,40 @@ $(document).ready(function () {
           var row = table.row(tr);
 
           if (row.child.isShown()) {
-               // This row is already open - close it
+               // Si la fila se está mostrando, se oculta
                row.child.hide();
                tr.removeClass('shown');
           }
           else {
-               // Open this row
+               // Muestra ésta fila
                row.child(format(row.data())).show();
                tr.addClass('shown');
           }
      });
+}
+     
+// Formato para la presentación de los detalles
+function format(d) {
+     // `d` es el objeto original para la fila
+     return '<table class="table table-bordered">' +
+          '<tr>' +
+               '<th scope="row">OST</th>' +
+               '<td>' + d.ost + '</td>' +
+               '<th scope="row">SIGA</th>' +
+               '<td>' + d.siga + '</td>' +
+               '<th scope="row"># Servicio</th>' +
+               '<td>' + d.numero_servicio + '</td>' +
+               '<th scope="row">Peso Total</th>' +
+               '<td>' + d.peso_total + '</td>' +
+               '<th scope="row"># Grupo</th>' +
+               '<td>' + d.grupo + '</td>' +
+          '</tr>' +
+          '<tr>' +
+               '<th scope="row">Observaciones</th>' +
+               '<td colspan="9">' + d.detalle + '</td>' +
+          '</tr>' +
+          '</table>';
+}
 
-});
 
 
