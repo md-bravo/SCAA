@@ -62,7 +62,7 @@ function valoresDefaultSelectpicker(){
 }
 
 // Buscar un Usuario por su cédula o código
-function buscarUsuario(e) {
+async function buscarUsuario(e) {
     e.preventDefault();
 
     const codigo = document.getElementById("codigo").value;
@@ -79,7 +79,7 @@ function buscarUsuario(e) {
         data.append('tipo', tipo);
 
         // Conexión del fetch al archivo php
-        fetch('inc/modelos/modelo-registro.php', {
+        await fetch('inc/modelos/modelo-registro.php', {
         method: 'POST',
         body: data
         })
@@ -354,7 +354,7 @@ function calcularTotal() {
 }
 
 // Guardar la información en la base de datos, por medio de modelo-registro.php
-function guardarRegistro() {
+async function guardarRegistro() {
 
     const cedulaPorCodigo = document.getElementById('id').value;
     const cedulaPorNombre = document.getElementById('ddlUsuarios').value;
@@ -409,7 +409,7 @@ function guardarRegistro() {
         data.append('tipo', tipo);
 
         // Conexión del fetch al archivo php
-        fetch('inc/modelos/modelo-registro.php', {
+        await fetch('inc/modelos/modelo-registro.php', {
         method: 'POST',
         body: data
         })

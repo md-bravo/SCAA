@@ -36,8 +36,7 @@ function llenarTabla() {
                },
                {
                     "className": 'cerrarReg',
-                    "id": 'cerrarReg',
-                    // "targets": -1,
+                    "targets": -1,
                     "orderable": false,
                     "data":null,
                     "defaultContent": ''
@@ -150,6 +149,7 @@ function llenarTabla() {
           }
      });
 
+     // Se agrega el evento para cerrar un registro
      $('#tablaRegistros tbody').on( 'click', 'td.cerrarReg', function () {
           var data = table.row( $(this).parents('tr') ).data();
           modalCerrarRegistro(data);
@@ -179,14 +179,13 @@ function format(d) {
           '</table>';
 }
 
+// Esta función muestra el modal para cerrar un registro, se carga con los datos del registro seleccionado
 function modalCerrarRegistro(data) {
+     // Muestra el modal
      $('#modalCerrarReg').modal('show')
      // Llama las funciones fechaHora y mueveReloj de Scripts
      fechaHora();
      mueveReloj();
-
-     // Al hacer click en guadar, se llama la función cerrarRegistro y se le pasan los datos del registro seleccionado
-     document.getElementById('btnGuardarReg').addEventListener('click', function(){cerrarRegistro(data)});
 
      document.getElementById('modalCerrarRegTitle').textContent = 'Cerrar Registro ' + data.consecutivo;
      document.getElementById('nombre').value = data.nombre;
@@ -198,8 +197,11 @@ function modalCerrarRegistro(data) {
      document.getElementById('servicio').value = data.numero_servicio;
      document.getElementById('observaciones').innerText = data.detalle;
      
+      // Al hacer click en guadar, se llama la función cerrarRegistro y se le pasan los datos del registro seleccionado
+      document.getElementById('btnGuardarReg').addEventListener('click', function(){cerrarRegistro(data)});
 }
 
+// Esta función recopila los datos a enviar y realiza la solicitud al modelo por medio de Fetch
 function cerrarRegistro(data) {
      console.log(data);
 
@@ -219,6 +221,5 @@ function cerrarRegistro(data) {
      let pesoTotal = (cantidad * pesoAct).toFixed(2);
 
      console.log(id_Reg, cantidad, ost, siga, servicio, detalle, idRegistrador, pesoAct, tipo, pesoTotal, fechaApertura, idGrupo);
-
 
 }

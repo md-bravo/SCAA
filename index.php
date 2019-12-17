@@ -12,7 +12,7 @@
                          <h3>Actividades Asignadas</h3>     
                     </div>
                     
-                    <table id="tablaRegistros" class="table table-striped table-bordered" cellspacing="0" style="width:100%">
+                    <table id="tablaRegistros" class="table table-striped table-bordered" style="width:100%">
                          <thead>
                               <tr>
                                    <th></th>

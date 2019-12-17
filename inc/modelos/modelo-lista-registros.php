@@ -15,10 +15,23 @@ if (isset($_POST['tipo'])) {
 include '../funciones/conexion.php';
 
 if($tipo === "llenarTabla"){
+
+     // Consultar los estados disponibles, para conocer su id
+     $stmt = $conn->prepare("SELECT * FROM estados_reg_act");
+     $stmt->execute();
+     $stmt->bind_result($id_Estado, $estado_Reg_Act);
+
+     while ($stmt->fetch()) {
+         if($estado_Reg_Act === "Abierto"){
+             $estado = $id_Estado;
+         }
+     }
+     $stmt->close();
+
     if($rol === "Vista" || $rol === "Tecnico"){
         try {
-            $stmt = $conn->prepare("SELECT id_Reg_Act, consecutivo, OST, SIGA, cantidad_eventos, numero_servicio, detalle, fecha_hora_apertura, peso_total, usuarios.nombre1, usuarios.nombre2, usuarios.apellido1, usuarios.apellido2, actividades.nombre_Act, actividades.peso_Act, id_Grupo_Reg FROM reg_act INNER JOIN usuarios ON usuarios.cedula = reg_act.usuario_asignado INNER JOIN actividades ON actividades.id_Act = reg_act.id_Act WHERE usuario_asignado = ? ORDER BY consecutivo DESC");
-            $stmt->bind_param('s', $usuario);
+            $stmt = $conn->prepare("SELECT id_Reg_Act, consecutivo, OST, SIGA, cantidad_eventos, numero_servicio, detalle, fecha_hora_apertura, peso_total, usuarios.nombre1, usuarios.nombre2, usuarios.apellido1, usuarios.apellido2, actividades.nombre_Act, actividades.peso_Act, id_Grupo_Reg FROM reg_act INNER JOIN usuarios ON usuarios.cedula = reg_act.usuario_asignado INNER JOIN actividades ON actividades.id_Act = reg_act.id_Act WHERE usuario_asignado = ? &&reg_act.id_Estado_Reg_Act = ?  ORDER BY consecutivo DESC");
+            $stmt->bind_param('ss', $usuario, $estado);
             $stmt->execute();
             $stmt->bind_result($id_Reg_Act, $consecutivo, $OST, $SIGA, $cantidad_eventos, $numero_servicio, $detalle, $fecha_hora_apertura, $peso_total, $nombre1, $nombre2, $apellido1, $apellido2, $actividad, $peso_Act, $grupo);
 
@@ -44,8 +57,8 @@ if($tipo === "llenarTabla"){
         
     } else {
         try {
-            $stmt = $conn->prepare("SELECT id_Reg_Act, consecutivo, OST, SIGA, cantidad_eventos, numero_servicio, detalle, fecha_hora_apertura, peso_total, usuarios.nombre1, usuarios.nombre2, usuarios.apellido1, usuarios.apellido2, actividades.nombre_Act, actividades.peso_Act, id_Grupo_Reg FROM reg_act INNER JOIN usuarios ON usuarios.cedula = reg_act.usuario_asignado INNER JOIN actividades ON actividades.id_Act = reg_act.id_Act ORDER BY consecutivo DESC");
-
+            $stmt = $conn->prepare("SELECT id_Reg_Act, consecutivo, OST, SIGA, cantidad_eventos, numero_servicio, detalle, fecha_hora_apertura, peso_total, usuarios.nombre1, usuarios.nombre2, usuarios.apellido1, usuarios.apellido2, actividades.nombre_Act, actividades.peso_Act, id_Grupo_Reg FROM reg_act INNER JOIN usuarios ON usuarios.cedula = reg_act.usuario_asignado INNER JOIN actividades ON actividades.id_Act = reg_act.id_Act WHERE reg_act.id_Estado_Reg_Act = ? ORDER BY consecutivo DESC");
+            $stmt->bind_param('s', $estado);
             $stmt->execute();
             $stmt->bind_result($id_Reg_Act, $consecutivo, $OST, $SIGA, $cantidad_eventos, $numero_servicio, $detalle, $fecha_hora_apertura, $peso_total, $nombre1, $nombre2, $apellido1, $apellido2, $actividad, $peso_Act, $grupo);
 
