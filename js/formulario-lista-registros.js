@@ -15,6 +15,7 @@ function eventListener() {
 function llenarTabla() {
      const usuario = document.getElementById('idRegistrador').value;
      const rol = document.getElementById('rolRegistrador').value;
+     const tipo = "llenarTabla";
 
      var table = $('#tablaRegistros').DataTable({
           "ajax": {
@@ -22,7 +23,8 @@ function llenarTabla() {
                url: "inc/modelos/modelo-lista-registros.php", 
                data: {
                     'usuario' : usuario,
-                    'rol' : rol
+                    'rol' : rol,
+                    'tipo': tipo
                }
           }, 
           "columns": [
@@ -34,10 +36,11 @@ function llenarTabla() {
                },
                {
                     "className": 'cerrarReg',
+                    "id": 'cerrarReg',
                     // "targets": -1,
                     "orderable": false,
                     "data":null,
-                    "defaultContent": '' //'<a id="cerrarReg"><i class="fas fa-check-circle fa-lg"></i></a>'
+                    "defaultContent": ''
                },
                { "data": "id_reg_act" },
                { "data": "consecutivo" },
@@ -124,6 +127,12 @@ function llenarTabla() {
            "select": 'single'
      });
 
+     // Si el rol del usuario es vista o tecnico, se ocultan las siguientes opciones
+     if(rol === "Vista" || rol === "Tecnico"){
+          // Oculta opcion de cerrar registros
+          table.column( 1 ).visible( false );
+     }
+
      // Se agrega el evento para mostrar u ocultar los detalles
      $('#tablaRegistros tbody').on('click', 'td.details-control', function () {
           var tr = $(this).closest('tr');
@@ -143,7 +152,7 @@ function llenarTabla() {
 
      $('#tablaRegistros tbody').on( 'click', 'td.cerrarReg', function () {
           var data = table.row( $(this).parents('tr') ).data();
-          cerrarRegistro(data);
+          modalCerrarRegistro(data);
       } );
 }
      
@@ -170,12 +179,46 @@ function format(d) {
           '</table>';
 }
 
-function cerrarRegistro(data) {
+function modalCerrarRegistro(data) {
      $('#modalCerrarReg').modal('show')
-     
-     const modalTitulo = document.getElementById('modalCerrarRegTitle').textContent;
+     // Llama las funciones fechaHora y mueveReloj de Scripts
+     fechaHora();
+     mueveReloj();
 
-     document.getElementById('modalCerrarRegTitle').textContent = modalTitulo + ' ' + data.consecutivo;
+     // Al hacer click en guadar, se llama la función cerrarRegistro y se le pasan los datos del registro seleccionado
+     document.getElementById('btnGuardarReg').addEventListener('click', function(){cerrarRegistro(data)});
 
+     document.getElementById('modalCerrarRegTitle').textContent = 'Cerrar Registro ' + data.consecutivo;
+     document.getElementById('nombre').value = data.nombre;
+     document.getElementById('actividad').value = data.actividad;
+     document.getElementById('fecha-hora').value = data.fecha_hora_apertura;
+     document.getElementById('cantidad').value = data.cantidad_eventos;
+     document.getElementById('ost').value = data.ost;
+     document.getElementById('siga').value = data.siga;
+     document.getElementById('servicio').value = data.numero_servicio;
+     document.getElementById('observaciones').innerText = data.detalle;
      
+}
+
+function cerrarRegistro(data) {
+     console.log(data);
+
+     const id_Reg = data.id_reg_act;
+     const cantidad = document.getElementById('cantidad').value;
+     const ost = document.getElementById('ost').value;
+     const siga = document.getElementById('siga').value;
+     const servicio = document.getElementById('servicio').value;
+     const detalle = document.getElementById('observaciones').value;
+     const idRegistrador = document.getElementById('idRegistrador').value;
+     const pesoAct = data.peso_act;
+     const tipo = document.getElementById('tipo').value;
+     const fechaApertura = data.fecha_hora_apertura;
+     const idGrupo = data.grupo;
+
+
+     let pesoTotal = (cantidad * pesoAct).toFixed(2);
+
+     console.log(id_Reg, cantidad, ost, siga, servicio, detalle, idRegistrador, pesoAct, tipo, pesoTotal, fechaApertura, idGrupo);
+
+
 }

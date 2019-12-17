@@ -202,7 +202,7 @@
                                     <div class="input-group-prepend">
                                     <div class="input-group-text">Observaciones</div>
                                     </div>
-                                    <textarea class="form-control" id="observaciones" rows="2"></textarea>
+                                    <textarea class="form-control" id="observaciones" maxlength="100" rows="2"></textarea>
                                 </div>
                             </div>
                             <div class="form-row align-items-end">

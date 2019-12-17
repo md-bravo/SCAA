@@ -60,7 +60,7 @@
           <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
           <div class="modal-content">
                <div class="modal-header">
-               <h5 class="modal-title" id="modalCerrarRegTitle">Cerrar Registro</h5>
+               <h5 class="modal-title" id="modalCerrarRegTitle"></h5>
                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                </button>
@@ -80,42 +80,52 @@
                          </div>
                     </div>
                     <div class="form-group row">
-                         <label for="fecha-hora" class="col-sm-3 col-form-label">Fecha/Hora Apertura</label>
-                         <div class="col-sm-9">
-                              <input type="text" readonly class="form-control" id="fecha-hora">
-                         </div>
-                    </div>
-                    <div class="form-group row">
                          <label for="cantidad" class="col-sm-2 col-form-label">Cantidad</label>
                          <div class="col-sm-4">
-                              <input type="text" class="form-control" id="cantidad">
+                              <input type="number" class="form-control" id="cantidad">
                          </div>
-                         <label for="OST" class="col-sm-2 col-form-label">OST</label>
+                         <label for="ost" class="col-sm-2 col-form-label">OST</label>
                          <div class="col-sm-4">
-                              <input type="text" class="form-control" id="OST">
+                              <input type="number" class="form-control" id="ost">
                          </div>
                     </div>
                     <div class="form-group row">
                          <label for="siga" class="col-sm-2 col-form-label">SIGA</label>
                          <div class="col-sm-4">
-                              <input type="text" class="form-control" id="siga">
+                              <input type="number" class="form-control" id="siga">
                          </div>
                          <label for="servicio" class="col-sm-2 col-form-label"># Servicio</label>
                          <div class="col-sm-4">
-                              <input type="text" class="form-control" id="servicio">
+                              <input type="number" class="form-control" id="servicio">
                          </div>
                     </div>
                     <div class="form-group row">
                          <label for="observaciones" class="col-sm-2 col-form-label">Observaciones</label>
                          <div class="col-sm-10">
-                              <input type="text" class="form-control" id="observaciones">
+                              <textarea class="form-control" maxlength="100" name="observaciones" id="observaciones" rows="2"></textarea>
+                         </div>
+                    </div>
+                    <div class="form-group row">
+                         <label for="fecha-hora" class="col-sm-3 col-form-label">Fecha/Hora Apertura</label>
+                         <div class="col-sm-6">
+                              <input type="text" readonly class="form-control" id="fecha-hora">
+                         </div>
+                    </div>
+                    <div class="form-group row">
+                         <label for="fecha-hora-cierre" class="col-sm-3 col-form-label">Fecha/Hora Cierre</label>
+                         <div class="col-sm-3">
+                              <input type="text" class="form-control" id="fecha" readonly>
+                         </div>
+                         <div class="col-sm-3">
+                              <input type="text" class="form-control" id="hora" readonly>
                          </div>
                     </div>
                </form>
                </div>
                <div class="modal-footer">
+               <input type="hidden" id="tipo" value="cerrarReg">
                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-               <button type="button" class="btn btn-primary">Guardar</button>
+               <button type="button" id="btnGuardarReg" class="btn btn-primary">Guardar</button>
                </div>
           </div>
           </div>
