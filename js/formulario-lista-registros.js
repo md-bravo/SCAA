@@ -7,7 +7,7 @@ function eventListener() {
           llenarTabla();
      });
 
-
+     document.getElementById('btnGuardarReg').addEventListener('click', cerrarRegistro);
 }
 
 
@@ -185,13 +185,17 @@ function format(d) {
 function modalCerrarRegistro(data, todos) {
 
      let consecutivosRelacionados = '';
+     let id_Reg = [];
+     id_Reg = [data.id_reg_act];
 
+     // Verifca si el registro es grupal y busca los consecutivos asociados
      if(data.grupo === null){
           document.getElementById('divRelacionados').style.display = "none";
      } else {
           for (let x = 0; x < todos.length; x++) {
                if(todos[x].grupo === data.grupo){
                     if(todos[x].consecutivo != data.consecutivo){
+                         id_Reg.push(todos[x].id_reg_act);
                          consecutivosRelacionados += todos[x].consecutivo + '  ';
                          document.getElementById('relacionados').value =  consecutivosRelacionados;
                          document.getElementById('divRelacionados').style.display = "flex";
@@ -216,30 +220,112 @@ function modalCerrarRegistro(data, todos) {
      document.getElementById('servicio').value = data.numero_servicio;
      document.getElementById('observaciones').innerText = data.detalle;
      
-     
+
+
       // Al hacer click en guadar, se llama la función cerrarRegistro y se le pasan los datos del registro seleccionado
-      document.getElementById('btnGuardarReg').addEventListener('click', function(){cerrarRegistro(data)});
+      //document.getElementById('btnGuardarReg').addEventListener('click', function(){cerrarRegistro(data, id_Reg)}, false);
+
+     //  document.getElementById('btnGuardarReg').addEventListener('click', cerrarRegistro);
+
+     
 }
 
-// Esta función recopila los datos a enviar y realiza la solicitud al modelo por medio de Fetch
-function cerrarRegistro(data) {
-     console.log(data);
+function cerrarRegistro() {
+     // console.log(data.consecutivo);
+     // console.log(id_Reg);
 
-     const id_Reg = data.id_reg_act;
      const cantidad = document.getElementById('cantidad').value;
-     const ost = document.getElementById('ost').value;
-     const siga = document.getElementById('siga').value;
-     const servicio = document.getElementById('servicio').value;
-     const detalle = document.getElementById('observaciones').value;
-     const idRegistrador = document.getElementById('idRegistrador').value;
-     const pesoAct = data.peso_act;
-     const tipo = document.getElementById('tipo').value;
-     const fechaApertura = data.fecha_hora_apertura;
-     const idGrupo = data.grupo;
 
-
-     let pesoTotal = (cantidad * pesoAct).toFixed(2);
-
-     console.log(id_Reg, cantidad, ost, siga, servicio, detalle, idRegistrador, pesoAct, tipo, pesoTotal, fechaApertura, idGrupo);
-
+     console.log(cantidad);
 }
+ 
+// Esta función recopila los datos a enviar y realiza la solicitud al modelo por medio de Fetch
+// function cerrarRegistro(data, id_Reg) {
+
+//      console.log(data.consecutivo);
+//      console.log(id_Reg);
+
+//      const cantidad = document.getElementById('cantidad').value;
+
+//      console.log(cantidad);
+//      // const ost = document.getElementById('ost').value;
+//      // const siga = document.getElementById('siga').value;
+//      // const servicio = document.getElementById('servicio').value;
+//      // const detalle = document.getElementById('observaciones').value;
+//      // const idRegistrador = document.getElementById('idRegistrador').value;
+//      // const pesoAct = datos.peso_act;
+//      // const tipo = document.getElementById('tipo').value;
+//      // const fechaApertura = datos.fecha_hora_apertura;
+//      // const idGrupo = datos.grupo;
+
+//      // let pesoTotal = (cantidad * pesoAct).toFixed(2);
+
+//      // if(cantidad === ''){
+//      //      mostrarMensaje('error', 'Debe indicar una cantidad');
+//      //      document.getElementById("cantidad").focus();
+//      // } else {
+
+//      // }
+// //      else {
+// //           // Se definen los datos que se van a enviar al fetch
+// //           const data = new FormData();
+// //                data.append('id_Reg', id_Reg);
+// //                data.append('ost', ost);
+// //                data.append('siga', siga);
+// //                data.append('numServicio', servicio);
+// //                data.append('cantidad', cantidad);
+// //                data.append('total', pesoTotal);
+// //                data.append('observaciones', detalle);
+// //                data.append('fecha_hora_apertura', fechaApertura);
+// //                data.append('idRegistrador', idRegistrador);
+// //                data.append('idGrupo', idGrupo);
+// //                data.append('tipo', tipo);
+
+// //           // Conexión del fetch al archivo php
+// //           fetch('inc/modelos/modelo-registro.php', {
+// //                method: 'POST',
+// //                body: data
+// //           })
+// //           .then(respuestaExitosa) // Respuesta exitosa llama la función
+// //           .catch(mostrarError); // Respuesta negativa llama la función
+
+// //           // Si la ejecución del AJAX es correcta se verifica la respuesta
+// //           function respuestaExitosa(response){
+// //                if(response.ok) {   // Si la respuesta en ok se llama la función para mostrar los resultados
+// //                     response.json().then(mostrarResultado);
+// //                } else {    // Si la respuesta no es ok se muestra el error
+// //                     mostrarError('status code: ' + response.status);
+// //                }
+// //           }
+
+// //           // Se muestran los resultados devueltos en el JSON
+// //           function mostrarResultado(respuesta){
+
+// //                console.log(respuesta);
+
+// //                // Si la respuesta es correcta
+// //                if(respuesta.estado === 'correcto') {      
+// //                     mostrarMensaje('success', 'Cierre de Registro Exitoso') ;      
+// //                     limpiarFormulario();
+// //                }else  if(respuesta.estado === 'error') {
+// //                     mostrarMensaje('error', 'No se realizó el cierre del registro'); 
+// //                } else {
+// //                     // Hubo un error
+// //                     if(respuesta.error) {
+// //                          mostrarMensaje('error', 'Algo falló al cerrar el registro de actividad');    
+// //                     }
+// //                     if (respuesta.conexion) {
+// //                          mostrarMensaje('error', 'Falla en la conexión a la base de datos');
+// //                     }
+// //                }
+// //           }
+
+// //           // Muestra el error si el AJAX no se ejecuta o la respuesta no es ok
+// //           function mostrarError(err){
+// //                console.log('Error', err);
+// //           }
+// //      }
+// }
+
+
+ 

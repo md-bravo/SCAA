@@ -48,8 +48,20 @@ if (isset($_POST['observaciones'])) {
         $observaciones = NULL;
     }
 }
+if (isset($_POST['idGrupo'])) {
+    $idGrupo = filter_var($_POST['idGrupo'], FILTER_SANITIZE_STRING);
+    if($idGrupo === ''){
+        $idGrupo = NULL;
+    }
+}
+if (isset($_POST['id_Reg'])) {
+    $id_Reg = filter_var($_POST['id_Reg'], FILTER_SANITIZE_STRING);
+}
 if (isset($_POST['idRegistrador'])) {
     $idRegistrador = filter_var($_POST['idRegistrador'], FILTER_SANITIZE_STRING);
+}
+if (isset($_POST['fecha_hora_apertura'])) {
+    $fecha_hora_apertura = filter_var($_POST['fecha_hora_apertura'], FILTER_SANITIZE_STRING);
 }
 
 // importar la conexion
@@ -211,6 +223,26 @@ if($tipo === 'registrar'){
 
     echo json_encode($respuesta);
 }
+
+if($tipo === 'cerrarReg'){
+
+    $respuesta = array(
+        'idReg' => $id_Reg,
+        'ost' => $ost,
+        'siga' => $siga,
+        'servicio' => $numServicio,
+        'cantidad' => $cantidad,
+        'total' => $total,
+        'detalle' => $observaciones,
+        'fechaApertura' => $fecha_hora_apertura,
+        'idGrupo' => $idGrupo,
+        'tipo' => $tipo,
+        'idRegistrador' => $idRegistrador 
+    );
+
+    echo json_encode($respuesta);
+}
+
 
 // Formatear fecha y hora definida
 // $formato = 'Y-m-d H:i:s';

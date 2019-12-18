@@ -136,3 +136,18 @@ function mueveReloj(){
 
     setTimeout("mueveReloj()",1000)
 }
+
+// Mostrar mensaje en pantalla, según el tipo y el mensaje ingresado
+function mostrarMensaje(tipo,mensaje) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+        })
+        
+        Toast.fire({
+        icon: tipo,
+        title: mensaje
+        })    
+}
