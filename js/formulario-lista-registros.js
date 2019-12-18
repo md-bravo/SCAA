@@ -27,6 +27,7 @@ function llenarTabla() {
                     'tipo': tipo
                }
           }, 
+          "autoWidth": false,
           "columns": [
                {
                     "className": 'details-control',
@@ -152,7 +153,8 @@ function llenarTabla() {
      // Se agrega el evento para cerrar un registro
      $('#tablaRegistros tbody').on( 'click', 'td.cerrarReg', function () {
           var data = table.row( $(this).parents('tr') ).data();
-          modalCerrarRegistro(data);
+          var todos = table.data();
+          modalCerrarRegistro(data, todos);
       } );
 }
      
@@ -180,7 +182,24 @@ function format(d) {
 }
 
 // Esta función muestra el modal para cerrar un registro, se carga con los datos del registro seleccionado
-function modalCerrarRegistro(data) {
+function modalCerrarRegistro(data, todos) {
+
+     let consecutivosRelacionados = '';
+
+     if(data.grupo === null){
+          document.getElementById('divRelacionados').style.display = "none";
+     } else {
+          for (let x = 0; x < todos.length; x++) {
+               if(todos[x].grupo === data.grupo){
+                    if(todos[x].consecutivo != data.consecutivo){
+                         consecutivosRelacionados += todos[x].consecutivo + '  ';
+                         document.getElementById('relacionados').value =  consecutivosRelacionados;
+                         document.getElementById('divRelacionados').style.display = "flex";
+                    }
+               }
+          }
+     }
+
      // Muestra el modal
      $('#modalCerrarReg').modal('show')
      // Llama las funciones fechaHora y mueveReloj de Scripts
@@ -196,6 +215,7 @@ function modalCerrarRegistro(data) {
      document.getElementById('siga').value = data.siga;
      document.getElementById('servicio').value = data.numero_servicio;
      document.getElementById('observaciones').innerText = data.detalle;
+     
      
       // Al hacer click en guadar, se llama la función cerrarRegistro y se le pasan los datos del registro seleccionado
       document.getElementById('btnGuardarReg').addEventListener('click', function(){cerrarRegistro(data)});

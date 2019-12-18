@@ -120,6 +120,12 @@
                               <input type="text" class="form-control" id="hora" readonly>
                          </div>
                     </div>
+                    <div class="form-group row" id="divRelacionados">
+                         <label for="relacionados" class="col-sm-3 col-form-label">Tambien Cerrará</label>
+                         <div class="col-sm-6">
+                              <input type="text" readonly class="form-control" id="relacionados">
+                         </div>
+                    </div>
                </form>
                </div>
                <div class="modal-footer">
