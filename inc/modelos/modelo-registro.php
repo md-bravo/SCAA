@@ -50,7 +50,7 @@ if (isset($_POST['observaciones'])) {
 }
 if (isset($_POST['idGrupo'])) {
     $idGrupo = filter_var($_POST['idGrupo'], FILTER_SANITIZE_STRING);
-    if($idGrupo === ''){
+    if($idGrupo === "null"){
         $idGrupo = NULL;
     }
 }
@@ -227,6 +227,7 @@ if($tipo === 'registrar'){
 if($tipo === 'cerrarReg'){
 
     $respuesta = array(
+        'estado' => 'correcto',
         'idReg' => $id_Reg,
         'ost' => $ost,
         'siga' => $siga,

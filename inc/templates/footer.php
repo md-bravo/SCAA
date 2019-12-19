@@ -15,7 +15,7 @@
           echo '<script type="text/javascript" src="js/formulario-login.js"></script>';
           break;
         case 'index':
-          echo '<script type="text/javascript" type="module" src="js/formulario-lista-registros.js"></script>';
+          echo '<script type="text/javascript" src="js/formulario-lista-registros.js"></script>';
           break;
         case 'registro':
           echo '<script type="text/javascript" src="js/formulario-registro.js"></script>';

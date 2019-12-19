@@ -70,6 +70,21 @@ function mostrarResultado(respuesta){
     }
 }
 
+// Mostrar mensaje en pantalla, según el tipo y el mensaje ingresado
+function mostrarMensaje(tipo,mensaje) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+        })
+        
+        Toast.fire({
+        icon: tipo,
+        title: mensaje
+        })    
+}
+
 // Muestra el error si el AJAX no se ejecuta o la respuesta no es ok
 function mostrarError(err){
     console.log('Error', err);

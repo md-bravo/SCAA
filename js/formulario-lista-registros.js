@@ -7,7 +7,7 @@ function eventListener() {
           llenarTabla();
      });
 
-     document.getElementById('btnGuardarReg').addEventListener('click', cerrarRegistro);
+
 }
 
 
@@ -221,111 +221,95 @@ function modalCerrarRegistro(data, todos) {
      document.getElementById('observaciones').innerText = data.detalle;
      
 
+     // Se clona el elemento para evitar que se agreguen multiples veces el EventListener
+     var el = document.getElementById('btnGuardarReg'),
+     elClone = el.cloneNode(true);
+     el.parentNode.replaceChild(elClone, el);
 
-      // Al hacer click en guadar, se llama la función cerrarRegistro y se le pasan los datos del registro seleccionado
-      //document.getElementById('btnGuardarReg').addEventListener('click', function(){cerrarRegistro(data, id_Reg)}, false);
-
-     //  document.getElementById('btnGuardarReg').addEventListener('click', cerrarRegistro);
-
-     
-}
-
-function cerrarRegistro() {
-     // console.log(data.consecutivo);
-     // console.log(id_Reg);
-
-     const cantidad = document.getElementById('cantidad').value;
-
-     console.log(cantidad);
+     // Al hacer click en guadar, se llama la función cerrarRegistro y se le pasan los datos del registro seleccionado
+     document.getElementById('btnGuardarReg').addEventListener('click', function(){cerrarRegistro(data, id_Reg)});
+    
 }
  
 // Esta función recopila los datos a enviar y realiza la solicitud al modelo por medio de Fetch
-// function cerrarRegistro(data, id_Reg) {
+function cerrarRegistro(datos, id_Reg) {
 
-//      console.log(data.consecutivo);
-//      console.log(id_Reg);
+     const cantidad = document.getElementById('cantidad').value;
+     const ost = document.getElementById('ost').value;
+     const siga = document.getElementById('siga').value;
+     const servicio = document.getElementById('servicio').value;
+     const detalle = document.getElementById('observaciones').value;
+     const idRegistrador = document.getElementById('idRegistrador').value;
+     const pesoAct = datos.peso_act;
+     const tipo = document.getElementById('tipo').value;
+     const fechaApertura = datos.fecha_hora_apertura;
+     const idGrupo = datos.grupo;
 
-//      const cantidad = document.getElementById('cantidad').value;
+     let pesoTotal = (cantidad * pesoAct).toFixed(2);
 
-//      console.log(cantidad);
-//      // const ost = document.getElementById('ost').value;
-//      // const siga = document.getElementById('siga').value;
-//      // const servicio = document.getElementById('servicio').value;
-//      // const detalle = document.getElementById('observaciones').value;
-//      // const idRegistrador = document.getElementById('idRegistrador').value;
-//      // const pesoAct = datos.peso_act;
-//      // const tipo = document.getElementById('tipo').value;
-//      // const fechaApertura = datos.fecha_hora_apertura;
-//      // const idGrupo = datos.grupo;
+     if(cantidad === ''){
+          mostrarMensaje('error', 'Debe indicar una cantidad');
+          document.getElementById("cantidad").focus();
+     }else {
+          // Se definen los datos que se van a enviar al fetch
+          const data = new FormData();
+               data.append('id_Reg', id_Reg);
+               data.append('ost', ost);
+               data.append('siga', siga);
+               data.append('numServicio', servicio);
+               data.append('cantidad', cantidad);
+               data.append('total', pesoTotal);
+               data.append('observaciones', detalle);
+               data.append('fecha_hora_apertura', fechaApertura);
+               data.append('idRegistrador', idRegistrador);
+               data.append('idGrupo', idGrupo);
+               data.append('tipo', tipo);
 
-//      // let pesoTotal = (cantidad * pesoAct).toFixed(2);
+          // Conexión del fetch al archivo php
+          fetch('inc/modelos/modelo-registro.php', {
+               method: 'POST',
+               body: data
+          })
+          .then(respuestaExitosa) // Respuesta exitosa llama la función
+          .catch(mostrarError); // Respuesta negativa llama la función
 
-//      // if(cantidad === ''){
-//      //      mostrarMensaje('error', 'Debe indicar una cantidad');
-//      //      document.getElementById("cantidad").focus();
-//      // } else {
+          // Si la ejecución del AJAX es correcta se verifica la respuesta
+          function respuestaExitosa(response){
+               if(response.ok) {   // Si la respuesta en ok se llama la función para mostrar los resultados
+                    response.json().then(mostrarResultado);
+               } else {    // Si la respuesta no es ok se muestra el error
+                    mostrarError('status code: ' + response.status);
+               }
+          }
 
-//      // }
-// //      else {
-// //           // Se definen los datos que se van a enviar al fetch
-// //           const data = new FormData();
-// //                data.append('id_Reg', id_Reg);
-// //                data.append('ost', ost);
-// //                data.append('siga', siga);
-// //                data.append('numServicio', servicio);
-// //                data.append('cantidad', cantidad);
-// //                data.append('total', pesoTotal);
-// //                data.append('observaciones', detalle);
-// //                data.append('fecha_hora_apertura', fechaApertura);
-// //                data.append('idRegistrador', idRegistrador);
-// //                data.append('idGrupo', idGrupo);
-// //                data.append('tipo', tipo);
+          // Se muestran los resultados devueltos en el JSON
+          function mostrarResultado(respuesta){
 
-// //           // Conexión del fetch al archivo php
-// //           fetch('inc/modelos/modelo-registro.php', {
-// //                method: 'POST',
-// //                body: data
-// //           })
-// //           .then(respuestaExitosa) // Respuesta exitosa llama la función
-// //           .catch(mostrarError); // Respuesta negativa llama la función
+               console.log(respuesta);
 
-// //           // Si la ejecución del AJAX es correcta se verifica la respuesta
-// //           function respuestaExitosa(response){
-// //                if(response.ok) {   // Si la respuesta en ok se llama la función para mostrar los resultados
-// //                     response.json().then(mostrarResultado);
-// //                } else {    // Si la respuesta no es ok se muestra el error
-// //                     mostrarError('status code: ' + response.status);
-// //                }
-// //           }
+               // Si la respuesta es correcta
+               if(respuesta.estado === 'correcto') {      
+                    mostrarMensaje('success', 'Cierre de Registro Exitoso') ;      
+                    limpiarFormulario();
+               }else  if(respuesta.estado === 'error') {
+                    mostrarMensaje('error', 'No se realizó el cierre del registro'); 
+               } else {
+                    // Hubo un error
+                    if(respuesta.error) {
+                         mostrarMensaje('error', 'Algo falló al cerrar el registro de actividad');    
+                    }
+                    if (respuesta.conexion) {
+                         mostrarMensaje('error', 'Falla en la conexión a la base de datos');
+                    }
+               }
+          }
 
-// //           // Se muestran los resultados devueltos en el JSON
-// //           function mostrarResultado(respuesta){
-
-// //                console.log(respuesta);
-
-// //                // Si la respuesta es correcta
-// //                if(respuesta.estado === 'correcto') {      
-// //                     mostrarMensaje('success', 'Cierre de Registro Exitoso') ;      
-// //                     limpiarFormulario();
-// //                }else  if(respuesta.estado === 'error') {
-// //                     mostrarMensaje('error', 'No se realizó el cierre del registro'); 
-// //                } else {
-// //                     // Hubo un error
-// //                     if(respuesta.error) {
-// //                          mostrarMensaje('error', 'Algo falló al cerrar el registro de actividad');    
-// //                     }
-// //                     if (respuesta.conexion) {
-// //                          mostrarMensaje('error', 'Falla en la conexión a la base de datos');
-// //                     }
-// //                }
-// //           }
-
-// //           // Muestra el error si el AJAX no se ejecuta o la respuesta no es ok
-// //           function mostrarError(err){
-// //                console.log('Error', err);
-// //           }
-// //      }
-// }
+          // Muestra el error si el AJAX no se ejecuta o la respuesta no es ok
+          function mostrarError(err){
+               console.log('Error', err);
+          }
+     }
+}
 
 
  
