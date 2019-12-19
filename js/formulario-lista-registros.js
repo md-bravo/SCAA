@@ -251,68 +251,81 @@ function cerrarRegistro(datos, id_Reg) {
           mostrarMensaje('error', 'Debe indicar una cantidad');
           document.getElementById("cantidad").focus();
      }else {
-          // Se definen los datos que se van a enviar al fetch
-          const data = new FormData();
-               data.append('id_Reg', id_Reg);
-               data.append('ost', ost);
-               data.append('siga', siga);
-               data.append('numServicio', servicio);
-               data.append('cantidad', cantidad);
-               data.append('pesoTotal', pesoTotal);
-               data.append('observaciones', detalle);
-               data.append('fecha_hora_apertura', fechaApertura);
-               data.append('idRegistrador', idRegistrador);
-               data.append('idGrupo', idGrupo);
-               data.append('tipo', tipo);
+          Swal.fire({
+               title: '¿Está seguro?',
+               text: 'Se cerrará el consecutivo ' + datos.consecutivo + ' y sus asociados',
+               icon: 'warning',
+               showCancelButton: true,
+               confirmButtonColor: '#3085d6',
+               cancelButtonColor: '#d33',
+               confirmButtonText: 'Si, cerrarlo'
+             }).then((result) => {
+               if (result.value) {
+                    // Se definen los datos que se van a enviar al fetch
+                    const data = new FormData();
+                    data.append('id_Reg', id_Reg);
+                    data.append('ost', ost);
+                    data.append('siga', siga);
+                    data.append('numServicio', servicio);
+                    data.append('cantidad', cantidad);
+                    data.append('pesoTotal', pesoTotal);
+                    data.append('observaciones', detalle);
+                    data.append('fecha_hora_apertura', fechaApertura);
+                    data.append('idRegistrador', idRegistrador);
+                    data.append('idGrupo', idGrupo);
+                    data.append('tipo', tipo);
 
-          // Conexión del fetch al archivo php
-          fetch('inc/modelos/modelo-registro.php', {
-               method: 'POST',
-               body: data
-          })
-          .then(respuestaExitosa) // Respuesta exitosa llama la función
-          .catch(mostrarError); // Respuesta negativa llama la función
+                    // Conexión del fetch al archivo php
+                    fetch('inc/modelos/modelo-registro.php', {
+                         method: 'POST',
+                         body: data
+                    })
+                    .then(respuestaExitosa) // Respuesta exitosa llama la función
+                    .catch(mostrarError); // Respuesta negativa llama la función
 
-          // Si la ejecución del AJAX es correcta se verifica la respuesta
-          function respuestaExitosa(response){
-               if(response.ok) {   // Si la respuesta en ok se llama la función para mostrar los resultados
-                    response.json().then(mostrarResultado);
-               } else {    // Si la respuesta no es ok se muestra el error
-                    mostrarError('status code: ' + response.status);
-               }
-          }
-
-          // Se muestran los resultados devueltos en el JSON
-          function mostrarResultado(respuesta){
-
-               // Si la respuesta es correcta
-               if(respuesta.estado === 'correcto') {      
-                    mostrarMensaje('success', 'Cierre de Registro Exitoso') ;   
-                    
-                    // Se oculta el modal de cierre de registro
-                    $('#modalCerrarReg').modal('hide');
-                    
-                    // Se actualiza la tabla
-                    var table = $('#tablaRegistros').DataTable();
-                    table.ajax.reload();
-
-               }else  if(respuesta.estado === 'error') {
-                    mostrarMensaje('error', 'No se realizó el cierre del registro'); 
-               } else {
-                    // Hubo un error
-                    if(respuesta.error) {
-                         mostrarMensaje('error', 'Algo falló al cerrar el registro de actividad');    
+                    // Si la ejecución del AJAX es correcta se verifica la respuesta
+                    function respuestaExitosa(response){
+                         if(response.ok) {   // Si la respuesta en ok se llama la función para mostrar los resultados
+                              response.json().then(mostrarResultado);
+                         } else {    // Si la respuesta no es ok se muestra el error
+                              mostrarError('status code: ' + response.status);
+                         }
                     }
-                    if (respuesta.conexion) {
-                         mostrarMensaje('error', 'Falla en la conexión a la base de datos');
+
+                    // Se muestran los resultados devueltos en el JSON
+                    function mostrarResultado(respuesta){
+
+                         // Si la respuesta es correcta
+                         if(respuesta.estado === 'correcto') {      
+                              mostrarMensaje('success', 'Cierre de Registro Exitoso') ;   
+                              
+                              // Se oculta el modal de cierre de registro
+                              $('#modalCerrarReg').modal('hide');
+                              
+                              // Se actualiza la tabla
+                              var table = $('#tablaRegistros').DataTable();
+                              table.ajax.reload();
+
+                         }else  if(respuesta.estado === 'error') {
+                              mostrarMensaje('error', 'No se realizó el cierre del registro'); 
+                         } else {
+                              // Hubo un error
+                              if(respuesta.error) {
+                                   mostrarMensaje('error', 'Algo falló al cerrar el registro de actividad');    
+                              }
+                              if (respuesta.conexion) {
+                                   mostrarMensaje('error', 'Falla en la conexión a la base de datos');
+                              }
+                         }
+                    }
+
+                    // Muestra el error si el AJAX no se ejecuta o la respuesta no es ok
+                    function mostrarError(err){
+                         console.log('Error', err);
                     }
                }
-          }
-
-          // Muestra el error si el AJAX no se ejecuta o la respuesta no es ok
-          function mostrarError(err){
-               console.log('Error', err);
-          }
+             })
+      
      }
 }
 

@@ -364,7 +364,7 @@ async function guardarRegistro() {
     const siga = document.getElementById('SIGA').value;
     const numServicio = document.getElementById('NumServicio').value;
     const cantidad = document.getElementById('cantidad').value;
-    const total = document.getElementById('total').innerText;
+    const pesoTotal = document.getElementById('total').innerText;
     const observaciones = document.getElementById('observaciones').value;
     const idRegistrador = document.getElementById('idRegistrador').value;
     const tipo = document.getElementById('tipoRegistrar').value;
@@ -403,7 +403,7 @@ async function guardarRegistro() {
         data.append('siga', siga);
         data.append('numServicio', numServicio);
         data.append('cantidad', cantidad);
-        data.append('total', total);
+        data.append('pesoTotal', pesoTotal);
         data.append('observaciones', observaciones);
         data.append('idRegistrador', idRegistrador);
         data.append('tipo', tipo);

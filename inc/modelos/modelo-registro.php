@@ -134,7 +134,7 @@ if($tipo === 'registrar'){
     if($cantidadUsuarios === 1){
         try {
             $stmt = $conn->prepare("INSERT INTO reg_act (OST, SIGA, cantidad_eventos, numero_servicio, detalle, fecha_hora_apertura, usuario_asignado, peso_total, usuario_asignador, id_Act, id_Estado_Reg_Act) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");   
-            $stmt->bind_param('sssssssssss', $ost, $siga, $cantidad, $numServicio, $observaciones, $fechaHora, $usuarios, $total,$idRegistrador, $idActividad, $id_Estado_Reg_Act);
+            $stmt->bind_param('sssssssssss', $ost, $siga, $cantidad, $numServicio, $observaciones, $fechaHora, $usuarios, $pesoTotal ,$idRegistrador, $idActividad, $id_Estado_Reg_Act);
             $stmt->execute();
 
             if($stmt->affected_rows > 0) {
@@ -164,7 +164,7 @@ if($tipo === 'registrar'){
             foreach ($listaUsuarios as $usuario) {
                 try {
                     $stmt = $conn->prepare("INSERT INTO reg_act (OST, SIGA, cantidad_eventos, numero_servicio, detalle, fecha_hora_apertura, usuario_asignado, peso_total, usuario_asignador, id_Act, id_Estado_Reg_Act) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");   
-                    $stmt->bind_param('sssssssssss', $ost, $siga, $cantidad, $numServicio, $observaciones, $fechaHora, $usuario, $total, $idRegistrador, $idActividad, $id_Estado_Reg_Act);
+                    $stmt->bind_param('sssssssssss', $ost, $siga, $cantidad, $numServicio, $observaciones, $fechaHora, $usuario, $pesoTotal, $idRegistrador, $idActividad, $id_Estado_Reg_Act);
                     $stmt->execute();
 
                     if($stmt->affected_rows > 0) {
