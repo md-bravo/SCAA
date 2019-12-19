@@ -39,8 +39,8 @@ if (isset($_POST['numServicio'])) {
 if (isset($_POST['cantidad'])) {
     $cantidad = filter_var($_POST['cantidad'], FILTER_SANITIZE_STRING);
 }
-if (isset($_POST['total'])) {
-    $total = filter_var($_POST['total'], FILTER_SANITIZE_STRING);
+if (isset($_POST['pesoTotal'])) {
+    $pesoTotal = filter_var($_POST['pesoTotal'], FILTER_SANITIZE_STRING);
 }
 if (isset($_POST['observaciones'])) {
     $observaciones = filter_var($_POST['observaciones'], FILTER_SANITIZE_STRING);
@@ -61,11 +61,16 @@ if (isset($_POST['idRegistrador'])) {
     $idRegistrador = filter_var($_POST['idRegistrador'], FILTER_SANITIZE_STRING);
 }
 if (isset($_POST['fecha_hora_apertura'])) {
-    $fecha_hora_apertura = filter_var($_POST['fecha_hora_apertura'], FILTER_SANITIZE_STRING);
+    $fecha_hora_apertura = ($_POST['fecha_hora_apertura']);
+    // $fecha_hora_apertura = new DateTime($_POST['fecha_hora_apertura']);
 }
+
+
 
 // importar la conexion
 include '../funciones/conexion.php';
+
+date_default_timezone_set('America/Costa_Rica');
 
 if($tipo === 'buscar'){
     try {
@@ -108,7 +113,6 @@ if($tipo === 'buscar'){
 
 if($tipo === 'registrar'){
 
-    date_default_timezone_set('America/Costa_Rica');
     $fechaHora = Date('Y/m/d H:i:s');
 
     // Consultar los estados disponibles, para conocer su id
@@ -226,24 +230,157 @@ if($tipo === 'registrar'){
 
 if($tipo === 'cerrarReg'){
 
-    $respuesta = array(
-        'estado' => 'correcto',
-        'idReg' => $id_Reg,
-        'ost' => $ost,
-        'siga' => $siga,
-        'servicio' => $numServicio,
-        'cantidad' => $cantidad,
-        'total' => $total,
-        'detalle' => $observaciones,
-        'fechaApertura' => $fecha_hora_apertura,
-        'idGrupo' => $idGrupo,
-        'tipo' => $tipo,
-        'idRegistrador' => $idRegistrador 
-    );
+    $fecha_hora_cierre = Date('Y/m/d H:i:s');
+    $tiempoTotal = tiempoTranscurridoFechas($fecha_hora_apertura, $fecha_hora_cierre);
+    $grupo = NULL;
 
+    try {
+
+        // Consultar los estados disponibles, para conocer su id
+        $stmt = $conn->prepare("SELECT * FROM estados_reg_act");
+        $stmt->execute();
+        $stmt->bind_result($id_Estado, $estado_Reg_Act);
+        
+        while ($stmt->fetch()) {
+            if($estado_Reg_Act === "Cerrado"){
+                $id_Estado_Reg_Act = $id_Estado;
+            }
+        }
+        $stmt->close();
+
+
+        $listaRegistros = explode(",", $id_Reg);
+
+        try {
+            foreach ($listaRegistros as $registro) {
+                $stmt = $conn->prepare("UPDATE reg_act SET OST = ?, SIGA = ?, cantidad_eventos = ?, numero_servicio = ?, detalle = ?, fecha_hora_cierre = ?, tiempo_total = ?, peso_total = ?, usuario_cierra = ?, id_Estado_Reg_Act = ?, id_Grupo_Reg = ? WHERE id_Reg_Act = ? ");  
+                $stmt->bind_param('ssssssssssss', $ost, $siga, $cantidad, $numServicio, $observaciones, $fecha_hora_cierre, $tiempoTotal, $pesoTotal, $idRegistrador, $id_Estado_Reg_Act, $grupo, $registro);
+                $stmt->execute();
+            }
+
+            if($stmt->affected_rows > 0) {
+                $respuesta = array(
+                    'estado' => 'correcto'
+                    // 'idReg' => $id_Reg,
+                    // 'ost' => $ost,
+                    // 'siga' => $siga,
+                    // 'servicio' => $numServicio,
+                    // 'cantidad' => $cantidad,
+                    // 'pesoTotal' => $pesoTotal,
+                    // 'detalle' => $observaciones,
+                    // 'fechaApertura' => $fecha_hora_apertura,
+                    // 'idGrupo' => $idGrupo,
+                    // 'tipo' => $tipo,
+                    // 'idRegistrador' => $idRegistrador,
+                    // 'listaReg' => $listaRegistros,
+                    // 'idEstado' => $id_Estado_Reg_Act,
+                    // 'tiempototal' => $tiempoTotal,
+                    // 'cierre' => $fecha_hora_cierre
+                );
+            }
+
+            $stmt->close();
+
+            if($idGrupo != NULL){
+                $stmt = $conn->prepare("DELETE FROM reg_act_agrupados WHERE id_Grupo_Reg = ? ");  
+                $stmt->bind_param('s', $idGrupo);
+                $stmt->execute();
+                $stmt->close();
+            }
+
+            $conn->close();
+            
+
+        } catch (Exception $e) {
+            // En caso de un error, tomar la exepcion
+            $respuesta = array(
+                'error' => $e->getMessage()
+            );
+        }
+
+
+
+    } catch (Exception $e) {
+        // En caso de un error, tomar la exepcion
+        $respuesta = array(
+            'error' => $e->getMessage()
+        );
+    }
+
+    // $respuesta = array(
+    //     'estado' => 'correcto'
+    // );
+    
     echo json_encode($respuesta);
 }
 
+// Calcular el tiempo transcurrido entre fechas
+function tiempoTranscurridoFechas($fechaInicio, $fechaFin)
+{
+    $fecha1 = new DateTime($fechaInicio);
+    $fecha2 = new DateTime($fechFin);
+    $fecha = $fecha1->diff($fecha2);
+    $tiempo = "";
+         
+    //años
+    if($fecha->y > 0)
+    {
+        $tiempo .= $fecha->y;
+             
+        if($fecha->y == 1)
+            $tiempo .= " año, ";
+        else
+            $tiempo .= " años, ";
+    }
+         
+    //meses
+    if($fecha->m > 0)
+    {
+        $tiempo .= $fecha->m;
+             
+        if($fecha->m == 1)
+            $tiempo .= " mes, ";
+        else
+            $tiempo .= " meses, ";
+    }
+         
+    //dias
+    if($fecha->d > 0)
+    {
+        $tiempo .= $fecha->d;
+             
+        if($fecha->d == 1)
+            $tiempo .= " día, ";
+        else
+            $tiempo .= " días, ";
+    }
+         
+    //horas
+    if($fecha->h > 0)
+    {
+        $tiempo .= $fecha->h;
+             
+        if($fecha->h == 1)
+            $tiempo .= " hora, ";
+        else
+            $tiempo .= " horas, ";
+    }
+         
+    //minutos
+    if($fecha->i > 0)
+    {
+        $tiempo .= $fecha->i;
+             
+        if($fecha->i == 1)
+            $tiempo .= " minuto";
+        else
+            $tiempo .= " minutos";
+    }
+    else if($fecha->i == 0) //segundos
+        $tiempo .= $fecha->s." segundos";
+         
+    return $tiempo;
+}
 
 // Formatear fecha y hora definida
 // $formato = 'Y-m-d H:i:s';

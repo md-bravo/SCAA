@@ -218,7 +218,7 @@ function modalCerrarRegistro(data, todos) {
      document.getElementById('ost').value = data.ost;
      document.getElementById('siga').value = data.siga;
      document.getElementById('servicio').value = data.numero_servicio;
-     document.getElementById('observaciones').innerText = data.detalle;
+     document.getElementById('observaciones').value = data.detalle;
      
 
      // Se clona el elemento para evitar que se agreguen multiples veces el EventListener
@@ -258,7 +258,7 @@ function cerrarRegistro(datos, id_Reg) {
                data.append('siga', siga);
                data.append('numServicio', servicio);
                data.append('cantidad', cantidad);
-               data.append('total', pesoTotal);
+               data.append('pesoTotal', pesoTotal);
                data.append('observaciones', detalle);
                data.append('fecha_hora_apertura', fechaApertura);
                data.append('idRegistrador', idRegistrador);
@@ -285,12 +285,17 @@ function cerrarRegistro(datos, id_Reg) {
           // Se muestran los resultados devueltos en el JSON
           function mostrarResultado(respuesta){
 
-               console.log(respuesta);
-
                // Si la respuesta es correcta
                if(respuesta.estado === 'correcto') {      
-                    mostrarMensaje('success', 'Cierre de Registro Exitoso') ;      
-                    limpiarFormulario();
+                    mostrarMensaje('success', 'Cierre de Registro Exitoso') ;   
+                    
+                    // Se oculta el modal de cierre de registro
+                    $('#modalCerrarReg').modal('hide');
+                    
+                    // Se actualiza la tabla
+                    var table = $('#tablaRegistros').DataTable();
+                    table.ajax.reload();
+
                }else  if(respuesta.estado === 'error') {
                     mostrarMensaje('error', 'No se realizó el cierre del registro'); 
                } else {
