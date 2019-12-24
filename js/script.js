@@ -28,7 +28,7 @@ function verificarRol() {
 
 
 // Esta función determina en que página se encuentra y agrega la clase active al menú que corresponde.
-function verificarNav(e) {
+function verificarNav() {
     const url = window.location.pathname;
 
     if(url.indexOf('index') != -1){

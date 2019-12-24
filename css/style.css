@@ -345,18 +345,28 @@ table {
 }
 
 td.details-control {
-  background: url('../img/plus.png') no-repeat center center;
+  background: url('../img/mas.svg') no-repeat center center;
   cursor: pointer;
   background-size: 1.33em;
 }
 
 tr.shown td.details-control {
-  background: url('../img/negativo.png') no-repeat center center;
+  background: url('../img/negativo.svg') no-repeat center center;
   background-size: 1.33em;
 }
 
 td.cerrarReg{
-  background: url('../img/correcto.png') no-repeat center center;
+  background: url('../img/comprobar.svg') no-repeat center center;
+  cursor: pointer;
+  background-size: 1.33em;
+}
+td.editarReg{
+  background: url('../img/edit.svg') no-repeat center center;
+  cursor: pointer;
+  background-size: 1.33em;
+}
+td.borrarReg{
+  background: url('../img/borrar.svg') no-repeat center center;
   cursor: pointer;
   background-size: 1.33em;
 }

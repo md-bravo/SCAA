@@ -7,7 +7,12 @@ function eventListener() {
           llenarTabla();
      });
 
-
+     // Calcular peso actividades
+     document.getElementById('ddlActividades').addEventListener('change', pesoActividades);
+     
+     // calcular total cuando se ingresa la cantidad
+     document.getElementById('cantidad').addEventListener('keyup', calcularTotal);
+     document.getElementById('cantidad').addEventListener('click', calcularTotal);
 }
 
 
@@ -37,7 +42,18 @@ function llenarTabla() {
                },
                {
                     "className": 'cerrarReg',
-                    "targets": -1,
+                    "orderable": false,
+                    "data":null,
+                    "defaultContent": ''
+               },
+               {
+                    "className": 'editarReg',
+                    "orderable": false,
+                    "data":null,
+                    "defaultContent": ''
+               },
+               {
+                    "className": 'borrarReg',
                     "orderable": false,
                     "data":null,
                     "defaultContent": ''
@@ -57,38 +73,38 @@ function llenarTabla() {
           ],
           "columnDefs": [
                {
-                    "targets": [2],
-                    "visible": false,
-                    "searchable": false
-               },
-               {
                     "targets": [4],
                     "visible": false,
-               },
-               {
-                    "targets": [5],
-                    "visible": false,
+                    "searchable": false
                },
                {
                     "targets": [6],
                     "visible": false,
                },
                {
-                    "targets": [9],
+                    "targets": [7],
+                    "visible": false,
+               },
+               {
+                    "targets": [8],
+                    "visible": false,
+               },
+               {
+                    "targets": [11],
                     "visible": false,
                     "searchable": false
                },
                {
-                    "targets": [12],
+                    "targets": [14],
                     "visible": false,
                },
                {
-                    "targets": [13],
+                    "targets": [15],
                     "visible": false,
                     "searchable": false
                }
           ],
-          "order": [[2, "desc"]],
+          "order": [[4, "desc"]],
           "language": {
                "sProcessing": "Procesando...",
                "sLengthMenu": "Mostrar _MENU_ registros",
@@ -131,6 +147,8 @@ function llenarTabla() {
      if(rol === "Vista" || rol === "Tecnico"){
           // Oculta opcion de cerrar registros
           table.column( 1 ).visible( false );
+          table.column( 2 ).visible( false );
+          table.column( 3 ).visible( false );
      }
 
      // Se agrega el evento para mostrar u ocultar los detalles
@@ -154,8 +172,26 @@ function llenarTabla() {
      $('#tablaRegistros tbody').on( 'click', 'td.cerrarReg', function () {
           var data = table.row( $(this).parents('tr') ).data();
           var todos = table.data();
-          modalCerrarRegistro(data, todos);
+          let tipo = "cerrar";
+          modalAccesionesRegistro(data, todos, tipo);
       } );
+
+     // Se agrega el evento para editar un registro
+     $('#tablaRegistros tbody').on( 'click', 'td.editarReg', function () {
+          var data = table.row( $(this).parents('tr') ).data();
+          var todos = table.data();
+          let tipo = "editar";
+          modalAccesionesRegistro(data, todos, tipo);
+      } );
+
+     // Se agrega el evento para editar un registro
+     $('#tablaRegistros tbody').on( 'click', 'td.borrarReg', function () {
+          var data = table.row( $(this).parents('tr') ).data();
+          var todos = table.data();
+          let tipo = "borrar";
+          modalAccesionesRegistro(data, todos, tipo);
+      } );
+
 }
      
 // Formato para la presentación de los detalles
@@ -182,7 +218,7 @@ function format(d) {
 }
 
 // Esta función muestra el modal para cerrar un registro, se carga con los datos del registro seleccionado
-function modalCerrarRegistro(data, todos) {
+function modalAccesionesRegistro(data, todos, tipo) {
 
      let consecutivosRelacionados = '';
      let id_Reg = [];
@@ -205,30 +241,94 @@ function modalCerrarRegistro(data, todos) {
      }
 
      // Muestra el modal
-     $('#modalCerrarReg').modal('show')
+     $('#modalAccionesReg').modal('show')
      // Llama las funciones fechaHora y mueveReloj de Scripts
+     valoresDefaultSelectpicker();
      fechaHora();
      mueveReloj();
 
-     document.getElementById('modalCerrarRegTitle').textContent = 'Cerrar Registro ' + data.consecutivo;
-     document.getElementById('nombre').value = data.nombre;
-     document.getElementById('actividad').value = data.actividad;
-     document.getElementById('fecha-hora').value = data.fecha_hora_apertura;
-     document.getElementById('cantidad').value = data.cantidad_eventos;
-     document.getElementById('ost').value = data.ost;
-     document.getElementById('siga').value = data.siga;
-     document.getElementById('servicio').value = data.numero_servicio;
-     document.getElementById('observaciones').value = data.detalle;
-     
+     let nombre = document.getElementById('nombre');
+     let ddlActividad = document.getElementById('ddlActividades');
+     let fecha_hora = document.getElementById('fecha-hora');
+     let cantidad = document.getElementById('cantidad');
+     let ost = document.getElementById('ost');
+     let siga = document.getElementById('siga');
+     let servicio = document.getElementById('servicio');
+     let observaciones = document.getElementById('observaciones');
+
+     nombre.value = data.nombre;
+     fecha_hora.value = data.fecha_hora_apertura;
+     cantidad.value = data.cantidad_eventos;
+     ost.value = data.ost;
+     siga.value = data.siga;
+     servicio.value = data.numero_servicio;
+     observaciones.value = data.detalle;
+
+     ddlActividad.disabled = false;
+     cantidad.disabled = false;
+     ost.disabled = false;
+     siga.disabled = false;
+     servicio.disabled = false;
+     observaciones.disabled = false;
+     document.getElementById('fecha').parentNode.parentNode.style.display = "flex";
+     document.getElementById('opcionesBorrar').classList.add("d-none");
 
      // Se clona el elemento para evitar que se agreguen multiples veces el EventListener
-     var el = document.getElementById('btnGuardarReg'),
+     var el = document.getElementById('btnAccionReg'),
      elClone = el.cloneNode(true);
      el.parentNode.replaceChild(elClone, el);
 
-     // Al hacer click en guadar, se llama la función cerrarRegistro y se le pasan los datos del registro seleccionado
-     document.getElementById('btnGuardarReg').addEventListener('click', function(){cerrarRegistro(data, id_Reg)});
-    
+     let botonModal = document.getElementById('btnAccionReg');
+     let titulo = document.getElementById('modalAccionesRegTitle');
+     let divModalHeader = document.getElementById('divModalHeader');
+     let labelAsociados = document.getElementById('divRelacionados').childNodes[1];
+
+     if(tipo === "cerrar"){
+          titulo.textContent = 'Cerrar Registro ' + data.consecutivo;
+          divModalHeader.style.backgroundColor = "#acfabb";
+          ddlActividad.disabled = true;
+          botonModal.innerText = "Cerrar Registro";
+          labelAsociados.innerHTML = "Tambien Cerrará";
+          // Al hacer click en Cerrar Registro, se llama la función cerrarRegistro y se le pasan los datos del registro seleccionado
+          document.getElementById('btnAccionReg').addEventListener('click', function(){cerrarRegistro(data, id_Reg)});
+     } else if(tipo === "editar") {
+          titulo.textContent = 'Editar Registro ' + data.consecutivo;
+          divModalHeader.style.backgroundColor = "#fffd6e";
+          botonModal.innerText = "Guardar Cambios";
+          labelAsociados.innerHTML = "Tambien Editará";
+          document.getElementById('fecha').parentNode.parentNode.style.display = "none";
+          // Al hacer click en Editar Registro, se llama la función editarRegistro y se le pasan los datos del registro seleccionado
+          document.getElementById('btnAccionReg').addEventListener('click', function(){editarRegistro(data, id_Reg)});
+     } else {
+          titulo.textContent = 'Eliminar Registro ' + data.consecutivo;
+          divModalHeader.style.backgroundColor = "#ff7373";
+          botonModal.innerText = "Eliminar Registro";
+          labelAsociados.innerHTML = "Asociados";
+          ddlActividad.disabled = true;
+          cantidad.disabled = true;
+          ost.disabled = true;
+          siga.disabled = true;
+          servicio.disabled = true;
+          observaciones.disabled = true;
+
+          if(id_Reg.length > 1){
+               document.getElementById('opcionesBorrar').classList.remove("d-none");
+          }
+          
+          // Al hacer click en Eliminar Registro, se llama la función eliminarRegistro y se le pasan los datos del registro seleccionado
+          document.getElementById('btnAccionReg').addEventListener('click', function(){eliminarRegistro(data, id_Reg)});
+     }
+
+     // Establece como seleccionado la actividad según el registro que se eligió
+     let listaActividades = document.getElementById('ddlActividades').children;
+     for (let x = 0; x < listaActividades.length; x++) {
+          if(listaActividades[x].value == data.id_Act){
+               listaActividades[x].selected = true;
+               $('#ddlActividades').selectpicker('refresh');
+               pesoActividades();
+          }
+     }
+     
 }
  
 // Esta función recopila los datos a enviar y realiza la solicitud al modelo por medio de Fetch
@@ -329,5 +429,45 @@ function cerrarRegistro(datos, id_Reg) {
      }
 }
 
+function editarRegistro(datos, id_Reg) {
+     console.log('Click en editar registros');
+}
 
+function eliminarRegistro(datos, id_Reg) {
+     console.log('Click en eliminar registros');
+}
+
+// Busca el peso de la actividad seleccionada y lo muestra
+function  pesoActividades() {
+     const listaActividades = document.getElementById('ddlActividades').children;
+     let peso = document.getElementById('pesoAct');
  
+     for (let x = 0; x < listaActividades.length; x++) {
+         if(listaActividades[x].selected === true){
+             peso.innerHTML = listaActividades[x].id;
+         }
+     }
+     calcularTotal();
+ }
+ 
+ // Calcula el total entre el pesa de la actividad y la cantidad
+ function calcularTotal() {
+ 
+     const pesoAct = Number(document.getElementById('pesoAct').innerHTML);
+     const cantidad = Number(document.getElementById('cantidad').value);
+ 
+     const total = pesoAct * cantidad;
+     
+     document.getElementById('total').innerHTML = total.toFixed(2);
+ 
+ }
+
+ // Valores inciales para selectPicker
+function valoresDefaultSelectpicker(){
+     $('#ddlActividades').selectpicker('setStyle', 'border', 'add');
+     $('#ddlActividades').selectpicker('setStyle', 'btn-light', 'remove');
+ 
+     $('#ddlActividades').selectpicker({
+         noneResultsText:'No hay resultados para {0}'
+     });
+ }
