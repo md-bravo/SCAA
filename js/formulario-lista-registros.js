@@ -173,7 +173,7 @@ function llenarTabla() {
           var data = table.row( $(this).parents('tr') ).data();
           var todos = table.data();
           let tipo = "cerrar";
-          modalAccesionesRegistro(data, todos, tipo);
+          modalAccionesRegistro(data, todos, tipo);
       } );
 
      // Se agrega el evento para editar un registro
@@ -181,7 +181,7 @@ function llenarTabla() {
           var data = table.row( $(this).parents('tr') ).data();
           var todos = table.data();
           let tipo = "editar";
-          modalAccesionesRegistro(data, todos, tipo);
+          modalAccionesRegistro(data, todos, tipo);
       } );
 
      // Se agrega el evento para editar un registro
@@ -189,7 +189,7 @@ function llenarTabla() {
           var data = table.row( $(this).parents('tr') ).data();
           var todos = table.data();
           let tipo = "borrar";
-          modalAccesionesRegistro(data, todos, tipo);
+          modalAccionesRegistro(data, todos, tipo);
       } );
 
 }
@@ -218,7 +218,7 @@ function format(d) {
 }
 
 // Esta función muestra el modal para cerrar un registro, se carga con los datos del registro seleccionado
-function modalAccesionesRegistro(data, todos, tipo) {
+function modalAccionesRegistro(data, todos, tipo) {
 
      let consecutivosRelacionados = '';
      let id_Reg = [];
@@ -290,7 +290,7 @@ function modalAccesionesRegistro(data, todos, tipo) {
           botonModal.innerText = "Cerrar Registro";
           labelAsociados.innerHTML = "Tambien Cerrará";
           // Al hacer click en Cerrar Registro, se llama la función cerrarRegistro y se le pasan los datos del registro seleccionado
-          document.getElementById('btnAccionReg').addEventListener('click', function(){cerrarRegistro(data, id_Reg)});
+          document.getElementById('btnAccionReg').addEventListener('click', function(){cerrarRegistro(data, id_Reg, tipo)});
      } else if(tipo === "editar") {
           titulo.textContent = 'Editar Registro ' + data.consecutivo;
           divModalHeader.style.backgroundColor = "#fffd6e";
@@ -298,7 +298,7 @@ function modalAccesionesRegistro(data, todos, tipo) {
           labelAsociados.innerHTML = "Tambien Editará";
           document.getElementById('fecha').parentNode.parentNode.style.display = "none";
           // Al hacer click en Editar Registro, se llama la función editarRegistro y se le pasan los datos del registro seleccionado
-          document.getElementById('btnAccionReg').addEventListener('click', function(){editarRegistro(data, id_Reg)});
+          document.getElementById('btnAccionReg').addEventListener('click', function(){editarRegistro(data, id_Reg, tipo)});
      } else {
           titulo.textContent = 'Eliminar Registro ' + data.consecutivo;
           divModalHeader.style.backgroundColor = "#ff7373";
@@ -316,7 +316,7 @@ function modalAccesionesRegistro(data, todos, tipo) {
           }
           
           // Al hacer click en Eliminar Registro, se llama la función eliminarRegistro y se le pasan los datos del registro seleccionado
-          document.getElementById('btnAccionReg').addEventListener('click', function(){eliminarRegistro(data, id_Reg)});
+          document.getElementById('btnAccionReg').addEventListener('click', function(){eliminarRegistro(data, id_Reg, tipo)});
      }
 
      // Establece como seleccionado la actividad según el registro que se eligió
@@ -332,28 +332,28 @@ function modalAccesionesRegistro(data, todos, tipo) {
 }
  
 // Esta función recopila los datos a enviar y realiza la solicitud al modelo por medio de Fetch
-function cerrarRegistro(datos, id_Reg) {
+function cerrarRegistro(datos, id_Reg, tipo) {
 
-     const cantidad = document.getElementById('cantidad').value;
+     const cantidad = Number(document.getElementById('cantidad').value);
      const ost = document.getElementById('ost').value;
      const siga = document.getElementById('siga').value;
      const servicio = document.getElementById('servicio').value;
      const detalle = document.getElementById('observaciones').value;
      const idRegistrador = document.getElementById('idRegistrador').value;
-     const pesoAct = datos.peso_act;
-     const tipo = document.getElementById('tipo').value;
      const fechaApertura = datos.fecha_hora_apertura;
      const idGrupo = datos.grupo;
-
-     let pesoTotal = (cantidad * pesoAct).toFixed(2);
+     const pesoTotal = document.getElementById('total').innerHTML;
 
      if(cantidad === ''){
           mostrarMensaje('error', 'Debe indicar una cantidad');
           document.getElementById("cantidad").focus();
+     } else if(cantidad === 0){
+          mostrarMensaje('error', 'La cantidad no puede ser igual a 0');
+          document.getElementById("cantidad").focus();
      }else {
           Swal.fire({
                title: '¿Está seguro?',
-               text: 'Se cerrará el consecutivo ' + datos.consecutivo + ' y sus asociados',
+               text: 'Se cerrará el consecutivo ' + (id_Reg.length === 1 ? datos.consecutivo : datos.consecutivo + ' y sus asociados'),
                icon: 'warning',
                showCancelButton: true,
                confirmButtonColor: '#3085d6',
@@ -400,13 +400,13 @@ function cerrarRegistro(datos, id_Reg) {
                               mostrarMensaje('success', 'Cierre de Registro Exitoso') ;   
                               
                               // Se oculta el modal de cierre de registro
-                              $('#modalCerrarReg').modal('hide');
+                              $('#modalAccionesReg').modal('hide');
                               
                               // Se actualiza la tabla
                               var table = $('#tablaRegistros').DataTable();
                               table.ajax.reload();
 
-                         }else  if(respuesta.estado === 'error') {
+                         }else  if(respuesta.estado === 'incorrecto') {
                               mostrarMensaje('error', 'No se realizó el cierre del registro'); 
                          } else {
                               // Hubo un error
@@ -429,12 +429,105 @@ function cerrarRegistro(datos, id_Reg) {
      }
 }
 
-function editarRegistro(datos, id_Reg) {
-     console.log('Click en editar registros');
+function editarRegistro(datos, id_Reg, tipo) {
+     const cantidad = Number(document.getElementById('cantidad').value);
+     const ost = document.getElementById('ost').value;
+     const siga = document.getElementById('siga').value;
+     const servicio = document.getElementById('servicio').value;
+     const detalle = document.getElementById('observaciones').value;
+     const idRegistrador = document.getElementById('idRegistrador').value;
+     const pesoTotal = document.getElementById('total').innerHTML;
+     const nuevoIdAct = document.getElementById('ddlActividades').value;
+
+     if(cantidad === ''){
+          mostrarMensaje('error', 'Debe indicar una cantidad');
+          document.getElementById("cantidad").focus();
+     } else if(cantidad === 0){
+          mostrarMensaje('error', 'La cantidad no puede ser igual a 0');
+          document.getElementById("cantidad").focus();
+     }else {
+          Swal.fire({
+               title: '¿Está seguro?',
+               text: 'Se editará el consecutivo ' + (id_Reg.length === 1 ? datos.consecutivo : datos.consecutivo + ' y sus asociados'),
+               icon: 'warning',
+               showCancelButton: true,
+               confirmButtonColor: '#3085d6',
+               cancelButtonColor: '#d33',
+               confirmButtonText: 'Si, editarlo'
+             }).then((result) => {
+               if (result.value) {
+                    // Se definen los datos que se van a enviar al fetch
+                    const data = new FormData();
+                    data.append('id_Reg', id_Reg);
+                    data.append('ost', ost);
+                    data.append('siga', siga);
+                    data.append('numServicio', servicio);
+                    data.append('cantidad', cantidad);
+                    data.append('pesoTotal', pesoTotal);
+                    data.append('observaciones', detalle);
+                    data.append('idRegistrador', idRegistrador);
+                    data.append('nuevoIdAct', nuevoIdAct);
+                    data.append('tipo', tipo);
+
+                    // Conexión del fetch al archivo php
+                    fetch('inc/modelos/modelo-registro.php', {
+                         method: 'POST',
+                         body: data
+                    })
+                    .then(respuestaExitosa) // Respuesta exitosa llama la función
+                    .catch(mostrarError); // Respuesta negativa llama la función
+
+                    // Si la ejecución del AJAX es correcta se verifica la respuesta
+                    function respuestaExitosa(response){
+                         if(response.ok) {   // Si la respuesta en ok se llama la función para mostrar los resultados
+                              response.json().then(mostrarResultado);
+                         } else {    // Si la respuesta no es ok se muestra el error
+                              mostrarError('status code: ' + response.status);
+                         }
+                    }
+
+                    // Se muestran los resultados devueltos en el JSON
+                    function mostrarResultado(respuesta){
+                    
+                         // Si la respuesta es correcta
+                         if(respuesta.estado === 'correcto') {      
+                              mostrarMensaje('success', 'Modificación de Registro Exitoso') ;   
+                              
+                              // Se oculta el modal de cierre de registro
+                              $('#modalAccionesReg').modal('hide');
+                              
+                              // Se actualiza la tabla
+                              var table = $('#tablaRegistros').DataTable();
+                              table.ajax.reload();
+
+                         }else  if(respuesta.estado === 'incorrecto') {
+                              mostrarMensaje('error', 'No se realizó la modificación del registro'); 
+                         } else {
+                              // Hubo un error
+                              if(respuesta.error) {
+                                   mostrarMensaje('error', 'Algo falló al modificar el registro de actividad');    
+                              }
+                              if (respuesta.conexion) {
+                                   mostrarMensaje('error', 'Falla en la conexión a la base de datos');
+                              }
+                         }
+                    }
+
+                    // Muestra el error si el AJAX no se ejecuta o la respuesta no es ok
+                    function mostrarError(err){
+                         console.log('Error', err);
+                    }
+               }
+             })
+      
+     }
 }
 
-function eliminarRegistro(datos, id_Reg) {
+function eliminarRegistro(datos, id_Reg, tipo) {
      console.log('Click en eliminar registros');
+     console.log(datos);
+     console.log(id_Reg);
+     console.log(tipo);
 }
 
 // Busca el peso de la actividad seleccionada y lo muestra

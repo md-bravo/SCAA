@@ -189,7 +189,7 @@
                                 <div class="form-group col-md-3">
                                     <label for="cantidad">Cantidad</label>
                                     <div class="input-group mb-2">
-                                        <input type="number" class="form-control" id="cantidad">
+                                        <input type="text" class="form-control" id="cantidad">
                                         <div class="input-group-prepend">
                                             <div id="total" class="input-group-text">0.00</div>
                                         </div>                                        

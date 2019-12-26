@@ -101,7 +101,7 @@
                          <div class="form-group row">
                               <label for="cantidad" class="col-sm-2 col-form-label">Cantidad</label>
                               <div class=" input-group col-sm-4">
-                                   <input type="number" class="form-control" id="cantidad">
+                                   <input type="text" class="form-control" id="cantidad">
                                    <div class="input-group-prepend">
                                         <div id="total" class="input-group-text">0.00</div>
                                    </div> 
@@ -170,7 +170,6 @@
                     </form>
                </div>
                <div class="modal-footer">
-                    <input type="hidden" id="tipo" value="cerrarReg">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="button" id="btnAccionReg" class="btn btn-primary">Guardar</button>
                </div>

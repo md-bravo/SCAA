@@ -18,6 +18,9 @@ if (isset($_POST['cuadrilla'])) {
 if (isset($_POST['idActividad'])) {
     $idActividad = filter_var($_POST['idActividad'], FILTER_SANITIZE_STRING);
 }
+if (isset($_POST['nuevoIdAct'])) {
+    $nuevoIdAct = filter_var($_POST['nuevoIdAct'], FILTER_SANITIZE_STRING);
+}
 if (isset($_POST['ost'])) {
     $ost = filter_var($_POST['ost'], FILTER_SANITIZE_STRING);
     if($ost === ''){
@@ -62,7 +65,6 @@ if (isset($_POST['idRegistrador'])) {
 }
 if (isset($_POST['fecha_hora_apertura'])) {
     $fecha_hora_apertura = ($_POST['fecha_hora_apertura']);
-    // $fecha_hora_apertura = new DateTime($_POST['fecha_hora_apertura']);
 }
 
 
@@ -228,7 +230,7 @@ if($tipo === 'registrar'){
     echo json_encode($respuesta);
 }
 
-if($tipo === 'cerrarReg'){
+if($tipo === 'cerrar'){
 
     $fecha_hora_cierre = Date('Y/m/d H:i:s');
     $tiempoTotal = tiempoTranscurridoFechas($fecha_hora_apertura, $fecha_hora_cierre);
@@ -261,21 +263,10 @@ if($tipo === 'cerrarReg'){
             if($stmt->affected_rows > 0) {
                 $respuesta = array(
                     'estado' => 'correcto'
-                    // 'idReg' => $id_Reg,
-                    // 'ost' => $ost,
-                    // 'siga' => $siga,
-                    // 'servicio' => $numServicio,
-                    // 'cantidad' => $cantidad,
-                    // 'pesoTotal' => $pesoTotal,
-                    // 'detalle' => $observaciones,
-                    // 'fechaApertura' => $fecha_hora_apertura,
-                    // 'idGrupo' => $idGrupo,
-                    // 'tipo' => $tipo,
-                    // 'idRegistrador' => $idRegistrador,
-                    // 'listaReg' => $listaRegistros,
-                    // 'idEstado' => $id_Estado_Reg_Act,
-                    // 'tiempototal' => $tiempoTotal,
-                    // 'cierre' => $fecha_hora_cierre
+                );
+            } else {
+                $respuesta = array(
+                    'estado' => 'incorrecto'
                 );
             }
 
@@ -298,7 +289,49 @@ if($tipo === 'cerrarReg'){
             );
         }
 
+    } catch (Exception $e) {
+        // En caso de un error, tomar la exepcion
+        $respuesta = array(
+            'error' => $e->getMessage()
+        );
+    }
+    
+    echo json_encode($respuesta);
+}
 
+if($tipo === 'editar'){
+
+    try {
+
+        $listaRegistros = explode(",", $id_Reg);
+
+        try {
+            foreach ($listaRegistros as $registro) {
+
+                $stmt = $conn->prepare("UPDATE reg_act SET id_Act = ?, OST = ?, SIGA = ?, cantidad_eventos = ?, numero_servicio = ?, detalle = ?, peso_total = ? WHERE id_Reg_Act = ? ");  
+                $stmt->bind_param('ssssssss', $nuevoIdAct, $ost, $siga, $cantidad, $numServicio, $observaciones, $pesoTotal, $registro);
+
+                $stmt->execute();
+            }
+
+            if($stmt->affected_rows > 0) {
+                $respuesta = array(
+                    'estado' => 'correcto'
+                );
+            } else {
+                $respuesta = array(
+                    'estado' => 'incorrecto'
+                );
+            }
+
+            $stmt->close();
+
+        } catch (Exception $e) {
+            // En caso de un error, tomar la exepcion
+            $respuesta = array(
+                'error' => $e->getMessage()
+            );
+        }
 
     } catch (Exception $e) {
         // En caso de un error, tomar la exepcion
@@ -306,12 +339,9 @@ if($tipo === 'cerrarReg'){
             'error' => $e->getMessage()
         );
     }
-
-    // $respuesta = array(
-    //     'estado' => 'correcto'
-    // );
     
     echo json_encode($respuesta);
+
 }
 
 // Calcular el tiempo transcurrido entre fechas
