@@ -2,7 +2,16 @@
           <div class="sidebar-brand">
                <input type="hidden" name="idRegistrador" id="idRegistrador" value="<?php echo $_SESSION['usuario']?>">
                <input type="hidden" name="rolRegistrador" id="rolRegistrador" value="<?php echo $_SESSION['rol']?>">
-               <a><i class="fas fa-user fa-1x"></i><span><?php echo $_SESSION['nombreCorto']?></span></a>
+               
+               <div class="row">
+                    <div class="col-4">
+                         <a><i class="fas fa-user"></i></a>
+                    </div>
+                    <div class="col-8">
+                         <span><?php echo $_SESSION['nombreCorto']?></span>
+                    </div>
+               </div>
+               
           </div>           
           <ul class="sidebar-nav">
                <li>

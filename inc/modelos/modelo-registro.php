@@ -344,6 +344,120 @@ if($tipo === 'editar'){
 
 }
 
+if($tipo === 'borrar'){
+    $fecha_hora_cierre = Date('Y/m/d H:i:s');
+    $tiempoTotal = tiempoTranscurridoFechas($fecha_hora_apertura, $fecha_hora_cierre);
+    $grupo = NULL;
+
+    try {
+
+        // Consultar los estados disponibles, para conocer su id
+        $stmt = $conn->prepare("SELECT * FROM estados_reg_act");
+        $stmt->execute();
+        $stmt->bind_result($id_Estado, $estado_Reg_Act);
+        
+        while ($stmt->fetch()) {
+            if($estado_Reg_Act === "Eliminado"){
+                $id_Estado_Reg_Act = $id_Estado;
+            }
+        }
+        $stmt->close();
+
+
+        $listaRegistros = explode(",", $id_Reg);
+        $cantidadRegistros = count($listaRegistros);
+
+        try {
+            // Para cada uno de los registros se actualiza la siguiente información y se pone estado eliminado
+            foreach ($listaRegistros as $registro) {
+                $stmt = $conn->prepare("UPDATE reg_act SET fecha_hora_cierre = ?, tiempo_total = ?, usuario_cierra = ?, id_Estado_Reg_Act = ?, id_Grupo_Reg = ? WHERE id_Reg_Act = ? ");  
+                $stmt->bind_param('ssssss', $fecha_hora_cierre, $tiempoTotal, $idRegistrador, $id_Estado_Reg_Act, $grupo, $registro);
+                $stmt->execute();
+            }
+
+            if($stmt->affected_rows > 0) {
+                $respuesta = array(
+                    'estado' => 'correcto'
+                );
+            } else {
+                $respuesta = array(
+                    'estado' => 'incorrecto'
+                );
+            }
+
+            $stmt->close();
+
+            // Si el registro pertenece a un grupo y solo se quiere eliminar un registro
+            if($idGrupo != NULL && $cantidadRegistros === 1 ){
+                $stmt = $conn->prepare("SELECT consecutivos FROM reg_act_agrupados WHERE id_Grupo_Reg = ? ");  
+                $stmt->bind_param('s', $idGrupo);
+                $stmt->execute();
+                $stmt->bind_result($consecutivos);
+                $stmt->fetch();
+
+                // Se obtienen los consecutivos que conforman el grupo
+                if($consecutivos){
+                    $reg_Agrupados = json_decode($consecutivos);
+                }
+                $stmt->close();
+
+                // Se conforma un nuevo grupo, sacando el registro que se desea eliminar
+                $nuevoGrupo = array(); 
+                foreach ($reg_Agrupados as $reg_Agrupado) {
+                    if($reg_Agrupado != $id_Reg){
+                        array_push($nuevoGrupo, $reg_Agrupado);
+                    }
+                }
+                $tamanioNuevoGrupo = count($nuevoGrupo);
+
+                if($tamanioNuevoGrupo === 1){
+                    $stmt = $conn->prepare("UPDATE reg_act SET id_Grupo_Reg = ? WHERE id_Reg_Act = ? ");  
+                    $stmt->bind_param('ss', $grupo, $nuevoGrupo[0]);
+                    $stmt->execute();
+                    $stmt->close();
+
+                    $stmt = $conn->prepare("DELETE FROM reg_act_agrupados WHERE id_Grupo_Reg = ? ");  
+                    $stmt->bind_param('s', $idGrupo);
+                    $stmt->execute();
+                    $stmt->close();
+
+                } else {
+                    $nuevoGrupoJSON = json_encode($nuevoGrupo);
+               
+                    // Se actualiza el grupo en la BD con la nueva información
+                    $stmt = $conn->prepare("UPDATE reg_act_agrupados SET consecutivos = ? WHERE id_Grupo_Reg = ? ");  
+                    $stmt->bind_param('ss', $nuevoGrupoJSON, $idGrupo);
+                    $stmt->execute();
+                    $stmt->close();
+                }
+            }
+
+            if($idGrupo != NULL && $cantidadRegistros > 1){
+                $stmt = $conn->prepare("DELETE FROM reg_act_agrupados WHERE id_Grupo_Reg = ? ");  
+                $stmt->bind_param('s', $idGrupo);
+                $stmt->execute();
+                $stmt->close();
+            }
+
+            $conn->close();
+            
+
+        } catch (Exception $e) {
+            // En caso de un error, tomar la exepcion
+            $respuesta = array(
+                'error' => $e->getMessage()
+            );
+        }
+
+    } catch (Exception $e) {
+        // En caso de un error, tomar la exepcion
+        $respuesta = array(
+            'error' => $e->getMessage()
+        );
+    }
+    
+    echo json_encode($respuesta);    
+}
 // Calcular el tiempo transcurrido entre fechas
 function tiempoTranscurridoFechas($fechaInicio, $fechaFin)
 {
@@ -411,8 +525,3 @@ function tiempoTranscurridoFechas($fechaInicio, $fechaFin)
          
     return $tiempo;
 }
-
-// Formatear fecha y hora definida
-// $formato = 'Y-m-d H:i:s';
-// $fecha = DateTime::createFromFormat($formato, '2009-02-15 15:16:17');
-// echo "Formato: $formato; " . $fecha->format('Y-m-d H:i:s') . "\n";

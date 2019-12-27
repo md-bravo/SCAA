@@ -9,7 +9,7 @@
           <div class="row mx-0">
                <div class="col-lg-12">
                     <div class="row justify-content-center border-bottom">
-                         <h3>Actividades Asignadas</h3>     
+                         <h4>Actividades Asignadas</h4>     
                     </div>
                     
                     <table id="tablaRegistros" class="display" style="width:100%">
@@ -153,14 +153,14 @@
                                    <legend class="col-form-label col-sm-3 pt-0">Cerrar</legend>
                                    <div class="col-sm-9">
                                         <div class="form-check">
-                                             <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                                             <label class="form-check-label" for="gridRadios1">
+                                             <input class="form-check-input" type="radio" name="gridRadios" id="soloActual" value="soloActual">
+                                             <label class="form-check-label" for="soloActual">
                                              Solo el actual
                                              </label>
                                         </div>
                                         <div class="form-check">
-                                             <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2" checked>
-                                             <label class="form-check-label" for="gridRadios2">
+                                             <input class="form-check-input" type="radio" name="gridRadios" id="todos" value="todos" checked>
+                                             <label class="form-check-label" for="todos">
                                              Todos los asociados
                                              </label>
                                         </div>

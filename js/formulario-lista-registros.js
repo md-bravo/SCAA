@@ -149,6 +149,8 @@ function llenarTabla() {
           table.column( 1 ).visible( false );
           table.column( 2 ).visible( false );
           table.column( 3 ).visible( false );
+     } else if(rol === "Operador"){
+          table.column( 3 ).visible( false );
      }
 
      // Se agrega el evento para mostrar u ocultar los detalles
@@ -313,6 +315,7 @@ function modalAccionesRegistro(data, todos, tipo) {
 
           if(id_Reg.length > 1){
                document.getElementById('opcionesBorrar').classList.remove("d-none");
+               document.getElementById('todos').checked = true;
           }
           
           // Al hacer click en Eliminar Registro, se llama la función eliminarRegistro y se le pasan los datos del registro seleccionado
@@ -429,6 +432,7 @@ function cerrarRegistro(datos, id_Reg, tipo) {
      }
 }
 
+// Editar el o los registros seleccionados
 function editarRegistro(datos, id_Reg, tipo) {
      const cantidad = Number(document.getElementById('cantidad').value);
      const ost = document.getElementById('ost').value;
@@ -523,11 +527,90 @@ function editarRegistro(datos, id_Reg, tipo) {
      }
 }
 
+// Elimina el o los registros seleccionados
 function eliminarRegistro(datos, id_Reg, tipo) {
-     console.log('Click en eliminar registros');
-     console.log(datos);
-     console.log(id_Reg);
-     console.log(tipo);
+
+     // Se verifica si se van a eliminar todos o solo uno
+     const todos = document.getElementById('todos').checked;
+     let regEliminar = [];
+
+     if(todos === true){
+          regEliminar = id_Reg;
+     } else {
+          regEliminar = [datos.id_reg_act];
+     }
+
+     const idRegistrador = document.getElementById('idRegistrador').value;
+     const fechaApertura = datos.fecha_hora_apertura;
+     const idGrupo = datos.grupo;
+
+     Swal.fire({
+          title: '¿Está seguro?',
+          text: 'Se eliminará el consecutivo ' + (regEliminar.length === 1 ? datos.consecutivo : datos.consecutivo + ' y sus asociados'),
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Si, eliminarlo'
+          }).then((result) => {
+          if (result.value) {
+               // Se definen los datos que se van a enviar al fetch
+               const data = new FormData();
+               data.append('id_Reg', regEliminar);
+               data.append('fecha_hora_apertura', fechaApertura);
+               data.append('idRegistrador', idRegistrador);
+               data.append('idGrupo', idGrupo);
+               data.append('tipo', tipo);
+
+               // Conexión del fetch al archivo php
+               fetch('inc/modelos/modelo-registro.php', {
+                    method: 'POST',
+                    body: data
+               })
+               .then(respuestaExitosa) // Respuesta exitosa llama la función
+               .catch(mostrarError); // Respuesta negativa llama la función
+
+               // Si la ejecución del AJAX es correcta se verifica la respuesta
+               function respuestaExitosa(response){
+                    if(response.ok) {   // Si la respuesta en ok se llama la función para mostrar los resultados
+                         response.json().then(mostrarResultado);
+                    } else {    // Si la respuesta no es ok se muestra el error
+                         mostrarError('status code: ' + response.status);
+                    }
+               }
+
+               // Se muestran los resultados devueltos en el JSON
+               function mostrarResultado(respuesta){
+                    // Si la respuesta es correcta
+                    if(respuesta.estado === 'correcto') {      
+                         mostrarMensaje('success', 'Eliminación de Registro Exitoso') ;   
+                         
+                         // Se oculta el modal de cierre de registro
+                         $('#modalAccionesReg').modal('hide');
+                         
+                         // Se actualiza la tabla
+                         var table = $('#tablaRegistros').DataTable();
+                         table.ajax.reload();
+
+                    }else  if(respuesta.estado === 'incorrecto') {
+                         mostrarMensaje('error', 'No se realizó la eliminación del registro'); 
+                    } else {
+                         // Hubo un error
+                         if(respuesta.error) {
+                              mostrarMensaje('error', 'Algo falló al eliminar el registro de actividad');    
+                         }
+                         if (respuesta.conexion) {
+                              mostrarMensaje('error', 'Falla en la conexión a la base de datos');
+                         }
+                    }
+               }
+
+               // Muestra el error si el AJAX no se ejecuta o la respuesta no es ok
+               function mostrarError(err){
+                    console.log('Error', err);
+               }
+          }
+     })
 }
 
 // Busca el peso de la actividad seleccionada y lo muestra

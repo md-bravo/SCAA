@@ -2,11 +2,13 @@ body {
   /* padding-bottom: 30px; */
   position: relative;
   min-height: 100%;
+  font-size: 0.9rem;
 }
 
 a {
   transition: background 0.2s, color 0.2s;
 }
+
 a:hover,
 a:focus {
   text-decoration: none;
@@ -25,12 +27,12 @@ a:focus {
 }
 #wrapper.toggled #navbar-wrapper {
   position: absolute;
-  margin-right: -200px;
+  margin-right: -175px;
 }
 #navbar-wrapper .navbar {
   border-width: 0 0 0 0;
   background-color: #025299;
-  font-size: 24px;
+  font-size: 22px;
   margin-bottom: 0;
   border-radius: 0;
 }
@@ -61,10 +63,10 @@ a:focus {
 #sidebar-wrapper {
   /* z-index: 1000; */
   position: fixed;
-  left: 200px;
+  left: 175px;
   width: 0;
   height: 100%;
-  margin-left: -200px;
+  margin-left: -175px;
   overflow-y: auto;
   overflow-x: hidden;
   background: #3b3f58;
@@ -73,13 +75,13 @@ a:focus {
 }
 
 #wrapper.toggled #sidebar-wrapper {
-  width: 200px;
+  width: 175px;
 }
 
 .sidebar-brand {
   position: absolute;
   top: 0;
-  width: 200px;
+  width: 175px;
   /* text-align: center; */
   padding: 35px 0;
   color: hsla(0,0%,100%,.8);
@@ -89,20 +91,19 @@ a:focus {
   text-indent: 20px;
 }
 
-.sidebar-brand a span{
-  margin-left: 10px;
+.sidebar-brand span{
   font-size: 14px;
   text-decoration: underline;
 }
 
 .sidebar-brand a i.fas {
-  font-size: 24px;
+  font-size: 20px;
   width: 60px;
 }
 .sidebar-nav {
   position: absolute;
   top: 100px;
-  width: 200px;
+  width: 175px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -118,7 +119,7 @@ a:focus {
   text-decoration: none;
   color: hsla(0,0%,100%,.8);
   font-weight: 600;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .sidebar-nav > li > a:hover,
@@ -129,7 +130,7 @@ a:focus {
 }
 
 .sidebar-nav > li > a i.fas {
-  font-size: 24px;
+  font-size: 20px;
   width: 60px;
 }
 
@@ -141,12 +142,12 @@ a:focus {
 }
 #wrapper.toggled #content-wrapper {
   position: absolute;
-  margin-right: -200px;
+  margin-right: -175px;
 }
 
 @media (min-width: 992px) {
   #wrapper {
-    padding-left: 200px;
+    padding-left: 175px;
   }
 
   #wrapper.toggled {
@@ -154,7 +155,7 @@ a:focus {
   }
 
   #sidebar-wrapper {
-    width: 200px;
+    width: 175px;
   }
 
   #wrapper.toggled #sidebar-wrapper {
@@ -206,12 +207,12 @@ a:focus {
 
   #wrapper.toggled #navbar-wrapper {
     position: absolute;
-    margin-right: -200px;
+    margin-right: -175px;
   }
 
   #wrapper.toggled #content-wrapper {
     position: absolute;
-    margin-right: -200px;
+    margin-right: -175px;
   }
 
   #navbar-wrapper {
@@ -223,7 +224,7 @@ a:focus {
   }
 
   #wrapper.toggled {
-    padding-left: 200px;
+    padding-left: 175px;
   }
 
   #content-wrapper {
@@ -234,7 +235,7 @@ a:focus {
   #wrapper.toggled #navbar-wrapper,
   #wrapper.toggled #content-wrapper {
     position: relative;
-    margin-right: 200px;
+    margin-right: 175px;
   }
 }
 
@@ -248,16 +249,16 @@ a:focus {
   }
 
   #wrapper.toggled #sidebar-wrapper {
-    width: 200px;
+    width: 175px;
   }
   #wrapper.toggled #navbar-wrapper {
     position: absolute;
-    margin-right: -200px;
+    margin-right: -175px;
   }
 
   #wrapper.toggled #content-wrapper {
     position: absolute;
-    margin-right: -200px;
+    margin-right: -175px;
   }
 
   #navbar-wrapper {
@@ -272,7 +273,7 @@ a:focus {
   }
 
   #wrapper.toggled {
-    padding-left: 200px;
+    padding-left: 175px;
   }
 
   #content-wrapper {
@@ -283,7 +284,7 @@ a:focus {
   #wrapper.toggled #navbar-wrapper,
   #wrapper.toggled #content-wrapper {
     position: relative;
-    margin-right: 200px;
+    margin-right: 175px;
   }
 }
 

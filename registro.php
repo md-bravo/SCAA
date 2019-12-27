@@ -5,11 +5,11 @@
      include 'inc/templates/sidebar.php';
 ?>
 
-    <section id="content-wrapper">
+    <section id="content-wrapper" class="pt-0">
           <div class="row mx-0">
                <div class="col-lg-12">
                     <div class="row justify-content-center border-bottom">
-                        <h3>Asignar Actividades</h3>     
+                        <h4>Asignar Actividades</h4>     
                     </div>
 
                     <div class="row pb-3 pt-4 justify-content-center">                                       
