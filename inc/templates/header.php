@@ -16,7 +16,7 @@
      <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
      <link rel="stylesheet" type="text/css" href="css/vendor/bootstrap-select.css">
 
-     <title>SCAA - DGEAS</title>
+     <title>SCAA - Empresa</title>
 </head>
 
 <body class="<?php echo obtenerPaginaActual(); ?>">
@@ -30,14 +30,15 @@
                     </div>
                     <div>
                          <span class="navbar-text titulo-largo">
-                              Sistema de Control y Asignación de Actividades - DGEAS
+                              Sistema de Control y Asignación de Actividades - Empresa
                          </span>
                          <span class="navbar-text titulo-corto">
-                              SCAA - DGEAS
+                              SCAA
                          </span>
                     </div>
                     <div>
-                         <img src="img/logo-ice.png" class="logo img-fluid" alt="logo-ice">
+                         <!-- <img src="img/logo-ice2.png" class="logo img-fluid" alt="Logo Empresa"> -->
+                         Logo Empresa
                     </div>
                </div>
           </nav>

@@ -19,10 +19,9 @@
           break;
         case 'registro':
           echo '<script type="text/javascript" src="js/formulario-registro.js"></script>';
-          
           break;
         case 'reporte':
-  
+          echo '<script type="text/javascript" src="js/formulario-reporte.js"></script>';
           break;
         default:
           break;

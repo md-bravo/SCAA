@@ -30,7 +30,7 @@
 <div class="container container-login h-100">
     <div class="row h-100 align-items-center justify-content-center">
             <div class="contenido bg-light p-4">
-                <h2 class="titulo-login text-center py-2 rounded">SCAA - DGEAS</h2>       
+                <h2 class="titulo-login text-center py-2 rounded">SCAA - Empresa</h2>       
 
                 <form id="formulario-login" class="mt-5" method="post">
                     <div class="form-group row">
