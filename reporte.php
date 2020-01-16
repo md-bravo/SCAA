@@ -35,7 +35,7 @@
             </div>
             
             <div class="table-responsive">
-            <table id="tablaReporte" class="display" style="width:100%">
+            <table hidden id="tablaReporte" class="display" style="width:100%">
                     <thead>
                         <tr>
                             <th>ID</th>
