@@ -15,6 +15,9 @@ function generarReporte(e) {
 
     const fechaInicio = document.getElementById('fechaInicio').value;
     const fechaFinIngresada = document.getElementById('fechaFin').value;
+    const idZona = Number(document.getElementById('ddlZonas').value);
+    const idArea = Number(document.getElementById('ddlAreas').value);
+    const cedula = document.getElementById("cedula").value;
 
     // A la fecha fin, se le suma un día más para realizar el filtrado en la base de datos, en ese rango
     let nuevaFecha = new Date(fechaFinIngresada);
@@ -40,14 +43,28 @@ function generarReporte(e) {
      // Si el rango de fechas es correcto se hace la consulta y se llena la tabla
           document.getElementById('tablaReporte').hidden = false;
           var table = $('#tablaReporte').DataTable({
+               destroy: true,
                dom: 'Bfrtip',
                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
                     {
-                    extend: 'pdfHtml5',
-                    orientation: 'landscape',
-                    pageSize: 'A4'
+                         extend: 'copyHtml5',
+                         exportOptions: {
+                              columns: ':visible'
+                          }
+                    },
+                    {
+                         extend: 'excelHtml5',
+                         exportOptions: {
+                              columns: ':visible'
+                          }
+                    },
+                    {
+                         extend: 'pdfHtml5',
+                         orientation: 'landscape',
+                         pageSize: 'A4',
+                         exportOptions: {
+                              columns: ':visible'
+                          }
                     },
                     {
                          extend: 'print',
@@ -76,7 +93,24 @@ function generarReporte(e) {
                                    }
                     
                                    head.appendChild(style);
-                         }
+                         },
+                         exportOptions: {
+                              columns: ':visible'
+                          }
+                    },
+                    {
+                         extend: 'colvis',
+                         collectionLayout: 'fixed two-column'
+                    },
+               ],
+               columnDefs: [
+                    {
+                        targets: 12,
+                        visible: false
+                    },
+                    {
+                         targets: 13,
+                         visible: false
                      }
                ],
                "ajax": {
@@ -84,7 +118,10 @@ function generarReporte(e) {
                     url: "inc/modelos/modelo-reporte.php", 
                     data: {
                          'fechaInicio' : fechaInicio,
-                         'fechaFin' : fechaFin
+                         'fechaFin' : fechaFin,
+                         'idZona' : idZona,
+                         'idArea' : idArea,
+                         'cedula' : cedula
                     }
                }, 
                "autoWidth": true,
@@ -104,39 +141,6 @@ function generarReporte(e) {
                     { "data": "usuario_asignador" },
                     { "data": "usuario_cierra" }
                ],
-               // "columnDefs": [
-               //      {
-               //           "targets": [4],
-               //           "visible": false,
-               //           "searchable": false
-               //      },
-               //      {
-               //           "targets": [6],
-               //           "visible": false,
-               //      },
-               //      {
-               //           "targets": [7],
-               //           "visible": false,
-               //      },
-               //      {
-               //           "targets": [8],
-               //           "visible": false,
-               //      },
-               //      {
-               //           "targets": [11],
-               //           "visible": false,
-               //           "searchable": false
-               //      },
-               //      {
-               //           "targets": [14],
-               //           "visible": false,
-               //      },
-               //      {
-               //           "targets": [15],
-               //           "visible": false,
-               //           "searchable": false
-               //      }
-               // ],
                "order": [[0, "asc"]],
                "language": {
                     "sProcessing": "Procesando...",
@@ -177,10 +181,10 @@ function generarReporte(e) {
                          copySuccess: {
                              _: '%d lineas copiadas',
                              1: '1 linea copiada'
-                         }
+                         },
+                         colvis: 'Columnas'
                     }
-               },
-               destroy: true
+               }
           });
 
     }

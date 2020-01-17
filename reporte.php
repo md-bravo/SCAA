@@ -12,25 +12,54 @@
                     <h4>Reportes</h4>     
             </div>
             
-            <div id="filtros" class="border-bottom pt-3 row">
-                <form class="form-inline" id="formulario-reporte" method="post">
-                    <label class="sr-only" for="fechaInicio">De</label>
-                    <div class="input-group mb-2 mr-sm-2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">De</div>
+            <div id="filtros" class="border-bottom pt-3 ">
+                <form id="formulario-reporte" method="post">
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <label for="fechaInicio">De</label>
+                            <input type="date" class="form-control form-control-sm" id="fechaInicio">                        
                         </div>
-                        <input type="date" class="form-control" id="fechaInicio">
+                        <div class="form-group col-md-2">
+                            <label for="fechaFin">Hasta</label>
+                            <input type="date" class="form-control form-control-sm" id="fechaFin">                        
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="zonas">Zonas</label>
+                            <?php
+                                $zonas = obtenerZonas();
+                                if($zonas) { ?>
+                                    <select class="form-control form-control-sm" id="ddlZonas">
+                                        <option value="0">Todas</option>
+                                        <?php
+                                            foreach($zonas as $zona) { ?>
+                                                <option value="<?php echo $zona['id_Zona']?>"><?php echo $zona['nombre_Zona']?></option>
+                                            <?php } ?>                        
+                                    </select>
+                                <?php } ?>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="areas">Areas</label>
+                            <?php
+                                $areas = obtenerAreas();
+                                if($areas) { ?>
+                                    <select class="form-control form-control-sm" id="ddlAreas">
+                                    <option value="0">Todas</option>
+                                        <?php
+                                            foreach($areas as $area) { ?>
+                                                <option value="<?php echo $area['id_Area']?>"><?php echo $area['nombre_Area']?></option>
+                                            <?php } ?>                        
+                                    </select>
+                                <?php } ?>                     
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="cedula">Cédula</label>
+                            <input type="number" class="form-control form-control-sm" id="cedula">                        
+                        </div>
+                        <div class="form-group col-md-2 d-flex align-items-end">                        
+                            <button type="submit" id="btnGenerar" class="btn btn-sm btn-primary">Generar</button>
+                        </div>
                     </div>
 
-                    <label class="sr-only" for="fechaFin">Hasta</label>
-                    <div class="input-group mb-2 mr-sm-2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Hasta</div>
-                        </div>
-                        <input type="date" class="form-control" id="fechaFin">
-                    </div>
-
-                    <button type="submit" id="btnGenerar" class="btn btn-primary mb-2">Generar</button>
                 </form>
             </div>
             
