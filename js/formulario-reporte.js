@@ -40,6 +40,45 @@ function generarReporte(e) {
      // Si el rango de fechas es correcto se hace la consulta y se llena la tabla
           document.getElementById('tablaReporte').hidden = false;
           var table = $('#tablaReporte').DataTable({
+               dom: 'Bfrtip',
+               buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    {
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    pageSize: 'A4'
+                    },
+                    {
+                         extend: 'print',
+                         text: 'Imprimir',
+                         customize: function(win)
+                         {
+                    
+                                   var last = null;
+                                   var current = null;
+                                   var bod = [];
+                    
+                                   var css = '@page { size: landscape; }',
+                                        head = win.document.head || win.document.getElementsByTagName('head')[0],
+                                        style = win.document.createElement('style');
+                    
+                                   style.type = 'text/css';
+                                   style.media = 'print';
+                    
+                                   if (style.styleSheet)
+                                   {
+                                   style.styleSheet.cssText = css;
+                                   }
+                                   else
+                                   {
+                                   style.appendChild(win.document.createTextNode(css));
+                                   }
+                    
+                                   head.appendChild(style);
+                         }
+                     }
+               ],
                "ajax": {
                     type: "POST",
                     url: "inc/modelos/modelo-reporte.php", 
@@ -48,20 +87,19 @@ function generarReporte(e) {
                          'fechaFin' : fechaFin
                     }
                }, 
-               "autoWidth": false,
+               "autoWidth": true,
                "columns": [
-                    { "data": "id_reg_act" },
                     { "data": "consecutivo" },
                     { "data": "ost" },
                     { "data": "siga" },
                     { "data": "numero_servicio" },
                     { "data": "cantidad_eventos" },
                     { "data": "peso_total" },
-                    { "data": "tiempo_total" },
-                    { "data": "id_Act" },
+                    { "data": "actividad" },
+                    { "data": "detalle" },
                     { "data": "fecha_hora_apertura" },
                     { "data": "fecha_hora_cierre" },
-                    { "data": "detalle" },
+                    { "data": "tiempo_total" },
                     { "data": "usuario_asignado" },
                     { "data": "usuario_asignador" },
                     { "data": "usuario_cierra" }
@@ -99,7 +137,7 @@ function generarReporte(e) {
                //           "searchable": false
                //      }
                // ],
-               "order": [[4, "desc"]],
+               "order": [[0, "asc"]],
                "language": {
                     "sProcessing": "Procesando...",
                     "sLengthMenu": "Mostrar _MENU_ registros",
@@ -133,9 +171,15 @@ function generarReporte(e) {
                               0: "",
                               1: "1 fila seleccionada"
                          }
+                    },
+                    buttons: {
+                         copyTitle: 'Copiado al portapapeles',
+                         copySuccess: {
+                             _: '%d lineas copiadas',
+                             1: '1 linea copiada'
+                         }
                     }
                },
-               "select": 'single',
                destroy: true
           });
 

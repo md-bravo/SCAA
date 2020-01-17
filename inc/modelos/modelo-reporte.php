@@ -12,10 +12,10 @@ if (isset($_POST['fechaFin'])) {
 include '../funciones/conexion.php';
 
 try {
-    $stmt = $conn->prepare("SELECT id_Reg_Act, consecutivo, OST, SIGA, cantidad_eventos, numero_servicio, detalle, fecha_hora_apertura, fecha_hora_cierre, tiempo_total, peso_total, usuario_asignado, usuario_asignador, usuario_cierra, id_Act FROM reg_act_cerrados WHERE fecha_hora_apertura >= ? AND fecha_hora_apertura < ? ORDER BY consecutivo ASC");
+    $stmt = $conn->prepare("SELECT a.consecutivo, a.OST, a.SIGA, a.numero_servicio, a.cantidad_eventos, a.peso_total, e.nombre_Act, a.detalle, a.fecha_hora_apertura, a.fecha_hora_cierre, a.tiempo_total, CONCAT_WS(' ', b.nombre1, b.apellido1, b.apellido2) AS usuario_asignado, CONCAT_WS(' ', c.nombre1, c.apellido1, c.apellido2) AS usuario_asignador, CONCAT_WS(' ', d.nombre1, d.apellido1, d.apellido2) AS usuario_cierra FROM reg_act_cerrados a INNER JOIN usuarios b ON b.cedula = a.usuario_asignado INNER JOIN usuarios c ON c.cedula = a.usuario_asignador INNER JOIN usuarios d ON d.cedula = a.usuario_cierra INNER JOIN actividades e ON e.id_Act = a.id_Act WHERE fecha_hora_apertura >= ? AND fecha_hora_apertura < ? ORDER BY consecutivo ASC");
     $stmt->bind_param('ss', $fechaInicio, $fechaFin);
     $stmt->execute();
-    $stmt->bind_result($id_Reg_Act, $consecutivo, $OST, $SIGA, $cantidad_eventos, $numero_servicio, $detalle, $fecha_hora_apertura, $fecha_hora_cierre, $tiempo_total, $peso_total, $usuario_asignado, $usuario_asignador, $usuario_cierra, $id_Act);
+    $stmt->bind_result($consecutivo, $OST, $SIGA, $numero_servicio, $cantidad_eventos, $peso_total, $actividad, $detalle, $fecha_hora_apertura, $fecha_hora_cierre, $tiempo_total, $usuario_asignado, $usuario_asignador, $usuario_cierra);
 
     $respuesta = array(
         'data' => array()
@@ -24,7 +24,7 @@ try {
     while ($stmt->fetch()) {
         $fecha_Apertura = date_create($fecha_hora_apertura);
         $fecha_Cierre = date_create($fecha_hora_cierre);
-        array_push($respuesta['data'], ['id_reg_act' => $id_Reg_Act, 'consecutivo' => $consecutivo, 'ost' => $OST, 'siga' => $SIGA, 'numero_servicio' => $numero_servicio, 'cantidad_eventos' => $cantidad_eventos, 'peso_total' => $peso_total, 'tiempo_total' => $tiempo_total, 'id_Act' => $id_Act, 'fecha_hora_apertura' => date_format($fecha_Apertura, 'd-m-Y H:i:s'), 'fecha_hora_cierre' => date_format($fecha_Cierre, 'd-m-Y H:i:s'), 'detalle' => $detalle, 'usuario_asignado' => $usuario_asignado, 'usuario_asignador' => $usuario_asignador, 'usuario_cierra' => $usuario_cierra]);  
+        array_push($respuesta['data'], ['consecutivo' => $consecutivo, 'ost' => $OST, 'siga' => $SIGA, 'numero_servicio' => $numero_servicio, 'cantidad_eventos' => $cantidad_eventos, 'peso_total' => $peso_total, 'actividad' => $actividad, 'detalle' => $detalle, 'fecha_hora_apertura' => date_format($fecha_Apertura, 'd-m-Y H:i:s'), 'fecha_hora_cierre' => date_format($fecha_Cierre, 'd-m-Y H:i:s'), 'tiempo_total' => $tiempo_total,  'usuario_asignado' => $usuario_asignado, 'usuario_asignador' => $usuario_asignador, 'usuario_cierra' => $usuario_cierra]);  
         $totalRegistros++;
     }
 

@@ -24,6 +24,10 @@ function verificarRol() {
             menu[1].remove();
             menu[2].remove();
         }
+        if(rol === 'Operador'){
+            const menu = document.querySelectorAll('.sidebar-nav li');
+            menu[2].remove();
+        }
 }
 
 
