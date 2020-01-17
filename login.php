@@ -22,7 +22,7 @@
      <link rel="stylesheet" type="text/css" href="css/all.min.css">
      <link rel="stylesheet" type="text/css" href="css/style.css">
 
-     <title>SCAA - DGEAS</title>
+     <title>SCAA - Empresa</title>
 </head>
 
 <body class="<?php echo obtenerPaginaActual(); ?>">
