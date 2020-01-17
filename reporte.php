@@ -37,19 +37,18 @@
             <div class="table-responsive">
             <table id="tablaReporte" class="display" style="width:100%">
                     <thead>
-                        <tr>
-                            <th>ID</th>
+                        <tr>                            
                             <th>Consecutivo</th>
                             <th>OST</th>
                             <th>SIGA</th>
                             <th>Servicio</th>
                             <th>Cantidad</th>
-                            <th>Peso Total</th>                          
-                            <th>Tiempo Total</th>                            
-                            <th>id_Act</th>
+                            <th>Peso Total</th>
+                            <th>Actividad</th>                          
+                            <th>Observaciones</th>
                             <th>Fecha/Hora Apertura</th>
                             <th>Fecha/Hora Cierre</th>
-                            <th>Observaciones</th>
+                            <th>Tiempo Total</th>>
                             <th>Asignado a</th>
                             <th>Asignado por</th>
                             <th>Cerrado por</th>
@@ -57,18 +56,17 @@
                     </thead>
                     <tfoot>
                         <tr>
-                        <th>ID</th>
                             <th>Consecutivo</th>
                             <th>OST</th>
                             <th>SIGA</th>
                             <th>Servicio</th>
                             <th>Cantidad</th>
-                            <th>Peso Total</th>                          
-                            <th>Tiempo Total</th>                            
-                            <th>id_Act</th>
+                            <th>Peso Total</th>
+                            <th>Actividad</th>                          
+                            <th>Observaciones</th>
                             <th>Fecha/Hora Apertura</th>
                             <th>Fecha/Hora Cierre</th>
-                            <th>Observaciones</th>
+                            <th>Tiempo Total</th>>
                             <th>Asignado a</th>
                             <th>Asignado por</th>
                             <th>Cerrado por</th>
