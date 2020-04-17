@@ -8,15 +8,21 @@ if (isset($_POST['fechaFin'])) {
 }
 if (isset($_POST['idZona'])) {
     $idZona = $_POST['idZona'];
+} else {
+    $idZona = 0;
 }
 if (isset($_POST['idArea'])) {
     $idArea = $_POST['idArea'];
+} else {
+    $idArea = 0;
 }
 if (isset($_POST['cedula'])) {
     $cedula = $_POST['cedula'];
     if($cedula === ''){
         $cedula = NULL;
     }
+} else {
+    $cedula = NULL;
 }
 
 // importar la conexion
