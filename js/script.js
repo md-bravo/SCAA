@@ -82,7 +82,7 @@ $(function()
        igual a la cantidad de minutos máxima establecida, se elimina la sessión. */
     function timeCompare(timeString)
     {
-        var maxMinutes  = 30;  // Minutos de espera
+        var maxMinutes  = 5;  // Minutos de espera
         var currentTime = new Date();
         var pastTime    = new Date(timeString);
         var timeDiff    = currentTime - pastTime;

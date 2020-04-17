@@ -5,6 +5,7 @@
      <script type="text/javascript" src="DataTables/datatables.min.js"></script>
      <script type="text/javascript" src="js/vendor/bootstrap-select.js"></script>
      <script type="text/javascript" src="DataTables/Buttons-1.6.1/js/buttons.print.min.js"></script>
+     <script type="text/javascript" src="DataTables/Buttons-1.6.1/js/buttons.colVis.min.js"></script>
      
     <?php 
       $actual = obtenerPaginaActual();

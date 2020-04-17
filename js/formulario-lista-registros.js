@@ -38,25 +38,25 @@ function llenarTabla() {
                     "className": 'details-control',
                     "orderable": false,
                     "data": null,
-                    "defaultContent": ''
+                    "defaultContent": '<span title="Ver Más" style="opacity:0">Tip</span>'
                },
                {
                     "className": 'cerrarReg',
                     "orderable": false,
                     "data":null,
-                    "defaultContent": ''
+                    "defaultContent": '<span title="Cerrar" style="opacity:0">Tip</span>'
                },
                {
                     "className": 'editarReg',
                     "orderable": false,
                     "data":null,
-                    "defaultContent": ''
+                    "defaultContent": '<span title="Editar" style="opacity:0">Tip</span>'
                },
                {
                     "className": 'borrarReg',
                     "orderable": false,
                     "data":null,
-                    "defaultContent": ''
+                    "defaultContent": '<span title="Borrar" style="opacity:0">Tip</span>'
                },
                { "data": "id_reg_act" },
                { "data": "consecutivo" },
