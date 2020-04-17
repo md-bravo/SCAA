@@ -21,6 +21,7 @@ try {
         'data' => array()
     );
 
+    $totalRegistros = 0;
     while ($stmt->fetch()) {
         $fecha_Apertura = date_create($fecha_hora_apertura);
         $fecha_Cierre = date_create($fecha_hora_cierre);

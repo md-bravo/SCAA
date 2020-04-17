@@ -428,6 +428,8 @@ async function guardarRegistro() {
         // Se muestran los resultados devueltos en el JSON
         function mostrarResultado(respuesta){
             // Si la respuesta es correcta
+
+            
            
             if(respuesta.estado === 'correcto') {      
                 mostrarMensaje('success', 'Registro Exitoso') ;      

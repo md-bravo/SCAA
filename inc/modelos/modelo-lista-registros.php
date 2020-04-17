@@ -39,6 +39,7 @@ if($tipo === "llenarTabla"){
                 'data' => array()
             );
 
+            $totalRegistros = 0;
             while ($stmt->fetch()) {
             array_push($respuesta['data'], ['id_reg_act' => $id_Reg_Act, 'consecutivo' => $consecutivo, 'ost' => $OST, 'siga' => $SIGA, 'numero_servicio' => $numero_servicio, 'actividad' => $actividad, 'peso_act' => $peso_Act, 'cantidad_eventos' => $cantidad_eventos, 'peso_total' => $peso_total, 'id_Act' => $id_Act, 'fecha_hora_apertura' => $fecha_hora_apertura, 'nombre' => $nombre1 . ' ' . $nombre2 . ' ' . $apellido1 . ' ' . $apellido2, 'detalle' => $detalle, 'grupo' => $grupo]);  
             $totalRegistros++;
@@ -66,6 +67,7 @@ if($tipo === "llenarTabla"){
                 'data' => array()
             );
 
+            $totalRegistros = 0;
             while ($stmt->fetch()) {
                 $fecha_Apertura = date_create($fecha_hora_apertura);
                 array_push($respuesta['data'], ['id_reg_act' => $id_Reg_Act, 'consecutivo' => $consecutivo, 'ost' => $OST, 'siga' => $SIGA, 'numero_servicio' => $numero_servicio, 'actividad' => $actividad, 'peso_act' => $peso_Act, 'cantidad_eventos' => $cantidad_eventos, 'peso_total' => $peso_total, 'id_Act' => $id_Act, 'fecha_hora_apertura' => date_format($fecha_Apertura, 'd-m-Y H:i:s'), 'nombre' => $nombre1 . ' ' . $nombre2 . ' ' . $apellido1 . ' ' . $apellido2, 'detalle' => $detalle, 'grupo' => $grupo]);  

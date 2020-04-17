@@ -194,7 +194,7 @@ if($tipo === 'registrar'){
             }
 
             // Crea un grupo e inserta los registros que lo conforman
-            if(count($grupo > 0)){
+            if(count($grupo) > 0){
                 $grupoJSON = json_encode($grupo);
                 $stmt = $conn->prepare("INSERT INTO reg_act_agrupados (consecutivos) VALUES (?) ");  
                 $stmt->bind_param('s', $grupoJSON);
@@ -462,7 +462,7 @@ if($tipo === 'borrar'){
 function tiempoTranscurridoFechas($fechaInicio, $fechaFin)
 {
     $fecha1 = new DateTime($fechaInicio);
-    $fecha2 = new DateTime($fechFin);
+    $fecha2 = new DateTime($fechaFin);
     $fecha = $fecha1->diff($fecha2);
     $tiempo = "";
          
